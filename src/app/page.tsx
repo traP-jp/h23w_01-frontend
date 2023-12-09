@@ -1,4 +1,4 @@
-import FabricCanvas from "@/features/fabric/FabricCanvas"
+import FabricCanvas from '@/features/fabric/FabricCanvas'
 
 export default function Home() {
 	return (

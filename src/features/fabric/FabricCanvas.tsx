@@ -1,9 +1,9 @@
-"use client"
+'use client'
 
-import { canvasAtom } from "@/states/canvas"
-import { Canvas } from "fabric"
-import { useSetAtom } from "jotai"
-import { useEffect, useRef } from "react"
+import { canvasAtom } from '@/states/canvas'
+import { Canvas } from 'fabric'
+import { useSetAtom } from 'jotai'
+import { useEffect, useRef } from 'react'
 
 export default function FabricCanvas() {
 	const canvasEl = useRef<HTMLCanvasElement>(null)
@@ -13,7 +13,7 @@ export default function FabricCanvas() {
 		if (!canvasEl.current) return
 		const canvas = new Canvas(canvasEl.current, {
 			height: 740,
-			width: 500,
+			width: 500
 		})
 
 		setCanvas(canvas)
