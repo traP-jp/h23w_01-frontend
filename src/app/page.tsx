@@ -1,9 +1,9 @@
-import { Button } from '@/components/ui/button'
+import FabricCanvas from "@/features/fabric/FabricCanvas"
 
 export default function Home() {
 	return (
 		<main>
-			<Button>button</Button>
+			<FabricCanvas />
 		</main>
 	)
 }
