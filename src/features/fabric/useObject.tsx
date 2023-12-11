@@ -1,4 +1,5 @@
 import { canvasAtom } from '@/states/canvas'
+import { selectedColorAtom } from '@/states/tools'
 import { CircleIcon, SquareIcon, VercelLogoIcon } from '@radix-ui/react-icons'
 import { Circle, Rect, Triangle } from 'fabric'
 import { useAtomValue } from 'jotai'
@@ -22,13 +23,9 @@ export type ObjectType = (typeof objects)[number]['value']
 
 export const useObject = () => {
 	const canvas = useAtomValue(canvasAtom)
+	const selectedColor = useAtomValue(selectedColorAtom)
 
-	const putObject = (
-		offsetX: number,
-		offsetY: number,
-		object: ObjectType,
-		color: string
-	) => {
+	const putObject = (offsetX: number, offsetY: number, object: ObjectType) => {
 		if (canvas == null) {
 			return
 		}
@@ -39,7 +36,7 @@ export const useObject = () => {
 					top: offsetY - 50,
 					radius: 50,
 					fill: 'transparent',
-					stroke: color,
+					stroke: selectedColor,
 					strokeWidth: 1
 				})
 				canvas.add(shape)
@@ -52,7 +49,7 @@ export const useObject = () => {
 					width: 100,
 					height: 100,
 					fill: 'transparent',
-					stroke: color,
+					stroke: selectedColor,
 					strokeWidth: 1
 				})
 				canvas.add(shape)
@@ -65,7 +62,7 @@ export const useObject = () => {
 					width: 100,
 					height: 100,
 					fill: 'transparent',
-					stroke: color,
+					stroke: selectedColor,
 					strokeWidth: 1
 				})
 				canvas.add(shape)
@@ -78,7 +75,7 @@ export const useObject = () => {
 			// 		rx: 50,
 			// 		ry: 30,
 			// 		fill: 'transparent',
-			// 		stroke: color,
+			// 		stroke: selectedColor,
 			// 		strokeWidth: 1
 			// 	})
 			// 	canvas.add(shape)
