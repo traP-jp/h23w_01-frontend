@@ -132,9 +132,7 @@ export function PostForm() {
 					)}
 				/>
 				<Label>送信先</Label>
-				<ul>
-					{makeSelectedChannelsElements()}
-				</ul>
+				<ul>{makeSelectedChannelsElements()}</ul>
 				<Popover open={open} onOpenChange={setOpen}>
 					<PopoverTrigger asChild>
 						<Button
