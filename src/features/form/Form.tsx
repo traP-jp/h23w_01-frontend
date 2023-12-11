@@ -1,11 +1,17 @@
 'use client'
 
-import { useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 
 import { Button } from '@/components/ui/button'
+import {
+	Command,
+	CommandInput,
+	CommandItem,
+	CommandList
+} from '@/components/ui/command'
 import {
 	Form,
 	FormControl,
@@ -16,26 +22,15 @@ import {
 	FormMessage
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import {
-	Command,
-	CommandDialog,
-	CommandEmpty,
-	CommandGroup,
-	CommandInput,
-	CommandItem,
-	CommandList,
-	CommandSeparator,
-	CommandShortcut
-} from '@/components/ui/command'
+import { Label } from '@/components/ui/label'
 import {
 	Popover,
 	PopoverContent,
 	PopoverTrigger
 } from '@/components/ui/popover'
-import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { useToast } from '@/components/ui/use-toast'
-import { Cross1Icon, ChevronDownIcon } from '@radix-ui/react-icons'
+import { ChevronDownIcon, Cross1Icon } from '@radix-ui/react-icons'
 
 import { getChannels } from '@/features/traq/channels'
 import { postForm } from './PostForm'
