@@ -1,9 +1,11 @@
-import FabricCanvas from '@/features/fabric/FabricCanvas'
+import FabricCanvasWrapper from '@/features/fabric/components/FabricCanvas'
+import ObjectSelector from '@/features/fabric/components/ObjectSelector'
 
 export default function Home() {
 	return (
 		<main>
-			<FabricCanvas />
+			<ObjectSelector />
+			<FabricCanvasWrapper />
 		</main>
 	)
 }

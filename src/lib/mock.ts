@@ -23,7 +23,7 @@ export const initMock = async () => {
 			const worker = setupWorker(...handlers(getApiOrigin()))
 			await worker.start({
 				onUnhandledRequest(req, print) {
-					if (req.url.startsWith('/_next')) {
+					if (req.url.includes('/_next')) {
 						return
 					}
 					print.warning()
