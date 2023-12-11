@@ -7,10 +7,14 @@ export const useImage = () => {
 
 	const putImage = (clientX: number, clientY: number, file: File) => {
 		if (canvas == null) {
-			return
+			throw new Error('canvas is null')
 		}
 		const imgEle = new Image()
 		imgEle.src = URL.createObjectURL(file)
+		const id = imgEle.src.split('/').at(-1)
+		if (!id) {
+			throw new Error(`invalid id: ${id}`)
+		}
 		const img = new FabricImage(imgEle, {
 			left: clientX,
 			top: clientY,
@@ -18,6 +22,7 @@ export const useImage = () => {
 			height: 100
 		})
 		canvas.add(img)
+		return { id, src: file }
 	}
 
 	return { putImage }

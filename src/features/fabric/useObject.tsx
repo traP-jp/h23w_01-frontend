@@ -24,8 +24,8 @@ export const useObject = () => {
 	const canvas = useAtomValue(canvasAtom)
 
 	const putObject = (
-		clientX: number,
-		clientY: number,
+		offsetX: number,
+		offsetY: number,
 		object: ObjectType,
 		color: string
 	) => {
@@ -35,8 +35,8 @@ export const useObject = () => {
 		switch (object) {
 			case 'circle': {
 				const shape = new Circle({
-					left: clientX - 50,
-					top: clientY - 50,
+					left: offsetX - 50,
+					top: offsetY - 50,
 					radius: 50,
 					fill: 'transparent',
 					stroke: color,
@@ -47,8 +47,8 @@ export const useObject = () => {
 			}
 			case 'rectangle': {
 				const shape = new Rect({
-					left: clientX - 50,
-					top: clientY - 50,
+					left: offsetX - 50,
+					top: offsetY - 50,
 					width: 100,
 					height: 100,
 					fill: 'transparent',
@@ -60,8 +60,8 @@ export const useObject = () => {
 			}
 			case 'triangle': {
 				const shape = new Triangle({
-					left: clientX - 50,
-					top: clientY - 50,
+					left: offsetX - 50,
+					top: offsetY - 50,
 					width: 100,
 					height: 100,
 					fill: 'transparent',
@@ -73,8 +73,8 @@ export const useObject = () => {
 			}
 			// case 'star': {
 			// 	const shape = new Star({
-			// 		left: clientX - 50,
-			// 		top: clientY - 30,
+			// 		left: offsetX - 50,
+			// 		top: offsetY - 30,
 			// 		rx: 50,
 			// 		ry: 30,
 			// 		fill: 'transparent',
