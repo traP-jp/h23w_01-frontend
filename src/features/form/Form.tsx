@@ -35,18 +35,20 @@ import { ChevronDownIcon, Cross1Icon } from '@radix-ui/react-icons'
 import { getChannels } from '@/features/traq/channels'
 import { postForm } from './PostForm'
 
+const nextYear = new Date().getFullYear() + 1
+
 const formSchema = z.object({
-	sendDateTime: z.string(),
+	sendDateTime: z.coerce.date().min(new Date(), {
+		message: '過去の日時は指定できません。'
+	}),
 	sendChannels: z
 		.array(z.string(), { required_error: 'チャンネルを指定してください' })
 		.min(1, { message: 'チャンネルを指定してください' })
 		.max(3, { message: 'チャンネルは3つまで指定できます' }),
 	message: z
-		.string({
-			required_error: 'メッセージを入力してください。'
-		})
-		.min(1, { message: 'メッセージを入力してください。' })
+		.string()
 		.max(100, { message: 'メッセージは100文字以内で入力してください。' })
+		.optional()
 })
 
 export function PostForm() {
@@ -57,7 +59,7 @@ export function PostForm() {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			sendDateTime: new Date().toISOString().slice(0, 16),
+			sendDateTime: new Date(`${nextYear}-01-01T09:00:00`),
 			sendChannels: [],
 			message: ''
 		}
@@ -67,9 +69,9 @@ export function PostForm() {
 
 	function onSubmit(values: z.infer<typeof formSchema>) {
 		postForm({
-			sendDateTime: values.sendDateTime,
+			sendDateTime: values.sendDateTime.toISOString(),
 			sendChannels: values.sendChannels,
-			message: values.message
+			message: values.message ? values.message : ''
 		})
 		form.reset()
 		setSelectedChannels([])
@@ -89,7 +91,13 @@ export function PostForm() {
 						<FormItem>
 							<FormLabel>送信日時</FormLabel>
 							<FormControl>
-								<Input type="datetime-local" {...field} />
+								<Input
+									type="datetime-local"
+									onChange={e => {
+										form.setValue('sendDateTime', new Date(e.target.value))
+									}}
+									value={form.watch('sendDateTime').toISOString().slice(0, -1)}
+								/>
 							</FormControl>
 							<FormDescription>送信日時を指定します。</FormDescription>
 							<FormMessage />
