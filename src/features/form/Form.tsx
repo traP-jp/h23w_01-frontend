@@ -81,6 +81,33 @@ export function PostForm() {
 		})
 	}
 
+	function makeSelectedChannelsElements() {
+		if (selectedChannels.length === 0)
+			return (
+				<>
+					<Label>...</Label>
+				</>
+			)
+
+		return selectedChannels.map(channel => (
+			<li key={channel}>
+				<Label key={channel} htmlFor="cancel">
+					#{channel}
+				</Label>{' '}
+				<Button
+					onClick={() => {
+						setSelectedChannels(selectedChannels.filter(c => c !== channel))
+					}}
+					variant="outline"
+					size="sm"
+					id="cancel"
+				>
+					<Cross1Icon />
+				</Button>
+			</li>
+		))
+	}
+
 	return (
 		<Form {...form}>
 			<form onSubmit={form.handleSubmit(onSubmit)}>
@@ -99,45 +126,15 @@ export function PostForm() {
 									value={form.watch('sendDateTime').toISOString().slice(0, -1)}
 								/>
 							</FormControl>
-							<FormDescription>送信日時を指定します。</FormDescription>
+							<FormDescription>送信日時を指定します</FormDescription>
 							<FormMessage />
 						</FormItem>
 					)}
 				/>
-				<FormField
-					control={form.control}
-					name="sendChannels"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>送信先</FormLabel>
-							<FormControl>
-								<ul>
-									{selectedChannels.map(channel => (
-										<li key={channel}>
-											<Label key={channel} htmlFor="cancel">
-												{channel}
-											</Label>
-											<Button
-												onClick={() => {
-													setSelectedChannels(
-														selectedChannels.filter(c => c !== channel)
-													)
-												}}
-												variant="outline"
-												size="icon"
-												id="cancel"
-											>
-												<Cross1Icon />
-											</Button>
-										</li>
-									))}
-								</ul>
-							</FormControl>
-							<FormDescription>送信先を選択します。</FormDescription>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
+				<Label>送信先</Label>
+				<ul>
+					{makeSelectedChannelsElements()}
+				</ul>
 				<Popover open={open} onOpenChange={setOpen}>
 					<PopoverTrigger asChild>
 						<Button
@@ -183,13 +180,13 @@ export function PostForm() {
 							<FormControl>
 								<Textarea {...field} />
 							</FormControl>
-							<FormDescription>メッセージを入力します。</FormDescription>
+							<FormDescription>メッセージを入力します</FormDescription>
 							<FormMessage />
 						</FormItem>
 					)}
 				/>
 
-				<Button type="submit">送信</Button>
+				<Button type="submit">保存</Button>
 			</form>
 			<Button onClick={() => console.log(form.getValues())}>リセット</Button>
 		</Form>
