@@ -2,7 +2,7 @@
 
 import { useObject } from '@/features/fabric/useObject'
 import { canvasAtom } from '@/states/canvas'
-import { selectObjectAtom } from '@/states/tools'
+import { selectObjectAtom, selectedToolAtom } from '@/states/tools'
 import { Canvas } from 'fabric'
 import { useSetAtom } from 'jotai'
 import { useAtom } from 'jotai'
@@ -11,12 +11,14 @@ import { MouseEvent } from 'react'
 
 export default function FabricCanvasWrapper() {
 	const [selectedObject, setSelctedObject] = useAtom(selectObjectAtom)
+	const [selectedTool, setSelectedTool] = useAtom(selectedToolAtom)
 	const { putObject } = useObject()
 
 	const handleAddObject = (e: MouseEvent<HTMLDivElement>) => {
-		if (selectedObject === null) return
+		if (selectedTool !== 'object' || selectedObject === null) return
 		const { clientX, clientY } = e
 		putObject(clientX, clientY, selectedObject, 'red')
+		setSelectedTool(null)
 		setSelctedObject(null)
 	}
 

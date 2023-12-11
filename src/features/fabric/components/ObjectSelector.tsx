@@ -1,17 +1,20 @@
 'use client'
 
 import { ObjectType, objects } from '@/features/fabric/useObject'
-import { selectObjectAtom } from '@/states/tools'
-import { useAtom } from 'jotai'
+import { selectObjectAtom, selectedToolAtom } from '@/states/tools'
+import { useAtom, useSetAtom } from 'jotai'
 
 export default function ObjectSelector() {
 	const [selectedObject, setSelctedObject] = useAtom(selectObjectAtom)
+	const setSelectedTool = useSetAtom(selectedToolAtom)
 
 	const selectObject = (objectType: ObjectType) => {
 		if (objectType === selectedObject) {
+			setSelectedTool(null)
 			setSelctedObject(null)
 			return
 		}
+		setSelectedTool('object')
 		setSelctedObject(objectType)
 	}
 
@@ -29,7 +32,6 @@ export default function ObjectSelector() {
 					{object.name}
 				</button>
 			))}
-			{selectedObject}
 		</div>
 	)
 }
