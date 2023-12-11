@@ -6,3 +6,5 @@ export type Tool = 'object' | 'text' | 'image' | null
 export const selectedToolAtom = atom<Tool>(null)
 
 export const selectObjectAtom = atom<ObjectType | null>(null)
+
+export const selectedColorAtom = atom<string>('#000000')

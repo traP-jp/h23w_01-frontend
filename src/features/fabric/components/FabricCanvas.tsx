@@ -26,7 +26,7 @@ export default function FabricCanvasWrapper() {
 			throw new Error('invalid state')
 		}
 		const { offsetX, offsetY } = e.nativeEvent
-		putObject(offsetX, offsetY, selectedObject, 'red')
+		putObject(offsetX, offsetY, selectedObject)
 		setSelectedTool(null)
 		setSelctedObject(null)
 	}
