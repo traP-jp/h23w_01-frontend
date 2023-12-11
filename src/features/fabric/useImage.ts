@@ -5,7 +5,7 @@ import { useAtomValue } from 'jotai'
 export const useImage = () => {
 	const canvas = useAtomValue(canvasAtom)
 
-	const putImage = (clientX: number, clientY: number, file: File) => {
+	const putImage = (offsetX: number, offsetY: number, file: File) => {
 		if (canvas == null) {
 			throw new Error('canvas is null')
 		}
@@ -16,8 +16,8 @@ export const useImage = () => {
 			throw new Error(`invalid id: ${id}`)
 		}
 		const img = new FabricImage(imgEle, {
-			left: clientX,
-			top: clientY,
+			left: offsetX,
+			top: offsetY,
 			width: 100,
 			height: 100
 		})
