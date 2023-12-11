@@ -7,11 +7,11 @@ import { PostForm } from '@/features/form/Form'
 export default function Home() {
 	return (
 		<main>
-			<PostForm />
 			<ColorSelector />
 			<ObjectSelector />
 			<OtherSelector />
 			<FabricCanvasWrapper />
+			<PostForm />
 		</main>
 	)
 }
