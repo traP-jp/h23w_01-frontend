@@ -3,21 +3,10 @@ import {
 	HoverCardContent,
 	HoverCardTrigger
 } from '@/components/ui/hover-card'
+import { CardType } from '@/features/card/type'
 import { datetimeToString } from '@/lib/date'
 import Image from 'next/image'
 import CardActionButtons from './CardActionButtons'
-
-export interface Channel {
-	id: string
-	path: string
-}
-
-export interface CardType {
-	id: string
-	publish_date: string
-	publish_channels: Channel[]
-	message: string
-}
 
 export default function Card({ card }: { card: CardType }) {
 	return (
