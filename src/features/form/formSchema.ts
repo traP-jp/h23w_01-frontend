@@ -19,4 +19,6 @@ const formSchema = z.object({
 		.optional()
 })
 
+export type FormSchemaType = z.infer<typeof formSchema>
+
 export { channelsMax, messageLengthMax, formSchema }

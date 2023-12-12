@@ -3,7 +3,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { z } from 'zod'
 import { useAtom } from 'jotai'
 import { selectedChannelsAtom } from '@/states/channels'
 
@@ -34,7 +33,12 @@ import { ChevronDownIcon } from '@radix-ui/react-icons'
 import { SelectedChannelsList } from './selectedChannelsList'
 import { getChannels } from '@/features/traq/channels'
 import { postForm } from './postForm'
-import { channelsMax, formSchema, messageLengthMax } from './formSchema'
+import {
+	channelsMax,
+	formSchema,
+	messageLengthMax,
+	FormSchemaType
+} from './formSchema'
 
 export function PostForm() {
 	const { toast } = useToast()
@@ -43,7 +47,7 @@ export function PostForm() {
 
 	const nextYear = new Date().getFullYear() + 1
 
-	const form = useForm<z.infer<typeof formSchema>>({
+	const form = useForm<FormSchemaType>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			sendDateTime: new Date(`${nextYear}-01-01T00:00:00`),
@@ -54,7 +58,7 @@ export function PostForm() {
 
 	const channelsList = getChannels()
 
-	function onSubmit(values: z.infer<typeof formSchema>) {
+	function onSubmit(values: FormSchemaType) {
 		postForm({
 			sendDateTime: values.sendDateTime.toISOString(),
 			sendChannels: values.sendChannels,
