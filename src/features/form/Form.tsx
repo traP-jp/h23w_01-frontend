@@ -33,7 +33,7 @@ import { useToast } from '@/components/ui/use-toast'
 import { ChevronDownIcon, Cross1Icon } from '@radix-ui/react-icons'
 
 import { getChannels } from '@/features/traq/channels'
-import { postForm } from './PostForm'
+import { postForm } from './postForm'
 
 const nextYear = new Date().getFullYear() + 1
 
