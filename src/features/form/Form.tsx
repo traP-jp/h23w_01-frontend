@@ -36,7 +36,7 @@ import { ChevronDownIcon } from '@radix-ui/react-icons'
 import { SelectedChannelsList } from './selectedChannelsList'
 import { getChannels } from '@/features/traq/channels'
 import { postForm } from './postForm'
-import { formSchema } from './formSchema'
+import { channelsMax, formSchema, messageLengthMax } from './formSchema'
 
 export function PostForm() {
 	const { toast } = useToast()
@@ -48,7 +48,7 @@ export function PostForm() {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			sendDateTime: new Date(`${nextYear}-01-01T09:00:00`),
+			sendDateTime: new Date(`${nextYear}-01-01T00:00:00`),
 			sendChannels: [],
 			message: ''
 		}
@@ -70,36 +70,54 @@ export function PostForm() {
 		})
 	}
 
+	const timezoneOffset = new Date().getTimezoneOffset() * 60000 // get timezone offset in milliseconds
+
 	return (
 		<Form {...form}>
 			<form onSubmit={form.handleSubmit(onSubmit)}>
 				<FormField
 					control={form.control}
 					name="sendDateTime"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>送信日時</FormLabel>
-							<FormControl>
-								<Input
-									type="datetime-local"
-									onChange={e => {
-										form.setValue('sendDateTime', new Date(e.target.value))
-									}}
-									value={form.watch('sendDateTime').toISOString().slice(0, -1)}
-								/>
-							</FormControl>
-							<FormDescription>送信日時を指定します</FormDescription>
-							<FormMessage />
-						</FormItem>
-					)}
+					render={({ field }) => {
+						const localISOTime = new Date(
+							field.value.valueOf() - timezoneOffset
+						)
+							.toISOString()
+							.slice(0, 16)
+						return (
+							<FormItem>
+								<FormLabel>送信日時</FormLabel>
+								<FormControl>
+									<Input
+										type="datetime-local"
+										onChange={e => {
+											form.setValue('sendDateTime', new Date(e.target.value))
+										}}
+										value={localISOTime}
+										min={new Date(new Date().valueOf() - timezoneOffset)
+											.toISOString()
+											.slice(0, 16)}
+										// ↑動くけどエラーが出る
+										// Warning: Prop `min` did not match. Server: "2023-12-12T16:45" Client: "2023-12-12T23:58"
+										className={field.value < new Date() ? 'bg-red-500' : ''}
+									/>
+								</FormControl>
+								<FormDescription>送信日時を指定します</FormDescription>
+								<FormMessage />
+							</FormItem>
+						)
+					}}
 				/>
 				<SelectedChannelsList />
-				<Popover open={open} onOpenChange={setOpen}>
+				<Popover
+					open={open && selectedChannels.length < channelsMax}
+					onOpenChange={setOpen}
+				>
 					<PopoverTrigger asChild>
 						<Button
 							variant="outline"
-							aria-expanded={open}
 							className="w-[200px] justify-between"
+							disabled={selectedChannels.length >= channelsMax}
 						>
 							チャンネル <ChevronDownIcon />
 						</Button>
@@ -121,6 +139,7 @@ export function PostForm() {
 													channel.name
 												])
 											}}
+											disabled={selectedChannels.length >= channelsMax}
 										>
 											#{channel.name}
 										</CommandItem>
@@ -136,8 +155,19 @@ export function PostForm() {
 						<FormItem>
 							<FormLabel>メッセージ</FormLabel>
 							<FormControl>
-								<Textarea {...field} />
+								<Textarea {...field} maxLength={100} />
 							</FormControl>
+							<div
+								className={
+									field.value
+										? field.value.length <= messageLengthMax
+											? 'text-red-500'
+											: ''
+										: ''
+								}
+							>
+								{field.value?.length}/100
+							</div>
 							<FormDescription>メッセージを入力します</FormDescription>
 							<FormMessage />
 						</FormItem>

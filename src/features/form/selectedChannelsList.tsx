@@ -11,19 +11,21 @@ export function SelectedChannelsList() {
 		return selectedChannels.map(channel => {
 			const id = `cancel-${channel}`
 			return (
-				<li key={channel}>
-					<Label htmlFor={id}>#{channel}</Label>{' '}
-					<Button
-						onClick={() => {
-							setSelectedChannels(selectedChannels.filter(c => c !== channel))
-						}}
-						variant="outline"
-						size="sm"
-						id={id}
-					>
-						<Cross1Icon />
-					</Button>
-				</li>
+				<>
+					<li key={channel}>
+						<Label htmlFor={id}>#{channel}</Label>{' '}
+						<Button
+							onClick={() => {
+								setSelectedChannels(selectedChannels.filter(c => c !== channel))
+							}}
+							variant="outline"
+							size="sm"
+							id={id}
+						>
+							<Cross1Icon />
+						</Button>
+					</li>
+				</>
 			)
 		})
 	}
