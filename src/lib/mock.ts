@@ -1,19 +1,16 @@
-import { http, HttpResponse, RequestHandler } from 'msw'
+import { HttpHandler } from 'msw'
 
+import { cardHandlers } from '@/features/card/mock'
 import { getApiOrigin } from '@/lib/env'
 
 export const getHandlersArray = (
-	handlers: Record<string, () => RequestHandler>
-): RequestHandler[] => {
+	handlers: Record<string, () => HttpHandler>
+): HttpHandler[] => {
 	return Object.values(handlers).map(handler => handler())
 }
 
 const handlers = (apiOrigin: string) => {
-	return [
-		http.get('/api/oisu-', () => {
-			return HttpResponse.json('oisu-')
-		})
-	].flat()
+	return [cardHandlers(apiOrigin)].flat()
 }
 
 export const initMock = async () => {
