@@ -11,7 +11,7 @@ import CardActionButtons from './CardActionButtons'
 export default function Card({ card }: { card: CardType }) {
 	return (
 		<HoverCard openDelay={500}>
-			<HoverCardTrigger className="w-[180px] border">
+			<HoverCardTrigger className="w-[180px] border shadow-md">
 				<Image
 					src="https://www.post.japanpost.jp/img/service/standard/two/type/pic_normal_new_01.jpg"
 					width={300}
