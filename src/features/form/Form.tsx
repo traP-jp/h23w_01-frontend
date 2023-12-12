@@ -17,11 +17,9 @@ import {
 import {
 	Form,
 	FormControl,
-	FormDescription,
 	FormField,
 	FormItem,
-	FormLabel,
-	FormMessage
+	FormLabel
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import {
@@ -102,8 +100,6 @@ export function PostForm() {
 										className={field.value < new Date() ? 'bg-red-500' : ''}
 									/>
 								</FormControl>
-								<FormDescription>送信日時を指定します</FormDescription>
-								<FormMessage />
 							</FormItem>
 						)
 					}}
@@ -168,8 +164,6 @@ export function PostForm() {
 							>
 								{field.value?.length}/100
 							</div>
-							<FormDescription>メッセージを入力します</FormDescription>
-							<FormMessage />
 						</FormItem>
 					)}
 				/>
