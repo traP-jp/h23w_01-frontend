@@ -1,7 +1,7 @@
 export type form = {
 	sendDateTime: string
 	sendChannels: string[]
-	message: string
+	message: string | null
 }
 
 export function postForm(form: form) {

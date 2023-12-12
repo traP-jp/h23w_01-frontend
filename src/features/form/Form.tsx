@@ -3,7 +3,9 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import * as z from 'zod'
+import { z } from 'zod'
+import { useAtom } from 'jotai'
+import { selectedChannelsAtom } from '@/states/channels'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -22,7 +24,6 @@ import {
 	FormMessage
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import {
 	Popover,
 	PopoverContent,
@@ -30,31 +31,19 @@ import {
 } from '@/components/ui/popover'
 import { Textarea } from '@/components/ui/textarea'
 import { useToast } from '@/components/ui/use-toast'
-import { ChevronDownIcon, Cross1Icon } from '@radix-ui/react-icons'
+import { ChevronDownIcon } from '@radix-ui/react-icons'
 
+import { SelectedChannelsList } from './selectedChannelsList'
 import { getChannels } from '@/features/traq/channels'
 import { postForm } from './postForm'
-
-const nextYear = new Date().getFullYear() + 1
-
-const formSchema = z.object({
-	sendDateTime: z.coerce.date().min(new Date(), {
-		message: '過去の日時は指定できません。'
-	}),
-	sendChannels: z
-		.array(z.string(), { required_error: 'チャンネルを指定してください' })
-		.min(1, { message: 'チャンネルを指定してください' })
-		.max(3, { message: 'チャンネルは3つまで指定できます' }),
-	message: z
-		.string()
-		.max(100, { message: 'メッセージは100文字以内で入力してください。' })
-		.optional()
-})
+import { formSchema } from './formSchema'
 
 export function PostForm() {
 	const { toast } = useToast()
 	const [open, setOpen] = useState(false)
-	const [selectedChannels, setSelectedChannels] = useState<string[]>([])
+	const [selectedChannels, setSelectedChannels] = useAtom(selectedChannelsAtom)
+
+	const nextYear = new Date().getFullYear() + 1
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -71,7 +60,7 @@ export function PostForm() {
 		postForm({
 			sendDateTime: values.sendDateTime.toISOString(),
 			sendChannels: values.sendChannels,
-			message: values.message ? values.message : ''
+			message: values.message ? values.message : null
 		})
 		form.reset()
 		setSelectedChannels([])
@@ -79,33 +68,6 @@ export function PostForm() {
 			title: '📨',
 			description: '手紙を送信しました'
 		})
-	}
-
-	function makeSelectedChannelsElements() {
-		if (selectedChannels.length === 0)
-			return (
-				<>
-					<Label>...</Label>
-				</>
-			)
-
-		return selectedChannels.map(channel => (
-			<li key={channel}>
-				<Label key={channel} htmlFor="cancel">
-					#{channel}
-				</Label>{' '}
-				<Button
-					onClick={() => {
-						setSelectedChannels(selectedChannels.filter(c => c !== channel))
-					}}
-					variant="outline"
-					size="sm"
-					id="cancel"
-				>
-					<Cross1Icon />
-				</Button>
-			</li>
-		))
 	}
 
 	return (
@@ -131,8 +93,7 @@ export function PostForm() {
 						</FormItem>
 					)}
 				/>
-				<Label>送信先</Label>
-				<ul>{makeSelectedChannelsElements()}</ul>
+				<SelectedChannelsList />
 				<Popover open={open} onOpenChange={setOpen}>
 					<PopoverTrigger asChild>
 						<Button
