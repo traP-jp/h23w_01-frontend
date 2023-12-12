@@ -1,6 +1,7 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 
 export default function CardActionButtons({ id }: { id: string }) {
 	const deleteCard = () => {
@@ -15,8 +16,8 @@ export default function CardActionButtons({ id }: { id: string }) {
 			<Button variant="destructive" size="lg" onClick={deleteCard}>
 				削除
 			</Button>
-			<Button variant="default" size="lg" onClick={editCard}>
-				編集
+			<Button variant="default" size="lg" onClick={editCard} asChild>
+				<Link href={`/${id}`}>編集</Link>
 			</Button>
 		</div>
 	)
