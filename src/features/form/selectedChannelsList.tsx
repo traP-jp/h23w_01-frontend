@@ -13,13 +13,12 @@ export function SelectedChannelsList() {
 					<span className="before:content-['・'] before:text-lg">
 						#{channel}
 					</span>
-					<button>
-						<Cross1Icon
-							onClick={() => {
-								setSelectedChannels(selectedChannels.filter(c => c !== channel))
-							}}
-							className="w-4 h-4 text-red-500 cursor-pointer hover:text-red-700 justify-self-end"
-						/>
+					<button
+						onClick={() => {
+							setSelectedChannels(selectedChannels.filter(c => c !== channel))
+						}}
+					>
+						<Cross1Icon className="w-4 h-4 text-red-500 hover:text-red-700 justify-self-end" />
 					</button>
 				</li>
 			)
