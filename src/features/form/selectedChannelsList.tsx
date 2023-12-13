@@ -1,7 +1,7 @@
-import { useAtom } from 'jotai'
-import { selectedChannelsAtom } from '@/states/channels'
 import { Label } from '@/components/ui/label'
+import { selectedChannelsAtom } from '@/states/channels'
 import { Cross1Icon } from '@radix-ui/react-icons'
+import { useAtom } from 'jotai'
 
 export function SelectedChannelsList() {
 	const [selectedChannels, setSelectedChannels] = useAtom(selectedChannelsAtom)

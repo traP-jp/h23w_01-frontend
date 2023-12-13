@@ -1,10 +1,10 @@
 'use client'
 
+import { selectedChannelsAtom } from '@/states/channels'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useAtom } from 'jotai'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useAtom } from 'jotai'
-import { selectedChannelsAtom } from '@/states/channels'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -30,15 +30,15 @@ import { Textarea } from '@/components/ui/textarea'
 import { useToast } from '@/components/ui/use-toast'
 import { ChevronDownIcon } from '@radix-ui/react-icons'
 
-import { SelectedChannelsList } from './selectedChannelsList'
 import { getChannels } from '@/features/traq/channels'
-import { postForm } from './postForm'
 import {
+	FormSchemaType,
 	channelsMax,
 	formSchema,
-	messageLengthMax,
-	FormSchemaType
+	messageLengthMax
 } from './formSchema'
+import { postForm } from './postForm'
+import { SelectedChannelsList } from './selectedChannelsList'
 
 export function PostForm() {
 	const { toast } = useToast()
