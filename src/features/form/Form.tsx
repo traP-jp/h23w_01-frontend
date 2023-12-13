@@ -87,8 +87,10 @@ export function PostForm() {
 							.toISOString()
 							.slice(0, 16)
 						return (
-							<FormItem>
-								<FormLabel>送信日時</FormLabel>
+							<FormItem className="my-4">
+								<FormLabel>
+									送信日時 <span className="text-red-500 text-sm">(必須)</span>
+								</FormLabel>
 								<FormControl>
 									<Input
 										type="datetime-local"
@@ -99,8 +101,6 @@ export function PostForm() {
 										min={new Date(new Date().valueOf() - timezoneOffset)
 											.toISOString()
 											.slice(0, 16)}
-										// ↑動くけどエラーが出る
-										// Warning: Prop `min` did not match. Server: "2023-12-12T16:45" Client: "2023-12-12T23:58"
 										className={field.value < new Date() ? 'bg-red-500' : ''}
 									/>
 								</FormControl>
@@ -116,10 +116,10 @@ export function PostForm() {
 					<PopoverTrigger asChild>
 						<Button
 							variant="outline"
-							className="w-[200px] justify-between"
+							className="w-[100%] justify-end"
 							disabled={selectedChannels.length >= channelsMax}
 						>
-							チャンネル <ChevronDownIcon />
+							<ChevronDownIcon />
 						</Button>
 					</PopoverTrigger>
 					<PopoverContent>
@@ -152,18 +152,18 @@ export function PostForm() {
 					control={form.control}
 					name="message"
 					render={({ field }) => (
-						<FormItem>
+						<FormItem className="my-4">
 							<FormLabel>メッセージ</FormLabel>
 							<FormControl>
-								<Textarea {...field} maxLength={100} />
+								<Textarea {...field} maxLength={messageLengthMax} />
 							</FormControl>
 							<div
 								className={
 									field.value
 										? field.value.length <= messageLengthMax
-											? 'text-red-500'
-											: ''
-										: ''
+											? 'text-red-500 text-right'
+											: 'text-right'
+										: 'text-right'
 								}
 							>
 								{field.value?.length}/100
@@ -172,7 +172,9 @@ export function PostForm() {
 					)}
 				/>
 
-				<Button type="submit">保存</Button>
+				<Button type="submit" className="bg-kaga-green">
+					保存
+				</Button>
 			</form>
 			<Button onClick={() => console.log(form.getValues())}>リセット</Button>
 		</Form>

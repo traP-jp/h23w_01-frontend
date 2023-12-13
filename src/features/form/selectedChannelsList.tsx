@@ -1,6 +1,5 @@
 import { useAtom } from 'jotai'
 import { selectedChannelsAtom } from '@/states/channels'
-import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Cross1Icon } from '@radix-ui/react-icons'
 
@@ -9,31 +8,28 @@ export function SelectedChannelsList() {
 
 	const makeChannelsList = () => {
 		return selectedChannels.map(channel => {
-			const id = `cancel-${channel}`
 			return (
-				<>
-					<li key={channel}>
-						<Label htmlFor={id}>#{channel}</Label>{' '}
-						<Button
-							onClick={() => {
-								setSelectedChannels(selectedChannels.filter(c => c !== channel))
-							}}
-							variant="outline"
-							size="sm"
-							id={id}
-						>
-							<Cross1Icon />
-						</Button>
-					</li>
-				</>
+				<li key={channel} className="flex justify-between items-center my-1">
+					<span className="before:content-['・'] before:text-lg">
+						#{channel}
+					</span>
+					<Cross1Icon
+						onClick={() => {
+							setSelectedChannels(selectedChannels.filter(c => c !== channel))
+						}}
+						className="w-4 h-4 text-red-500 cursor-pointer hover:text-red-700 justify-self-end"
+					/>
+				</li>
 			)
 		})
 	}
 
 	return (
 		<>
-			<Label>送信先チャンネル</Label>
-			<ul>{makeChannelsList()}</ul>
+			<Label>
+				送信先チャンネル <span className="text-red-500 text-sm">(必須)</span>
+			</Label>
+			<ul className="list-disc">{makeChannelsList()}</ul>
 		</>
 	)
 }
