@@ -46,13 +46,13 @@ export const useFabricCanvas = () => {
 		setPosition({ x: offsetX, y: offsetY })
 		inputRef.current.click()
 	}
-	const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+	const onChange = async (e: ChangeEvent<HTMLInputElement>) => {
 		const files = e.target.files
 		if (files === null) {
 			throw new Error('files is null')
 		}
 		const file = files[0]
-		const image = putImage(position.x, position.y, file)
+		const image = await putImage(position.x, position.y, file)
 		setImages(images => [...images, image])
 		setPosition({ x: 0, y: 0 })
 		setSelectedTool(null)
