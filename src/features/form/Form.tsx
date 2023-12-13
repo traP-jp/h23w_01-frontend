@@ -172,11 +172,10 @@ export function PostForm() {
 					)}
 				/>
 
-				<Button type="submit" className="bg-kaga-green">
-					保存
-				</Button>
+				<div className="flex justify-end">
+					<Button type="submit">保存</Button>
+				</div>
 			</form>
-			<Button onClick={() => console.log(form.getValues())}>リセット</Button>
 		</Form>
 	)
 }
