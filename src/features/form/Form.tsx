@@ -155,7 +155,7 @@ export function PostForm() {
 						<FormItem className="my-4">
 							<FormLabel>メッセージ</FormLabel>
 							<FormControl>
-								<Textarea {...field} maxLength={messageLengthMax} />
+								<Input {...field} maxLength={messageLengthMax} />
 							</FormControl>
 							<div
 								className={
