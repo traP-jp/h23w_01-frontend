@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
-const channelsMax = 3
-const messageLengthMax = 100
+const CHANNELS_MAX = 3
+const MESSAGE_LENGTH_MAX = 100
 
 const formSchema = z.object({
 	sendDateTime: z.coerce.date().min(new Date(), {
@@ -10,15 +10,16 @@ const formSchema = z.object({
 	sendChannels: z
 		.array(z.string(), { required_error: 'チャンネルを指定してください' })
 		.min(1, { message: 'チャンネルを指定してください' })
-		.max(channelsMax, { message: 'チャンネルは3つまで指定できます' }),
-	message: z
-		.string()
-		.max(messageLengthMax, {
-			message: 'メッセージは100文字以内で入力してください。'
-		})
-		.optional()
+		.max(CHANNELS_MAX, { message: 'チャンネルは3つまで指定できます' }),
+	message: z.string().max(MESSAGE_LENGTH_MAX, {
+		message: 'メッセージは100文字以内で入力してください。'
+	})
 })
 
 export type FormSchemaType = z.infer<typeof formSchema>
 
-export { channelsMax, messageLengthMax, formSchema }
+export {
+	CHANNELS_MAX as channelsMax,
+	MESSAGE_LENGTH_MAX as messageLengthMax,
+	formSchema
+}

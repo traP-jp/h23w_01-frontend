@@ -160,7 +160,7 @@ export function PostForm() {
 							<div
 								className={
 									field.value
-										? field.value.length <= messageLengthMax
+										? field.value.length >= messageLengthMax
 											? 'text-red-500 text-right'
 											: 'text-right'
 										: 'text-right'

@@ -13,12 +13,14 @@ export function SelectedChannelsList() {
 					<span className="before:content-['・'] before:text-lg">
 						#{channel}
 					</span>
-					<Cross1Icon
-						onClick={() => {
-							setSelectedChannels(selectedChannels.filter(c => c !== channel))
-						}}
-						className="w-4 h-4 text-red-500 cursor-pointer hover:text-red-700 justify-self-end"
-					/>
+					<button>
+						<Cross1Icon
+							onClick={() => {
+								setSelectedChannels(selectedChannels.filter(c => c !== channel))
+							}}
+							className="w-4 h-4 text-red-500 cursor-pointer hover:text-red-700 justify-self-end"
+						/>
+					</button>
 				</li>
 			)
 		})
@@ -26,7 +28,7 @@ export function SelectedChannelsList() {
 
 	return (
 		<>
-			<Label>
+			<Label className="block mb-2">
 				送信先チャンネル <span className="text-red-500 text-sm">(必須)</span>
 			</Label>
 			<ul className="list-disc">{makeChannelsList()}</ul>
