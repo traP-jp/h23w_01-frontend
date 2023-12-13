@@ -5,13 +5,13 @@ import { operationMap, useHistory } from '@/features/fabric/useHistory'
 import { timeToString } from '@/lib/date'
 
 export default function History() {
-	const { history, undo } = useHistory()
+	const { histories, undo } = useHistory()
 
 	return (
 		<div className="w-1/3">
 			履歴
 			<ol className="divide-y-2">
-				{history.map(h => (
+				{histories.map(h => (
 					<li key={h.id} className="flex items-center justify-between py-1">
 						<p className="flex items-center gap-2">
 							<time>{timeToString(h.time)}</time>

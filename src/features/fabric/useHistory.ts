@@ -1,17 +1,16 @@
 import { canvasAtom } from '@/states/canvas'
-import { useAtomValue } from 'jotai'
-import { useEffect, useRef, useState } from 'react'
+import { History, historiesAtom, undoingAtom } from '@/states/history'
+import { useAtom, useAtomValue } from 'jotai'
+import { useEffect } from 'react'
 
-type ObjectType = 'circle' | 'triangle' | 'rect' | 'star' | 'textbox' | 'image'
-type OperationType = 'add' | 'modify' | 'delete'
-
-interface History {
-	id: string
-	json: string
-	name: string
-	operation: OperationType
-	time: Date
-}
+export type ObjectType =
+	| 'circle'
+	| 'triangle'
+	| 'rect'
+	| 'star'
+	| 'textbox'
+	| 'image'
+export type OperationType = 'add' | 'modify' | 'remove'
 
 const objectMap: Record<ObjectType, string> = {
 	circle: '円',
@@ -25,20 +24,35 @@ const objectMap: Record<ObjectType, string> = {
 export const operationMap: Record<OperationType, string> = {
 	add: '追加',
 	modify: '編集',
-	delete: '削除'
+	remove: '削除'
 }
 
 export const useHistory = () => {
 	const canvas = useAtomValue(canvasAtom)
-	const [histories, setHistories] = useState<History[]>([])
+	const [histories, setHistories] = useAtom(historiesAtom)
 	// undoでの追加や編集はhistoryに追加しないようにするフラグ
-	const undoing = useRef(false)
+	const [undoing, setUndoing] = useAtom(undoingAtom)
+
+	const pushRemoveHistory = (objectName: ObjectType[]) => {
+		if (canvas === null || undoing) {
+			return
+		}
+		const id = crypto.randomUUID()
+		const newHistory: History = {
+			id,
+			json: JSON.stringify(canvas),
+			name: objectName.map(name => objectMap[name]).join('、'),
+			operation: 'remove',
+			time: new Date()
+		}
+		setHistories(histories.concat([newHistory]))
+	}
 
 	const undo = async (targetId: string) => {
 		if (canvas === null) {
 			return
 		}
-		undoing.current = true
+		setUndoing(true)
 		const index = histories.findIndex(history => history.id === targetId)
 		if (index === -1) {
 			throw new Error('history not found')
@@ -46,7 +60,7 @@ export const useHistory = () => {
 		if (index === 0) {
 			canvas.clear()
 			setHistories([])
-			undoing.current = false
+			setUndoing(false)
 			return
 		}
 		const content = histories[index - 1].json
@@ -55,7 +69,7 @@ export const useHistory = () => {
 			// targetId以降を全て削除
 			setHistories(histories.slice(0, index))
 		})
-		undoing.current = false
+		setUndoing(false)
 	}
 
 	useEffect(() => {
@@ -65,7 +79,7 @@ export const useHistory = () => {
 
 		// biome-ignore lint/suspicious/noExplicitAny: TODO: eventの型が分からん
 		const onEventHandler = (e: any) => {
-			if (undoing.current) {
+			if (undoing) {
 				return
 			}
 			const objectType = e.target.type as ObjectType
@@ -78,12 +92,12 @@ export const useHistory = () => {
 				operation: 'add',
 				time: new Date()
 			}
-			setHistories([...histories, newHistory])
+			setHistories(histories.concat([newHistory]))
 		}
 
 		// biome-ignore lint/suspicious/noExplicitAny: TODO: eventの型が分からん
 		const offEventHandler = (e: any) => {
-			if (undoing.current) {
+			if (undoing) {
 				return
 			}
 			const objectType = e.target.type as ObjectType
@@ -96,7 +110,7 @@ export const useHistory = () => {
 				operation: 'modify',
 				time: new Date()
 			}
-			setHistories([...histories, newHistory])
+			setHistories(histories.concat([newHistory]))
 		}
 
 		// 図形が追加されたとき
@@ -108,7 +122,7 @@ export const useHistory = () => {
 			canvas.off('object:added', onEventHandler)
 			canvas.off('object:modified', offEventHandler)
 		}
-	}, [canvas, histories])
+	}, [canvas, histories, setHistories, undoing])
 
-	return { history: histories, undo }
+	return { histories, pushRemoveHistory, undo }
 }
