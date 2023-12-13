@@ -3,6 +3,7 @@ import FabricCanvasWrapper from '@/features/fabric/components/FabricCanvas'
 import History from '@/features/fabric/components/History'
 import ObjectSelector from '@/features/fabric/components/ObjectSelector'
 import OtherSelector from '@/features/fabric/components/OtherSelector'
+import { PostForm } from '@/features/form/Form'
 
 export default function Home() {
 	return (
@@ -12,6 +13,7 @@ export default function Home() {
 			<OtherSelector />
 			<History />
 			<FabricCanvasWrapper />
+			<PostForm />
 		</main>
 	)
 }
