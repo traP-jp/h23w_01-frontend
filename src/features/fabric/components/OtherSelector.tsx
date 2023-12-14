@@ -40,19 +40,22 @@ export default function OtherSelector() {
 	}
 
 	return (
-		<div className="flex gap-3">
-			{otherTools.map(tool => (
-				<button
-					onClick={() => handleToolClick(tool.value)}
-					key={tool.value}
-					className={`rounded-full flex flex-col gap-1 items-center py-2 border-2 border-kaga-yellow w-20 h-20${
-						tool.value === selectedTool ? ' bg-kaga-yellow text-white' : ''
-					}`}
-				>
-					{tool.icon}
-					{tool.name}
-				</button>
-			))}
+		<div className="space-y-2">
+			<div>その他</div>
+			<div className="flex gap-3">
+				{otherTools.map(tool => (
+					<button
+						onClick={() => handleToolClick(tool.value)}
+						key={tool.value}
+						className={`rounded-full flex flex-col gap-1 items-center py-2 border-2 border-kaga-yellow w-20 h-20${
+							tool.value === selectedTool ? ' bg-kaga-yellow text-white' : ''
+						}`}
+					>
+						{tool.icon}
+						{tool.name}
+					</button>
+				))}
+			</div>
 		</div>
 	)
 }

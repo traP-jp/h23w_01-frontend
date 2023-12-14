@@ -8,8 +8,8 @@ export default function History() {
 	const { histories, undo } = useHistory()
 
 	return (
-		<div className="w-1/3">
-			履歴
+		<div className="space-y-2">
+			<div>履歴</div>
 			<ol className="divide-y-2">
 				{histories.map(h => (
 					<li key={h.id} className="flex items-center justify-between py-1">
@@ -25,6 +25,7 @@ export default function History() {
 					</li>
 				))}
 			</ol>
+			{histories.length === 0 && <div>履歴はまだありません。</div>}
 		</div>
 	)
 }
