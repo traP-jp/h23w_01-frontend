@@ -29,7 +29,7 @@ import {
 import { useToast } from '@/components/ui/use-toast'
 import { ChevronDownIcon } from '@radix-ui/react-icons'
 
-import { getChannels } from '@/features/traq/channels'
+import { Channel } from '@/features/traq/channels'
 import {
 	FormSchemaType,
 	channelsMax,
@@ -40,158 +40,166 @@ import { usePostForm } from './postForm'
 import { SelectedChannelsList } from './selectedChannelsList'
 
 export function PostForm({
-	userId,
-	initialValue
-}: { userId: string | null; initialValue?: FormSchemaType }) {
-	const { toast } = useToast()
-	const [open, setOpen] = useState(false)
-	const [selectedChannels, setSelectedChannels] = useAtom(selectedChannelsAtom)
-	const { postForm } = usePostForm()
+		userId,
+		initialValue,
+		channels
+	}: {
+		userId: string | null
+		initialValue?: FormSchemaType
+		channels: Channel[]
+	}) {
+		const { toast } = useToast()
+		const [open, setOpen] = useState(false)
+		const [selectedChannels, setSelectedChannels] =
+			useAtom(selectedChannelsAtom)
+		const { postForm } = usePostForm()
 
-	const nextYear = new Date().getFullYear() + 1
+		const nextYear = new Date().getFullYear() + 1
 
-	const form = useForm<FormSchemaType>({
-		resolver: zodResolver(formSchema),
-		defaultValues:
-			initialValue !== undefined
-				? {
-						...initialValue,
-						message: initialValue.message ?? ''
-				  }
-				: {
-						sendDateTime: new Date(`${nextYear}-01-01T00:00:00`),
-						sendChannels: [],
-						message: ''
-				  }
-	})
-
-	const channelsList = getChannels()
-
-	function onSubmit(values: FormSchemaType) {
-		if (userId === null) {
-			throw new Error('userId is null')
-		}
-		postForm(
-			{
-				ownerId: userId,
-				publishDate: values.sendDateTime.toISOString(),
-				publishChannels: values.sendChannels,
-				message: values.message ? values.message : null
-			},
-			initialValue !== undefined
-		)
-		form.reset()
-		setSelectedChannels([])
-		toast({
-			title: '📨',
-			description: '手紙を送信しました'
+		const form = useForm<FormSchemaType>({
+			resolver: zodResolver(formSchema),
+			defaultValues:
+				initialValue !== undefined
+					? {
+							...initialValue,
+							message: initialValue.message ?? ''
+					  }
+					: {
+							sendDateTime: new Date(`${nextYear}-01-01T00:00:00`),
+							sendChannels: [],
+							message: ''
+					  }
 		})
-	}
 
-	const timezoneOffset = new Date().getTimezoneOffset() * 60000 // get timezone offset in milliseconds
+		function onSubmit(values: FormSchemaType) {
+			if (userId === null) {
+				throw new Error('userId is null')
+			}
+			postForm(
+				{
+					ownerId: userId,
+					publishDate: values.sendDateTime.toISOString(),
+					publishChannels: values.sendChannels,
+					message: values.message ? values.message : null
+				},
+				initialValue !== undefined
+			)
+			form.reset()
+			setSelectedChannels([])
+			toast({
+				title: '📨',
+				description: '手紙を送信しました'
+			})
+		}
 
-	return (
-		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)}>
-				<FormField
-					control={form.control}
-					name="sendDateTime"
-					render={({ field }) => {
-						const localISOTime = new Date(
-							field.value.valueOf() - timezoneOffset
-						)
-							.toISOString()
-							.slice(0, 16)
-						return (
-							<FormItem className="my-4">
-								<FormLabel>
-									送信日時 <span className="text-red-500 text-sm">(必須)</span>
-								</FormLabel>
-								<FormControl>
-									<Input
-										type="datetime-local"
-										onChange={e => {
-											form.setValue('sendDateTime', new Date(e.target.value))
-										}}
-										value={localISOTime}
-										min={new Date(new Date().valueOf() - timezoneOffset)
-											.toISOString()
-											.slice(0, 16)}
-										className={field.value < new Date() ? 'bg-red-500' : ''}
-									/>
-								</FormControl>
-							</FormItem>
-						)
-					}}
-				/>
-				<SelectedChannelsList />
-				<Popover
-					open={open && selectedChannels.length < channelsMax}
-					onOpenChange={setOpen}
-				>
-					<PopoverTrigger asChild>
-						<Button
-							variant="outline"
-							className="w-[100%] justify-end"
-							disabled={selectedChannels.length >= channelsMax}
-						>
-							<ChevronDownIcon />
-						</Button>
-					</PopoverTrigger>
-					<PopoverContent>
-						<Command>
-							<CommandInput />
-							<CommandList>
-								{channelsList
-									.filter(channel => !selectedChannels.includes(channel.name))
-									.map(channel => (
-										<CommandItem
-											key={channel.id}
-											value={channel.name}
-											onSelect={() => {
-												setSelectedChannels([...selectedChannels, channel.name])
-												form.setValue('sendChannels', [
-													...selectedChannels,
-													channel.name
-												])
+		const timezoneOffset = new Date().getTimezoneOffset() * 60000 // get timezone offset in milliseconds
+
+		return (
+			<Form {...form}>
+				<form onSubmit={form.handleSubmit(onSubmit)}>
+					<FormField
+						control={form.control}
+						name="sendDateTime"
+						render={({ field }) => {
+							const localISOTime = new Date(
+								field.value.valueOf() - timezoneOffset
+							)
+								.toISOString()
+								.slice(0, 16)
+							return (
+								<FormItem className="my-4">
+									<FormLabel>
+										送信日時{' '}
+										<span className="text-red-500 text-sm">(必須)</span>
+									</FormLabel>
+									<FormControl>
+										<Input
+											type="datetime-local"
+											onChange={e => {
+												form.setValue('sendDateTime', new Date(e.target.value))
 											}}
-											disabled={selectedChannels.length >= channelsMax}
-										>
-											#{channel.name}
-										</CommandItem>
-									))}
-							</CommandList>
-						</Command>
-					</PopoverContent>
-				</Popover>
-				<FormField
-					control={form.control}
-					name="message"
-					render={({ field }) => (
-						<FormItem className="my-4">
-							<FormLabel>メッセージ</FormLabel>
-							<FormControl>
-								<Input {...field} maxLength={messageLengthMax} />
-							</FormControl>
-							<div
-								className={
-									field.value
-										? field.value.length > messageLengthMax
-											? 'text-red-500 text-right'
-											: 'text-right'
-										: 'text-right'
-								}
+											value={localISOTime}
+											min={new Date(new Date().valueOf() - timezoneOffset)
+												.toISOString()
+												.slice(0, 16)}
+											className={field.value < new Date() ? 'bg-red-500' : ''}
+										/>
+									</FormControl>
+								</FormItem>
+							)
+						}}
+					/>
+					<SelectedChannelsList />
+					<Popover
+						open={open && selectedChannels.length < channelsMax}
+						onOpenChange={setOpen}
+					>
+						<PopoverTrigger asChild>
+							<Button
+								variant="outline"
+								className="w-[100%] justify-end"
+								disabled={selectedChannels.length >= channelsMax}
 							>
-								{field.value?.length}/100
-							</div>
-						</FormItem>
-					)}
-				/>
+								<ChevronDownIcon />
+							</Button>
+						</PopoverTrigger>
+						<PopoverContent>
+							<Command>
+								<CommandInput />
+								<CommandList>
+									{channels
+										.filter(channel => !selectedChannels.includes(channel.name))
+										.map(channel => (
+											<CommandItem
+												key={channel.id}
+												value={channel.name}
+												onSelect={() => {
+													setSelectedChannels([
+														...selectedChannels,
+														channel.name
+													])
+													form.setValue('sendChannels', [
+														...selectedChannels,
+														channel.name
+													])
+												}}
+												disabled={selectedChannels.length >= channelsMax}
+											>
+												#{channel.name}
+											</CommandItem>
+										))}
+								</CommandList>
+							</Command>
+						</PopoverContent>
+					</Popover>
+					<FormField
+						control={form.control}
+						name="message"
+						render={({ field }) => (
+							<FormItem className="my-4">
+								<FormLabel>メッセージ</FormLabel>
+								<FormControl>
+									<Input {...field} maxLength={messageLengthMax} />
+								</FormControl>
+								<div
+									className={
+										field.value
+											? field.value.length > messageLengthMax
+												? 'text-red-500 text-right'
+												: 'text-right'
+											: 'text-right'
+									}
+								>
+									{field.value?.length}/100
+								</div>
+							</FormItem>
+						)}
+					/>
 
-				<div className="flex justify-end">
-					<Button type="submit">保存</Button>
-				</div>
-			</form>
-		</Form>
-	)
-}
+					<div className="flex justify-end">
+						<Button type="submit">保存</Button>
+					</div>
+				</form>
+			</Form>
+		)
+	}
