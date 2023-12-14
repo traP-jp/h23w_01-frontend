@@ -5,6 +5,7 @@ import {
 } from '@/components/ui/hover-card'
 import { CardType } from '@/features/card/type'
 import { datetimeToString } from '@/lib/date'
+import { getApiOrigin } from '@/lib/env'
 import Image from 'next/image'
 import CardActionButtons from './CardActionButtons'
 
@@ -13,7 +14,7 @@ export default function Card({ card }: { card: CardType }) {
 		<HoverCard openDelay={500}>
 			<HoverCardTrigger className="w-[180px] border shadow-md">
 				<Image
-					src="https://www.post.japanpost.jp/img/service/standard/two/type/pic_normal_new_01.jpg"
+					src={`${getApiOrigin()}/cards/${card.id}/png`}
 					width={300}
 					height={444}
 					alt={`${datetimeToString(
@@ -27,7 +28,7 @@ export default function Card({ card }: { card: CardType }) {
 				sideOffset={-20}
 			>
 				<Image
-					src="https://www.post.japanpost.jp/img/service/standard/two/type/pic_normal_new_01.jpg"
+					src={`${getApiOrigin()}/cards/${card.id}/png`}
 					width={300}
 					height={444}
 					className="border w-[240px]"
@@ -46,7 +47,7 @@ export default function Card({ card }: { card: CardType }) {
 						<div>
 							<p>送信先</p>
 							<p className="ml-4">
-								{card.publish_channels.map(channel => channel.path).join(', ')}
+								{card.publish_channels.map(channel => channel).join(', ')}
 							</p>
 						</div>
 						<div>

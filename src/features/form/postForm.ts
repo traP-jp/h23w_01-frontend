@@ -3,8 +3,9 @@ import { canvasAtom, imagesAtoms } from '@/states/canvas'
 import { useAtomValue } from 'jotai'
 
 export type form = {
-	publish_date: string
-	publish_channels: string[]
+	ownerId: string
+	publishDate: string
+	publishChannels: string[]
 	message: string | null
 }
 
@@ -20,19 +21,22 @@ export const usePostForm = () => {
 	const canvas = useAtomValue(canvasAtom)
 	const images = useAtomValue(imagesAtoms)
 
-	const postForm = async (form: form) => {
+	const postForm = async (form: form, isPatch: boolean) => {
 		if (canvas === null) {
 			return
 		}
+		const method = isPatch ? 'PATCH' : 'POST'
 
 		const data: PostFormData = {
-			owner_id: 'TODO: atomから取ってくる',
-			...form,
+			owner_id: form.ownerId,
+			publish_date: form.publishDate,
+			publish_channels: form.publishChannels,
+			message: form.message,
 			images: images.map(image => image.id)
 		}
 		// カードの情報を送信
 		const cardRes = await fetch(`${getApiOrigin()}/cards`, {
-			method: 'POST',
+			method: method,
 			headers: {
 				'Content-Type': 'application/json'
 			},
@@ -65,7 +69,7 @@ export const usePostForm = () => {
 		})
 		promises.push(
 			fetch(`${getApiOrigin()}/cards/${cardId}/png`, {
-				method: 'POST',
+				method: method,
 				headers: {
 					'Content-Type': 'image/png'
 				},

@@ -6,7 +6,6 @@ import { getApiOrigin } from '@/lib/env'
 export type CardOwner = 'me' | 'all'
 
 const fetchCards = async (owner: CardOwner) => {
-	//return mockCards
 	const ownerQuery = owner === 'me' ? '/me' : ''
 	const res = await fetch(`${getApiOrigin()}/cards${ownerQuery}`, {
 		mode: 'no-cors',
@@ -23,14 +22,13 @@ const fetchCards = async (owner: CardOwner) => {
 	return data
 }
 
-export default async function MyCards({
+export default async function Cards({
 	searchParams: { owner }
 }: { searchParams: { owner: CardOwner } }) {
 	const cards = await fetchCards(owner)
 
 	return (
 		<main className="px-10">
-			{JSON.stringify(cards)}
 			<div className="pt-7 pb-10 flex items-center justify-between">
 				<h1 className="text-3xl">自分のカード</h1>
 				<CardOwnerSwitch owner={owner} />

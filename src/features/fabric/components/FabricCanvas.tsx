@@ -2,16 +2,18 @@
 
 import { useFabricCanvas } from '@/features/fabric/useFabricCanvas'
 import { canvasAtom } from '@/states/canvas'
-import { Canvas } from 'fabric'
+import { Canvas, loadSVGFromString } from 'fabric'
 import { useSetAtom } from 'jotai'
 import { useEffect, useRef } from 'react'
 
-export default function FabricCanvasWrapper() {
+export default function FabricCanvasWrapper({
+	initialSvg
+}: { initialSvg?: string }) {
 	const { inputRef, onChange, handleToolClick } = useFabricCanvas()
 
 	return (
 		<div onClick={handleToolClick}>
-			<FabricCanvas />
+			<FabricCanvas initialSvg={initialSvg} />
 			<input
 				type="file"
 				className="hidden"
@@ -24,7 +26,7 @@ export default function FabricCanvasWrapper() {
 	)
 }
 
-function FabricCanvas() {
+function FabricCanvas({ initialSvg }: { initialSvg?: string }) {
 	const canvasEl = useRef<HTMLCanvasElement>(null)
 	const setCanvas = useSetAtom(canvasAtom)
 
@@ -36,11 +38,18 @@ function FabricCanvas() {
 		})
 
 		setCanvas(canvas)
+
+		if (initialSvg !== undefined) {
+			loadSVGFromString(initialSvg, (_, object) => {
+				canvas.add(object)
+				canvas.renderAll()
+			})
+		}
 		return () => {
 			setCanvas(null)
 			canvas.dispose()
 		}
-	}, [setCanvas])
+	}, [setCanvas, initialSvg])
 
 	return <canvas width="500" height="740" ref={canvasEl} className="border" />
 }
