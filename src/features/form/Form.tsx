@@ -29,9 +29,7 @@ import {
 import { useToast } from '@/components/ui/use-toast'
 import { ChevronDownIcon } from '@radix-ui/react-icons'
 
-import { CardType } from '@/features/card/type'
 import { getChannels } from '@/features/traq/channels'
-import { getApiOrigin } from '@/lib/env'
 import { canvasAtom } from '@/states/canvas'
 import {
 	FormSchemaType,
@@ -62,22 +60,7 @@ export function PostForm() {
 
 	const channelsList = getChannels()
 
-	async function onSubmit(values: FormSchemaType) {
-		const res = await fetch(`${getApiOrigin()}/cards`, {
-			next: {
-				revalidate: 60
-			}
-		})
-
-		if (!res.ok) {
-			console.error(res)
-			throw new Error('Failed to fetch data')
-		}
-		const data: CardType[] = await res.json()
-
-		if (canvas === null) {
-			return
-		}
+	function onSubmit(values: FormSchemaType) {
 		postForm({
 			publish_date: values.sendDateTime.toISOString(),
 			publish_channels: values.sendChannels,
