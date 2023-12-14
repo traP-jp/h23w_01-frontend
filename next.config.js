@@ -16,6 +16,12 @@ const nextConfig = {
 				hostname: 'h23w-01-backend.trap.show',
 				port: '',
 				pathname: '/api/**'
+			},
+			{
+				protocol: 'https',
+				hostname: 'q.trap.jp',
+				port: '',
+				pathname: '/api/v3/public/icon/**'
 			}
 		]
 	}

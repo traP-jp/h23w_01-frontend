@@ -9,6 +9,7 @@ import { PostForm } from '@/features/form/Form'
 import { fetchChannels } from '@/features/traq/channels'
 import { SHOWCASE_USER_KEY } from '@/lib/auth'
 import { cookies, headers } from 'next/headers'
+import StampSelectorWrapper from '@/features/fabric/components/stamps/StampSelectorWrapper'
 
 export default async function Home() {
 	const headerList = headers()
@@ -27,6 +28,7 @@ export default async function Home() {
 				</div>
 				<ObjectSelector />
 				<OtherSelector />
+				<StampSelectorWrapper />
 			</div>
 			<div>
 				<FabricCanvasWrapper />
