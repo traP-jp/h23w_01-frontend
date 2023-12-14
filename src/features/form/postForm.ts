@@ -3,11 +3,11 @@ import { canvasAtom, imagesAtoms } from '@/states/canvas'
 import { useAtomValue } from 'jotai'
 
 export type form = {
-		ownerId: string
-		publishDate: string
-		publishChannels: string[]
-		message: string | null
-	}
+	ownerId: string
+	publishDate: string
+	publishChannels: string[]
+	message: string | null
+}
 
 interface PostFormData {
 	owner_id: string

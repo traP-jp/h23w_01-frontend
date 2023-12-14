@@ -4,13 +4,13 @@ import { useAtom, useAtomValue } from 'jotai'
 import { useEffect } from 'react'
 
 export type ObjectType =
-		| 'circle'
-		| 'triangle'
-		| 'polygon'
-		| 'rect'
-		| 'star'
-		| 'textbox'
-		| 'image'
+	| 'circle'
+	| 'triangle'
+	| 'polygon'
+	| 'rect'
+	| 'star'
+	| 'textbox'
+	| 'image'
 export type OperationType = 'add' | 'modify' | 'remove'
 
 const objectMap: Record<ObjectType, string> = {

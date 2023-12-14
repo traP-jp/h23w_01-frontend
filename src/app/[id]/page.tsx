@@ -6,6 +6,7 @@ import History from '@/features/fabric/components/History'
 import ObjectSelector from '@/features/fabric/components/ObjectSelector'
 import OtherSelector from '@/features/fabric/components/OtherSelector'
 import { PostForm } from '@/features/form/Form'
+import { fetchChannels } from '@/features/traq/channels'
 import { SHOWCASE_USER_KEY } from '@/lib/auth'
 import { getApiOrigin } from '@/lib/env'
 import { headers } from 'next/headers'
@@ -48,7 +49,8 @@ export default async function EditCard({
 	params: { id: string }
 }) {
 	const headerList = headers()
-	const userId = headerList.get(SHOWCASE_USER_KEY) ?? 'mehm8128'
+	const userId = headerList.get(SHOWCASE_USER_KEY)
+	const channels = await fetchChannels()
 	const card = await fetchCard(id)
 	const cardSvg = await fetchCardSvg(id)
 
@@ -70,7 +72,11 @@ export default async function EditCard({
 			</div>
 			<div className="flex flex-col justify-between flex-1">
 				<History />
-				<PostForm userId={userId} initialValue={initialFormValue} />
+				<PostForm
+					userId={userId}
+					initialValue={initialFormValue}
+					channels={channels}
+				/>
 			</div>
 		</main>
 	)

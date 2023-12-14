@@ -10,7 +10,7 @@ import { headers } from 'next/headers'
 
 export default async function Home() {
 	const headerList = headers()
-	const userId = headerList.get(SHOWCASE_USER_KEY) ?? 'mehm8128'
+	const userId = headerList.get(SHOWCASE_USER_KEY)
 	const channels = await fetchChannels()
 
 	return (
