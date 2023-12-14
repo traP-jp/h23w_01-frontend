@@ -64,7 +64,7 @@ export const usePostForm = () => {
 			type: 'image/png'
 		})
 		promises.push(
-			fetch(`${getApiOrigin()}/cards/${cardId}/img`, {
+			fetch(`${getApiOrigin()}/cards/${cardId}/png`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'image/png'

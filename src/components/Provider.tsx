@@ -1,8 +1,8 @@
 'use client'
 
-import { initMock } from '@/lib/mock'
+// import { initMock } from '@/lib/mock'
 
-initMock()
+// initMock()
 
 export default function Provider({ children }: { children: React.ReactNode }) {
 	return children
