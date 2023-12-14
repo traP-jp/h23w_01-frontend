@@ -2,7 +2,7 @@
 
 import { selectedChannelsAtom } from '@/states/channels'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useAtom, useAtomValue } from 'jotai'
+import { useAtom } from 'jotai'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -30,7 +30,6 @@ import { useToast } from '@/components/ui/use-toast'
 import { ChevronDownIcon } from '@radix-ui/react-icons'
 
 import { getChannels } from '@/features/traq/channels'
-import { canvasAtom } from '@/states/canvas'
 import {
 	FormSchemaType,
 	channelsMax,
@@ -40,22 +39,30 @@ import {
 import { usePostForm } from './postForm'
 import { SelectedChannelsList } from './selectedChannelsList'
 
-export function PostForm({ userId }: { userId: string | null }) {
+export function PostForm({
+	userId,
+	initialValue
+}: { userId: string | null; initialValue?: FormSchemaType }) {
 	const { toast } = useToast()
 	const [open, setOpen] = useState(false)
 	const [selectedChannels, setSelectedChannels] = useAtom(selectedChannelsAtom)
-	const canvas = useAtomValue(canvasAtom)
 	const { postForm } = usePostForm()
 
 	const nextYear = new Date().getFullYear() + 1
 
 	const form = useForm<FormSchemaType>({
 		resolver: zodResolver(formSchema),
-		defaultValues: {
-			sendDateTime: new Date(`${nextYear}-01-01T00:00:00`),
-			sendChannels: [],
-			message: ''
-		}
+		defaultValues:
+			initialValue !== undefined
+				? {
+						...initialValue,
+						message: initialValue.message ?? ''
+				  }
+				: {
+						sendDateTime: new Date(`${nextYear}-01-01T00:00:00`),
+						sendChannels: [],
+						message: ''
+				  }
 	})
 
 	const channelsList = getChannels()
@@ -64,12 +71,15 @@ export function PostForm({ userId }: { userId: string | null }) {
 		if (userId === null) {
 			throw new Error('userId is null')
 		}
-		postForm({
-			ownerId: userId,
-			publishDate: values.sendDateTime.toISOString(),
-			publishChannels: values.sendChannels,
-			message: values.message ? values.message : null
-		})
+		postForm(
+			{
+				ownerId: userId,
+				publishDate: values.sendDateTime.toISOString(),
+				publishChannels: values.sendChannels,
+				message: values.message ? values.message : null
+			},
+			initialValue !== undefined
+		)
 		form.reset()
 		setSelectedChannels([])
 		toast({

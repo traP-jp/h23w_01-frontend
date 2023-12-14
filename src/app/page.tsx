@@ -4,13 +4,12 @@ import History from '@/features/fabric/components/History'
 import ObjectSelector from '@/features/fabric/components/ObjectSelector'
 import OtherSelector from '@/features/fabric/components/OtherSelector'
 import { PostForm } from '@/features/form/Form'
+import { SHOWCASE_USER_KEY } from '@/lib/auth'
 import { headers } from 'next/headers'
-
-const SHOWCASE_USER_KEY = 'X-Forwarded-User'
 
 export default function Home() {
 	const headerList = headers()
-	const userId = headerList.get(SHOWCASE_USER_KEY)
+	const userId = headerList.get(SHOWCASE_USER_KEY) ?? 'mehm8128'
 
 	return (
 		<main className="flex gap-12 pt-8 px-10">

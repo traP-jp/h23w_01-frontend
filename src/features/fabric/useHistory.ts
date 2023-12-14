@@ -4,17 +4,19 @@ import { useAtom, useAtomValue } from 'jotai'
 import { useEffect } from 'react'
 
 export type ObjectType =
-	| 'circle'
-	| 'triangle'
-	| 'rect'
-	| 'star'
-	| 'textbox'
-	| 'image'
+		| 'circle'
+		| 'triangle'
+		| 'polygon'
+		| 'rect'
+		| 'star'
+		| 'textbox'
+		| 'image'
 export type OperationType = 'add' | 'modify' | 'remove'
 
 const objectMap: Record<ObjectType, string> = {
 	circle: '円',
 	triangle: '三角形',
+	polygon: '三角形',
 	rect: '四角形',
 	star: '星',
 	textbox: 'テキスト',
@@ -45,7 +47,7 @@ export const useHistory = () => {
 			operation: 'remove',
 			time: new Date()
 		}
-		setHistories(histories.concat([newHistory]))
+		setHistories(currentHistories => currentHistories.concat([newHistory]))
 	}
 
 	const undo = async (targetId: string) => {
@@ -78,7 +80,7 @@ export const useHistory = () => {
 		}
 
 		// biome-ignore lint/suspicious/noExplicitAny: TODO: eventの型が分からん
-		const onEventHandler = (e: any) => {
+		const addEventHandler = (e: any) => {
 			if (undoing) {
 				return
 			}
@@ -92,11 +94,11 @@ export const useHistory = () => {
 				operation: 'add',
 				time: new Date()
 			}
-			setHistories(histories.concat([newHistory]))
+			setHistories(currentHistories => currentHistories.concat([newHistory]))
 		}
 
 		// biome-ignore lint/suspicious/noExplicitAny: TODO: eventの型が分からん
-		const offEventHandler = (e: any) => {
+		const modifyEventHandler = (e: any) => {
 			if (undoing) {
 				return
 			}
@@ -110,19 +112,19 @@ export const useHistory = () => {
 				operation: 'modify',
 				time: new Date()
 			}
-			setHistories(histories.concat([newHistory]))
+			setHistories(currentHistories => currentHistories.concat([newHistory]))
 		}
 
 		// 図形が追加されたとき
-		canvas.on('object:added', onEventHandler)
+		canvas.on('object:added', addEventHandler)
 		// 図形が編集されたとき(移動・変形など)
-		canvas.on('object:modified', offEventHandler)
+		canvas.on('object:modified', modifyEventHandler)
 
 		return () => {
-			canvas.off('object:added', onEventHandler)
-			canvas.off('object:modified', offEventHandler)
+			canvas.off('object:added', addEventHandler)
+			canvas.off('object:modified', modifyEventHandler)
 		}
-	}, [canvas, histories, setHistories, undoing])
+	}, [canvas, setHistories, undoing])
 
 	return { histories, pushRemoveHistory, undo }
 }

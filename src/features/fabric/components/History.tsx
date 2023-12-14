@@ -10,22 +10,25 @@ export default function History() {
 	return (
 		<div className="space-y-2">
 			<div>履歴</div>
-			<ol className="divide-y-2 h-80 overflow-y-scroll p-2">
-				{histories.map(h => (
-					<li key={h.id} className="flex items-center justify-between py-1">
-						<p className="flex items-center gap-2">
-							<time>{timeToString(h.time)}</time>
-							<span>
-								{h.name}を{operationMap[h.operation]}しました
-							</span>
-						</p>
-						<Button variant="secondary" size="sm" onClick={() => undo(h.id)}>
-							戻す
-						</Button>
-					</li>
-				))}
-			</ol>
-			{histories.length === 0 && <div>履歴はまだありません。</div>}
+			{histories.length === 0 ? (
+				<div>履歴はまだありません。</div>
+			) : (
+				<ol className="divide-y-2 h-80 overflow-y-scroll p-2">
+					{histories.map(h => (
+						<li key={h.id} className="flex items-center justify-between py-1">
+							<p className="flex items-center gap-2">
+								<time>{timeToString(h.time)}</time>
+								<span>
+									{h.name}を{operationMap[h.operation]}しました
+								</span>
+							</p>
+							<Button variant="secondary" size="sm" onClick={() => undo(h.id)}>
+								戻す
+							</Button>
+						</li>
+					))}
+				</ol>
+			)}
 		</div>
 	)
 }
