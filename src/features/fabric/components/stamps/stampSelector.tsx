@@ -19,7 +19,7 @@ export default function StampSelector({ stamps }: { stamps: stamp[] }) {
 				}}
 				className="flex my-4"
 			/>
-			<div className="flex flex-wrap">
+			<div className="flex flex-wrap overflow-y-auto h-64">
 				{selectedStamps.map(stamp => (
 					<button key={stamp.name} className="w-[60px] h-[60px] mr-1 mb-1">
 						<Image
