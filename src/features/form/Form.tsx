@@ -40,7 +40,7 @@ import {
 import { usePostForm } from './postForm'
 import { SelectedChannelsList } from './selectedChannelsList'
 
-export function PostForm() {
+export function PostForm({ userId }: { userId: string | null }) {
 	const { toast } = useToast()
 	const [open, setOpen] = useState(false)
 	const [selectedChannels, setSelectedChannels] = useAtom(selectedChannelsAtom)
@@ -61,9 +61,13 @@ export function PostForm() {
 	const channelsList = getChannels()
 
 	function onSubmit(values: FormSchemaType) {
+		if (userId === null) {
+			throw new Error('userId is null')
+		}
 		postForm({
-			publish_date: values.sendDateTime.toISOString(),
-			publish_channels: values.sendChannels,
+			ownerId: userId,
+			publishDate: values.sendDateTime.toISOString(),
+			publishChannels: values.sendChannels,
 			message: values.message ? values.message : null
 		})
 		form.reset()

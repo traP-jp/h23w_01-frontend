@@ -6,7 +6,6 @@ import { getApiOrigin } from '@/lib/env'
 export type CardOwner = 'me' | 'all'
 
 const fetchCards = async (owner: CardOwner) => {
-	//return mockCards
 	const ownerQuery = owner === 'me' ? '/me' : ''
 	const res = await fetch(`${getApiOrigin()}/cards${ownerQuery}`, {
 		mode: 'no-cors',

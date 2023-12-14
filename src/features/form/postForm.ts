@@ -3,10 +3,11 @@ import { canvasAtom, imagesAtoms } from '@/states/canvas'
 import { useAtomValue } from 'jotai'
 
 export type form = {
-	publish_date: string
-	publish_channels: string[]
-	message: string | null
-}
+		ownerId: string
+		publishDate: string
+		publishChannels: string[]
+		message: string | null
+	}
 
 interface PostFormData {
 	owner_id: string
@@ -26,8 +27,10 @@ export const usePostForm = () => {
 		}
 
 		const data: PostFormData = {
-			owner_id: 'TODO: atomから取ってくる',
-			...form,
+			owner_id: form.ownerId,
+			publish_date: form.publishDate,
+			publish_channels: form.publishChannels,
+			message: form.message,
 			images: images.map(image => image.id)
 		}
 		// カードの情報を送信
