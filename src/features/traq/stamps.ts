@@ -20,6 +20,7 @@ export type stamp = {
 
 async function getStamps(): Promise<stamp[]> {
 	//GET /api/stamps
+	// TODO: 実装
 	const stamps: stamp[] = []
 	for (let i = 0; i < 30; i++) {
 		stamps.push({
@@ -41,7 +42,15 @@ export async function getAllStamps(): Promise<stamp[]> {
 			id: user.id,
 			name: user.name,
 			path: 'https://q.trap.jp/api/v3/public/icon/BOT_ikura-hamu',
+			// path: `https://q.trap.jp/api/v3/public/icon/${user.id}`,
 			isUser: true
 		}))
 	)
+}
+
+export async function getStampImage(stamp: stamp): Promise<Blob> {
+	//GET /api/stamps/:stampId/image
+	const res = await fetch(stamp.path)
+
+	return res.blob()
 }

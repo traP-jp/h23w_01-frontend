@@ -4,7 +4,7 @@ type user = {
 }
 
 export async function getUsers(): Promise<user[]> {
-	// TODO:
+	// TODO: 実装
 	//GET /api/users
 
 	const users: user[] = []

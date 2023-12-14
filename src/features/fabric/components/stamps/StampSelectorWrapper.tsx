@@ -6,7 +6,7 @@ export default async function StampSelectorWrapper() {
 	const stamps = await getAllStamps()
 	return (
 		<>
-			<div className="w-1/3">
+			<div>
 				<Label htmlFor="stampsSelector">スタンプ</Label>
 				<div id="stampsSelector">
 					<StampSelector stamps={stamps} />
