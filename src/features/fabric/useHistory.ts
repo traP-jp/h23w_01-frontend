@@ -6,7 +6,6 @@ import { useEffect } from 'react'
 export type ObjectType =
 	| 'circle'
 	| 'triangle'
-	| 'polygon'
 	| 'rect'
 	| 'star'
 	| 'textbox'
@@ -16,7 +15,6 @@ export type OperationType = 'add' | 'modify' | 'remove'
 const objectMap: Record<ObjectType, string> = {
 	circle: '円',
 	triangle: '三角形',
-	polygon: '三角形',
 	rect: '四角形',
 	star: '星',
 	textbox: 'テキスト',
@@ -48,6 +46,7 @@ export const useHistory = () => {
 			time: new Date()
 		}
 		setHistories(currentHistories => currentHistories.concat([newHistory]))
+		localStorage.setItem('history', JSON.stringify(newHistory))
 	}
 
 	const undo = async (targetId: string) => {
@@ -62,6 +61,7 @@ export const useHistory = () => {
 		if (index === 0) {
 			canvas.clear()
 			setHistories([])
+			localStorage.clear()
 			setUndoing(false)
 			return
 		}
@@ -70,6 +70,7 @@ export const useHistory = () => {
 			canvas.renderAll()
 			// targetId以降を全て削除
 			setHistories(histories.slice(0, index))
+			localStorage.setItem('history', JSON.stringify(histories[index - 1]))
 		})
 		setUndoing(false)
 	}
@@ -95,6 +96,7 @@ export const useHistory = () => {
 				time: new Date()
 			}
 			setHistories(currentHistories => currentHistories.concat([newHistory]))
+			localStorage.setItem('history', JSON.stringify(newHistory))
 		}
 
 		// biome-ignore lint/suspicious/noExplicitAny: TODO: eventの型が分からん
@@ -113,6 +115,7 @@ export const useHistory = () => {
 				time: new Date()
 			}
 			setHistories(currentHistories => currentHistories.concat([newHistory]))
+			localStorage.setItem('history', JSON.stringify(newHistory))
 		}
 
 		// 図形が追加されたとき

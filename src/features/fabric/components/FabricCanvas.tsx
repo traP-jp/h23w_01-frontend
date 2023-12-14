@@ -2,6 +2,7 @@
 
 import { useFabricCanvas } from '@/features/fabric/useFabricCanvas'
 import { canvasAtom } from '@/states/canvas'
+import { undoingAtom } from '@/states/history'
 import { Canvas, loadSVGFromString } from 'fabric'
 import { useSetAtom } from 'jotai'
 import { useEffect, useRef } from 'react'
@@ -29,6 +30,7 @@ export default function FabricCanvasWrapper({
 function FabricCanvas({ initialSvg }: { initialSvg?: string }) {
 	const canvasEl = useRef<HTMLCanvasElement>(null)
 	const setCanvas = useSetAtom(canvasAtom)
+	const setUndoing = useSetAtom(undoingAtom)
 
 	useEffect(() => {
 		if (!canvasEl.current) return
@@ -40,16 +42,27 @@ function FabricCanvas({ initialSvg }: { initialSvg?: string }) {
 		setCanvas(canvas)
 
 		if (initialSvg !== undefined) {
+			setUndoing(true)
 			loadSVGFromString(initialSvg, (_, object) => {
 				canvas.add(object)
 				canvas.renderAll()
+				setUndoing(false)
+			})
+		}
+		const savedHistory = localStorage.getItem('history')
+		if (initialSvg === undefined && savedHistory !== null) {
+			setUndoing(true)
+			loadSVGFromString(savedHistory, (_, object) => {
+				canvas.add(object)
+				canvas.renderAll()
+				setUndoing(false)
 			})
 		}
 		return () => {
 			setCanvas(null)
 			canvas.dispose()
 		}
-	}, [setCanvas, initialSvg])
+	}, [setCanvas, setUndoing, initialSvg])
 
 	return <canvas width="500" height="740" ref={canvasEl} className="border" />
 }
