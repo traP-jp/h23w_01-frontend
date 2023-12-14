@@ -2,18 +2,18 @@ import { ObjectType, useHistory } from '@/features/fabric/useHistory'
 import { useImage } from '@/features/fabric/useImage'
 import { useObject } from '@/features/fabric/useObject'
 import { useText } from '@/features/fabric/useText'
-import { useStamp } from './components/stamps/useStamp'
 import { canvasAtom, imagesAtoms } from '@/states/canvas'
 import {
 	selectObjectAtom,
-	selectedToolAtom,
-	selectedStampAtom
+	selectedStampAtom,
+	selectedToolAtom
 } from '@/states/tools'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useAtom } from 'jotai'
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { MouseEvent } from 'react'
 import { getStampImage } from '../traq/stamps'
+import { useStamp } from './components/stamps/useStamp'
 
 export const useFabricCanvas = () => {
 	const [selectedObject, setSelctedObject] = useAtom(selectObjectAtom)

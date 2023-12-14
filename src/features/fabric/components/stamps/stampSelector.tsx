@@ -1,11 +1,11 @@
 'use client'
-import { useState } from 'react'
-import Image from 'next/image'
 import { Input } from '@/components/ui/input'
 import { stamp } from '@/features/traq/stamps'
+import { selectedStampAtom, selectedToolAtom } from '@/states/tools'
+import { useAtom, useSetAtom } from 'jotai'
+import Image from 'next/image'
+import { useState } from 'react'
 import { getMatchedStampsWithPriority } from './util'
-import { useSetAtom, useAtom } from 'jotai'
-import { selectedToolAtom, selectedStampAtom } from '@/states/tools'
 
 export default function StampSelector({ stamps }: { stamps: stamp[] }) {
 	const [selectedStamps, setSelectedStamps] = useState<stamp[]>([])
