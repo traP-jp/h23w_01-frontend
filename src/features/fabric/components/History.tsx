@@ -10,7 +10,7 @@ export default function History() {
 	return (
 		<div className="space-y-2">
 			<div>履歴</div>
-			<ol className="divide-y-2">
+			<ol className="divide-y-2 h-80 overflow-y-scroll p-2">
 				{histories.map(h => (
 					<li key={h.id} className="flex items-center justify-between py-1">
 						<p className="flex items-center gap-2">
