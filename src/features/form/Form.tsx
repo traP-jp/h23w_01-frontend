@@ -2,7 +2,7 @@
 
 import { selectedChannelsAtom } from '@/states/channels'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useAtom } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -26,24 +26,26 @@ import {
 	PopoverContent,
 	PopoverTrigger
 } from '@/components/ui/popover'
-import { Textarea } from '@/components/ui/textarea'
 import { useToast } from '@/components/ui/use-toast'
 import { ChevronDownIcon } from '@radix-ui/react-icons'
 
 import { getChannels } from '@/features/traq/channels'
+import { canvasAtom } from '@/states/canvas'
 import {
 	FormSchemaType,
 	channelsMax,
 	formSchema,
 	messageLengthMax
 } from './formSchema'
-import { postForm } from './postForm'
+import { usePostForm } from './postForm'
 import { SelectedChannelsList } from './selectedChannelsList'
 
 export function PostForm() {
 	const { toast } = useToast()
 	const [open, setOpen] = useState(false)
 	const [selectedChannels, setSelectedChannels] = useAtom(selectedChannelsAtom)
+	const canvas = useAtomValue(canvasAtom)
+	const { postForm } = usePostForm()
 
 	const nextYear = new Date().getFullYear() + 1
 
@@ -60,8 +62,8 @@ export function PostForm() {
 
 	function onSubmit(values: FormSchemaType) {
 		postForm({
-			sendDateTime: values.sendDateTime.toISOString(),
-			sendChannels: values.sendChannels,
+			publish_date: values.sendDateTime.toISOString(),
+			publish_channels: values.sendChannels,
 			message: values.message ? values.message : null
 		})
 		form.reset()

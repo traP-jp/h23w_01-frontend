@@ -10,6 +10,12 @@ const nextConfig = {
 				hostname: 'www.post.japanpost.jp',
 				port: '',
 				pathname: '/img/service/standard/two/type/**'
+			},
+			{
+				protocol: 'https',
+				hostname: 'h23w01-backend-cors.trap.show',
+				port: '',
+				pathname: '/api/**'
 			}
 		]
 	}
