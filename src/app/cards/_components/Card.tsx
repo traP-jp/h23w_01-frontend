@@ -47,7 +47,7 @@ export default function Card({ card }: { card: CardType }) {
 						<div>
 							<p>送信先</p>
 							<p className="ml-4">
-								{card.publish_channels.map(channel => channel.path).join(', ')}
+								{card.publish_channels.map(channel => channel).join(', ')}
 							</p>
 						</div>
 						<div>
