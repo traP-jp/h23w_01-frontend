@@ -49,15 +49,7 @@ function FabricCanvas({ initialSvg }: { initialSvg?: string }) {
 				setUndoing(false)
 			})
 		}
-		const savedHistory = localStorage.getItem('history')
-		if (initialSvg === undefined && savedHistory !== null) {
-			setUndoing(true)
-			loadSVGFromString(savedHistory, (_, object) => {
-				canvas.add(object)
-				canvas.renderAll()
-				setUndoing(false)
-			})
-		}
+
 		return () => {
 			setCanvas(null)
 			canvas.dispose()
