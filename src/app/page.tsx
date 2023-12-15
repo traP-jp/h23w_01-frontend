@@ -5,11 +5,11 @@ import History from '@/features/fabric/components/History'
 import InnerColorSelector from '@/features/fabric/components/InnerColorSelector'
 import ObjectSelector from '@/features/fabric/components/ObjectSelector'
 import OtherSelector from '@/features/fabric/components/OtherSelector'
+import StampSelectorWrapper from '@/features/fabric/components/stamps/StampSelectorWrapper'
+import { PostForm } from '@/features/form/Form'
 import { fetchChannels } from '@/features/traq/channels'
 import { SHOWCASE_USER_KEY } from '@/lib/auth'
 import { cookies, headers } from 'next/headers'
-import StampSelectorWrapper from '@/features/fabric/components/stamps/StampSelectorWrapper'
-import { PostForm } from '@/features/form/Form'
 
 export default async function Home() {
 	const headerList = headers()

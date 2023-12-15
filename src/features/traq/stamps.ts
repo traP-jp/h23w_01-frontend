@@ -1,5 +1,5 @@
-import { fetchUsers } from './users'
 import { getApiOrigin } from '@/lib/env'
+import { fetchUsers } from './users'
 
 export type Stamp = {
 	id: string
