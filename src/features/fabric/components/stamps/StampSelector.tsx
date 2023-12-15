@@ -6,6 +6,7 @@ import { useAtom, useSetAtom } from 'jotai'
 import Image from 'next/image'
 import { useState } from 'react'
 import { getMatchedStampsWithPriority } from './util'
+import { cn } from '@/lib/utils'
 
 export default function StampSelector({ stamps }: { stamps: Stamp[] }) {
 	const [selectedStamps, setSelectedStamps] = useState<Stamp[]>([])
@@ -26,11 +27,10 @@ export default function StampSelector({ stamps }: { stamps: Stamp[] }) {
 			<div className="flex flex-wrap overflow-y-auto h-64">
 				{selectedStamps.map(stamp => (
 					<button
-						key={stamp.name}
-						className={'w-[60px] h-[60px] mr-1 mb-1 '.concat(
-							selectedStamp?.name === stamp.name
-								? 'border-2 border-kaga-blue'
-								: ''
+						key={stamp.id}
+						className={cn(
+							'w-[60px] h-[60px] mr-1 mb-1',
+							selectedStamp?.name === stamp.name && 'border-2 border-kaga-blue'
 						)}
 						onClick={() => {
 							setSelectedStamp(stamp)
