@@ -1,7 +1,12 @@
 import { canvasAtom } from '@/states/canvas'
 import { selectedColorAtom } from '@/states/tools'
-import { CircleIcon, SquareIcon, VercelLogoIcon } from '@radix-ui/react-icons'
-import { Circle, Rect, Triangle } from 'fabric'
+import {
+	CircleIcon,
+	SquareIcon,
+	StarIcon,
+	VercelLogoIcon
+} from '@radix-ui/react-icons'
+import { Circle, Path, Rect, Triangle } from 'fabric'
 import { useAtomValue } from 'jotai'
 
 export const objects = [
@@ -15,8 +20,8 @@ export const objects = [
 		name: '矩形',
 		value: 'rectangle',
 		icon: <SquareIcon width={32} height={32} />
-	}
-	// { name: '星', value: 'star', icon: <StarIcon width={32} height={32} /> }
+	},
+	{ name: '星', value: 'star', icon: <StarIcon width={32} height={32} /> }
 ] as const
 
 export type ObjectType = (typeof objects)[number]['value']
@@ -68,19 +73,22 @@ export const useObject = () => {
 				canvas.add(shape)
 				break
 			}
-			// case 'star': {
-			// 	const shape = new Star({
-			// 		left: offsetX - 50,
-			// 		top: offsetY - 30,
-			// 		rx: 50,
-			// 		ry: 30,
-			// 		fill: 'transparent',
-			// 		stroke: selectedColor,
-			// 		strokeWidth: 1
-			// 	})
-			// 	canvas.add(shape)
-			// 	break
-			// }
+			case 'star': {
+				const shape = new Path(
+					'M50 2l12 36h38l-30 24 12 36-30-24-30 24 12-36-30-24h38z',
+					{
+						left: offsetX - 50,
+						top: offsetY - 50,
+						width: 100,
+						height: 100,
+						fill: 'transparent',
+						stroke: selectedColor,
+						strokeWidth: 1
+					}
+				)
+				canvas.add(shape)
+				break
+			}
 			default:
 				throw new Error(`invalid object: ${object satisfies never}`)
 		}
