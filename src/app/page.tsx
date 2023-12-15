@@ -1,6 +1,8 @@
+import CanvasColorSelector from '@/features/fabric/components/CanvasColorSelector'
 import ColorSelector from '@/features/fabric/components/ColorSelector'
 import FabricCanvasWrapper from '@/features/fabric/components/FabricCanvas'
 import History from '@/features/fabric/components/History'
+import InnerColorSelector from '@/features/fabric/components/InnerColorSelector'
 import ObjectSelector from '@/features/fabric/components/ObjectSelector'
 import OtherSelector from '@/features/fabric/components/OtherSelector'
 import { PostForm } from '@/features/form/Form'
@@ -16,7 +18,11 @@ export default async function Home() {
 	return (
 		<main className="flex gap-12 pt-8 px-10">
 			<div className="space-y-8 flex-1">
-				<ColorSelector />
+				<div className="space-y-2">
+					<ColorSelector />
+					<InnerColorSelector />
+					<CanvasColorSelector />
+				</div>
 				<ObjectSelector />
 				<OtherSelector />
 			</div>

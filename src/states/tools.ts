@@ -8,3 +8,7 @@ export const selectedToolAtom = atom<Tool>(null)
 export const selectObjectAtom = atom<ObjectType | null>(null)
 
 export const selectedColorAtom = atom<string>('#000000')
+
+export const selectedInnerColorAtom = atom<string>('#000000')
+
+export const selectedCanvasColorAtom = atom<string>('#FFFFFF')
