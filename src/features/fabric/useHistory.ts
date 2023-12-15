@@ -33,15 +33,18 @@ export const useHistory = () => {
 	// undoでの追加や編集はhistoryに追加しないようにするフラグ
 	const [undoing, setUndoing] = useAtom(undoingAtom)
 
-	const pushRemoveHistory = (objectName: ObjectType[]) => {
+	const pushRemoveHistory = (objectTypes: ObjectType[]) => {
 		if (canvas === null || undoing) {
+			return
+		}
+		if (objectTypes.length === 0) {
 			return
 		}
 		const id = crypto.randomUUID()
 		const newHistory: History = {
 			id,
 			json: JSON.stringify(canvas),
-			name: objectName.map(name => objectMap[name]).join('、'),
+			name: objectTypes.map(type => objectMap[type]).join('、'),
 			operation: 'remove',
 			time: new Date()
 		}
