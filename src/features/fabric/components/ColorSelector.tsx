@@ -9,14 +9,11 @@ export default function ColorSelector() {
 	return (
 		<div className="space-y-2">
 			<div>色</div>
-			<div className="flex items-cetner gap-4">
-				<input
-					type="color"
-					onChange={e => setSelctedColor(e.target.value)}
-					value={selectedColor}
-				/>
-				<p>{selectedColor}を選択中</p>
-			</div>
+			<input
+				type="color"
+				onChange={e => setSelctedColor(e.target.value)}
+				value={selectedColor}
+			/>
 		</div>
 	)
 }

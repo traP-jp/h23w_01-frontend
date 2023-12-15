@@ -1,3 +1,4 @@
+import CanvasColorSelector from '@/features/fabric/components/CanvasColorSelector'
 import ColorSelector from '@/features/fabric/components/ColorSelector'
 import FabricCanvasWrapper from '@/features/fabric/components/FabricCanvas'
 import History from '@/features/fabric/components/History'
@@ -17,6 +18,7 @@ export default async function Home() {
 		<main className="flex gap-12 pt-8 px-10">
 			<div className="space-y-8 flex-1">
 				<ColorSelector />
+				<CanvasColorSelector />
 				<ObjectSelector />
 				<OtherSelector />
 			</div>
