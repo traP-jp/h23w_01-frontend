@@ -45,7 +45,7 @@ export const useHistory = () => {
 			operation: 'remove',
 			time: new Date()
 		}
-		setHistories(currentHistories => currentHistories.concat([newHistory]))
+		setHistories(histories.concat([newHistory]))
 	}
 
 	const undo = async (targetId: string) => {
@@ -92,7 +92,7 @@ export const useHistory = () => {
 				operation: 'add',
 				time: new Date()
 			}
-			setHistories(currentHistories => currentHistories.concat([newHistory]))
+			setHistories(histories.concat([newHistory]))
 		}
 
 		// biome-ignore lint/suspicious/noExplicitAny: TODO: eventの型が分からん
@@ -110,7 +110,7 @@ export const useHistory = () => {
 				operation: 'modify',
 				time: new Date()
 			}
-			setHistories(currentHistories => currentHistories.concat([newHistory]))
+			setHistories(histories.concat([newHistory]))
 		}
 
 		// 図形が追加されたとき
@@ -122,7 +122,7 @@ export const useHistory = () => {
 			canvas.off('object:added', addEventHandler)
 			canvas.off('object:modified', modifyEventHandler)
 		}
-	}, [canvas, setHistories, undoing])
+	}, [canvas, histories, setHistories, undoing])
 
 	return { histories, pushRemoveHistory, undo }
 }
