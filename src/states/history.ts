@@ -10,4 +10,4 @@ export interface History {
 }
 
 export const historiesAtom = atom<History[]>([])
-export const undoingAtom = atom(false)
+export const historyLockedAtom = atom(false)

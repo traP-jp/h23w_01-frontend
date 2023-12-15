@@ -1,5 +1,5 @@
 import { canvasAtom } from '@/states/canvas'
-import { History, historiesAtom, undoingAtom } from '@/states/history'
+import { History, historiesAtom, historyLockedAtom } from '@/states/history'
 import { useAtom, useAtomValue } from 'jotai'
 import { useEffect } from 'react'
 
@@ -31,10 +31,10 @@ export const useHistory = () => {
 	const canvas = useAtomValue(canvasAtom)
 	const [histories, setHistories] = useAtom(historiesAtom)
 	// undoでの追加や編集はhistoryに追加しないようにするフラグ
-	const [undoing, setUndoing] = useAtom(undoingAtom)
+	const [historyLocked, setHistoryLocked] = useAtom(historyLockedAtom)
 
 	const pushRemoveHistory = (objectTypes: ObjectType[]) => {
-		if (canvas === null || undoing) {
+		if (canvas === null || historyLocked) {
 			return
 		}
 		if (objectTypes.length === 0) {
@@ -55,7 +55,7 @@ export const useHistory = () => {
 		if (canvas === null) {
 			return
 		}
-		setUndoing(true)
+		setHistoryLocked(true)
 		const index = histories.findIndex(history => history.id === targetId)
 		if (index === -1) {
 			throw new Error('history not found')
@@ -63,7 +63,7 @@ export const useHistory = () => {
 		if (index === 0) {
 			canvas.clear()
 			setHistories([])
-			setUndoing(false)
+			setHistoryLocked(false)
 			return
 		}
 		const content = histories[index - 1].json
@@ -72,7 +72,7 @@ export const useHistory = () => {
 			// targetId以降を全て削除
 			setHistories(histories.slice(0, index))
 		})
-		setUndoing(false)
+		setHistoryLocked(false)
 	}
 
 	useEffect(() => {
@@ -82,7 +82,7 @@ export const useHistory = () => {
 
 		// biome-ignore lint/suspicious/noExplicitAny: TODO: eventの型が分からん
 		const addEventHandler = (e: any) => {
-			if (undoing) {
+			if (historyLocked) {
 				return
 			}
 			const objectType = e.target.type as ObjectType
@@ -100,7 +100,7 @@ export const useHistory = () => {
 
 		// biome-ignore lint/suspicious/noExplicitAny: TODO: eventの型が分からん
 		const modifyEventHandler = (e: any) => {
-			if (undoing) {
+			if (historyLocked) {
 				return
 			}
 			const objectType = e.target.type as ObjectType
@@ -125,7 +125,7 @@ export const useHistory = () => {
 			canvas.off('object:added', addEventHandler)
 			canvas.off('object:modified', modifyEventHandler)
 		}
-	}, [canvas, histories, setHistories, undoing])
+	}, [canvas, histories, setHistories, historyLocked])
 
 	return { histories, pushRemoveHistory, undo }
 }
