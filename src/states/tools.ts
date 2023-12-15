@@ -14,4 +14,4 @@ export const selectedInnerColorAtom = atom<string>('#000000')
 
 export const selectedCanvasColorAtom = atom<string>('#FFFFFF')
 
-export const selectedStampAtom = atom<stamp | null>(null)
+export const selectedStampAtom = atom<Stamp | null>(null)
