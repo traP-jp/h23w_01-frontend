@@ -13,7 +13,7 @@ const nextConfig = {
 			},
 			{
 				protocol: 'https',
-				hostname: 'h23w01-backend-cors.trap.show',
+				hostname: 'h23w-01-backend.trap.show',
 				port: '',
 				pathname: '/api/**'
 			}

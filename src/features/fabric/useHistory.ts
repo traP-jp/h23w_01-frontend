@@ -6,7 +6,6 @@ import { useEffect } from 'react'
 export type ObjectType =
 	| 'circle'
 	| 'triangle'
-	| 'polygon'
 	| 'rect'
 	| 'star'
 	| 'textbox'
@@ -16,7 +15,6 @@ export type OperationType = 'add' | 'modify' | 'remove'
 const objectMap: Record<ObjectType, string> = {
 	circle: '円',
 	triangle: '三角形',
-	polygon: '三角形',
 	rect: '四角形',
 	star: '星',
 	textbox: 'テキスト',
