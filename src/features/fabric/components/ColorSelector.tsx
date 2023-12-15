@@ -8,7 +8,7 @@ export default function ColorSelector() {
 
 	return (
 		<div className="space-y-2">
-			<div>色</div>
+			<div>枠色・文字色</div>
 			<input
 				type="color"
 				onChange={e => setSelctedColor(e.target.value)}
