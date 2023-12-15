@@ -7,23 +7,20 @@ export const getMatchedStampsWithPriority = (
 	if (query === '') return []
 
 	if (query === '@') {
-		return stamps.filter(stamp => stamp.isUser)
+		return []
 	}
-
-	// if (query.length === 1) {
-
-	// }
 
 	const matchedValuesArray = new Array<{ value: Stamp; priority: number }>()
 
 	for (const stamp of stamps) {
+		const lowerStampName = stamp.name.toLowerCase()
 		if (stamp.isUser !== query.startsWith('@')) continue
 		const q = query.replace('@', '')
-		if (q === stamp.name) {
+		if (q === lowerStampName) {
 			matchedValuesArray.push({ value: stamp, priority: 0 })
-		} else if (stamp.name.startsWith(q)) {
+		} else if (lowerStampName.startsWith(q)) {
 			matchedValuesArray.push({ value: stamp, priority: 1 })
-		} else if (stamp.name.includes(q)) {
+		} else if (lowerStampName.includes(q)) {
 			matchedValuesArray.push({ value: stamp, priority: 2 })
 		}
 	}

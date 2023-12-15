@@ -1,15 +1,5 @@
-import { getUsers } from './users'
-
-type StampResponse = {
-	id: string
-	name: string
-	creatorId: string
-	createdAt: string
-	updatedAt: string
-	fileId: string
-	isUnicode: boolean
-	hasThumbnail: boolean
-}
+import { fetchUsers } from './users'
+import { getApiOrigin } from '@/lib/env'
 
 export type Stamp = {
 	id: string
@@ -19,37 +9,60 @@ export type Stamp = {
 }
 
 async function fetchStamps(): Promise<Stamp[]> {
-	//GET /api/stamps
-	// TODO: 実装
-	const stamps: Stamp[] = []
-	for (let i = 0; i < 30; i++) {
-		stamps.push({
-			id: i.toString(),
-			name: `st${i}amp${i}`,
-			path: 'https://q.trap.jp/api/v3/public/icon/ikura-hamu',
-			isUser: false
-		})
+	const unicodeRes = await fetch(`${getApiOrigin()}/stamps?type=unicode`, {
+		mode: 'no-cors',
+		next: {
+			revalidate: 3600
+		}
+	})
+
+	if (!unicodeRes.ok) {
+		console.error(unicodeRes)
+		throw new Error('Failed to fetch data')
 	}
-	return stamps
+
+	const unicodeData: Stamp[] = await unicodeRes.json()
+	for (const stamp of unicodeData) {
+		stamp.path = `${getApiOrigin()}/stamps/${stamp.id}/image`
+		stamp.isUser = false
+	}
+
+	const originalRes = await fetch(`${getApiOrigin()}/stamps?type=original`, {
+		mode: 'no-cors',
+		next: {
+			revalidate: 3600
+		}
+	})
+
+	if (!originalRes.ok) {
+		console.error(unicodeRes)
+		throw new Error('Failed to fetch data')
+	}
+
+	const originalData: Stamp[] = await originalRes.json()
+	for (const stamp of originalData) {
+		stamp.path = `${getApiOrigin()}/stamps/${stamp.id}/image`
+		stamp.isUser = false
+	}
+
+	return unicodeData.concat(originalData)
 }
 
 export async function fetchAllStamps(): Promise<Stamp[]> {
 	const stamps = await fetchStamps()
-	const users = await getUsers()
+	const users = await fetchUsers()
 
 	return stamps.concat(
 		users.map(user => ({
 			id: user.id,
 			name: user.name,
-			path: 'https://q.trap.jp/api/v3/public/icon/BOT_ikura-hamu',
-			// path: `https://q.trap.jp/api/v3/public/icon/${user.id}`,
+			path: `${getApiOrigin()}/users/${user.id}/icon`,
 			isUser: true
 		}))
 	)
 }
 
 export async function fetchStampImage(stamp: Stamp): Promise<Blob> {
-	//GET /api/stamps/:stampId/image
 	const res = await fetch(stamp.path)
 
 	return res.blob()

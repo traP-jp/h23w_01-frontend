@@ -23,7 +23,10 @@ const nextConfig = {
 				port: '',
 				pathname: '/api/v3/public/icon/**'
 			} // TODO: アイコン取ってくる用。バックエンドの実装ができたら消す
-		]
+		],
+		dangerouslyAllowSVG: true,
+		contentDispositionType: 'attachment',
+		contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;"
 	}
 }
 

@@ -1,19 +1,23 @@
+import { getApiOrigin } from '@/lib/env'
+
 type User = {
 	id: string
 	name: string
 }
 
-export async function getUsers(): Promise<User[]> {
-	// TODO: 実装
-	//GET /api/users
-	fetch('https://h23w-01-backend.trap.show/api/users')
+export async function fetchUsers(): Promise<User[]> {
+	const res = await fetch(`${getApiOrigin()}/users`, {
+		mode: 'no-cors',
+		next: {
+			revalidate: 3600
+		}
+	})
 
-	const users: User[] = []
-	for (let i = 0; i < 30; i++) {
-		users.push({
-			id: i.toString(),
-			name: `us${i}er${i}`
-		})
+	if (!res.ok) {
+		console.error(res)
+		throw new Error('Failed to fetch data')
 	}
-	return users
+
+	const data: User[] = await res.json()
+	return data
 }
