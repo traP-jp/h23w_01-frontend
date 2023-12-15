@@ -1,9 +1,9 @@
 import { Label } from '@/components/ui/label'
-import { getAllStamps } from '@/features/traq/stamps'
+import { fetchAllStamps } from '@/features/traq/stamps'
 import StampSelector from './stampSelector'
 
 export default async function StampSelectorWrapper() {
-	const stamps = await getAllStamps()
+	const stamps = await fetchAllStamps()
 	return (
 		<>
 			<div>

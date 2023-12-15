@@ -1,5 +1,5 @@
 import { ObjectType } from '@/features/fabric/useObject'
-import { stamp } from '@/features/traq/stamps'
+import { Stamp } from '@/features/traq/stamps'
 import { atom } from 'jotai'
 
 export type Tool = 'object' | 'text' | 'image' | 'stamp' | null

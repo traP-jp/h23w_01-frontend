@@ -1,6 +1,6 @@
 import { getUsers } from './users'
 
-type stampResponse = {
+type StampResponse = {
 	id: string
 	name: string
 	creatorId: string
@@ -11,17 +11,17 @@ type stampResponse = {
 	hasThumbnail: boolean
 }
 
-export type stamp = {
+export type Stamp = {
 	id: string
 	name: string
 	path: string
 	isUser: boolean
 }
 
-async function getStamps(): Promise<stamp[]> {
+async function fetchStamps(): Promise<Stamp[]> {
 	//GET /api/stamps
 	// TODO: 実装
-	const stamps: stamp[] = []
+	const stamps: Stamp[] = []
 	for (let i = 0; i < 30; i++) {
 		stamps.push({
 			id: i.toString(),
@@ -33,8 +33,8 @@ async function getStamps(): Promise<stamp[]> {
 	return stamps
 }
 
-export async function getAllStamps(): Promise<stamp[]> {
-	const stamps = await getStamps()
+export async function fetchAllStamps(): Promise<Stamp[]> {
+	const stamps = await fetchStamps()
 	const users = await getUsers()
 
 	return stamps.concat(
@@ -48,7 +48,7 @@ export async function getAllStamps(): Promise<stamp[]> {
 	)
 }
 
-export async function getStampImage(stamp: stamp): Promise<Blob> {
+export async function fetchStampImage(stamp: Stamp): Promise<Blob> {
 	//GET /api/stamps/:stampId/image
 	const res = await fetch(stamp.path)
 

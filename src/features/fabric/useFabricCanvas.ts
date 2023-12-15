@@ -12,7 +12,7 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import { useAtom } from 'jotai'
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { MouseEvent } from 'react'
-import { getStampImage } from '../traq/stamps'
+import { fetchStampImage } from '../traq/stamps'
 import { useStamp } from './components/stamps/useStamp'
 
 export const useFabricCanvas = () => {
@@ -61,7 +61,7 @@ export const useFabricCanvas = () => {
 		const { offsetX, offsetY } = e.nativeEvent
 		setPosition({ x: offsetX, y: offsetY })
 
-		const img = await getStampImage(selectedStamp)
+		const img = await fetchStampImage(selectedStamp)
 		putStamp(offsetX, offsetY, img)
 		setSelectedTool(null)
 		setSelectedStamp(null)

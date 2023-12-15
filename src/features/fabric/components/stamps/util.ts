@@ -1,9 +1,9 @@
-import { stamp } from '@/features/traq/stamps'
+import { Stamp } from '@/features/traq/stamps'
 
 export const getMatchedStampsWithPriority = (
-	stamps: readonly stamp[],
+	stamps: readonly Stamp[],
 	query: string
-): stamp[] => {
+): Stamp[] => {
 	if (query === '') return []
 
 	if (query === '@') {
@@ -14,7 +14,7 @@ export const getMatchedStampsWithPriority = (
 
 	// }
 
-	const matchedValuesArray = new Array<{ value: stamp; priority: number }>()
+	const matchedValuesArray = new Array<{ value: Stamp; priority: number }>()
 
 	for (const stamp of stamps) {
 		if (stamp.isUser !== query.startsWith('@')) continue
