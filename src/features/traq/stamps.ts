@@ -61,8 +61,8 @@ export async function fetchAllStamps(
 	)
 }
 
-export async function fetchStampImage(stamp: Stamp): Promise<Blob> {
-	const res = await fetch(stamp.path)
+export async function fetchStampImage(stamp: Stamp, cookies: RequestCookie[]): Promise<Blob> {
+	const res = await fetcher(stamp.path, cookies)
 
 	return await res.blob()
 }

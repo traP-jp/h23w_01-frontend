@@ -61,7 +61,7 @@ export const useFabricCanvas = () => {
 		const { offsetX, offsetY } = e.nativeEvent
 		setPosition({ x: offsetX, y: offsetY })
 
-		const img = await fetchStampImage(selectedStamp)
+		const img = await fetchStampImage(selectedStamp, [])
 		putStamp(offsetX, offsetY, img)
 		setSelectedTool(null)
 		setSelectedStamp(null)
