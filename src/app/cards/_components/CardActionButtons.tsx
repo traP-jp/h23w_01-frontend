@@ -2,12 +2,21 @@
 
 import { Button } from '@/components/ui/button'
 import { getApiOrigin } from '@/lib/env'
+import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies'
 import Link from 'next/link'
 
-export default function CardActionButtons({ id }: { id: string }) {
+export default function CardActionButtons({
+	id,
+	cookies
+}: { id: string; cookies: RequestCookie[] }) {
 	const deleteCard = async () => {
 		const res = await fetch(`${getApiOrigin()}/cards/${id}`, {
-			method: 'DELETE'
+			method: 'DELETE',
+			headers: {
+				cookie: cookies
+					.map(cookie => `${cookie.name}=${cookie.value}`)
+					.join('; ')
+			}
 		})
 		if (!res.ok) {
 			throw new Error('Failed to post form')

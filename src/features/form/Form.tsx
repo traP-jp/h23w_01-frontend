@@ -30,6 +30,7 @@ import { useToast } from '@/components/ui/use-toast'
 import { ChevronDownIcon } from '@radix-ui/react-icons'
 
 import { Channel } from '@/features/traq/channels'
+import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies'
 import {
 	FormSchemaType,
 	channelsMax,
@@ -43,12 +44,14 @@ export function PostForm({
 	userId,
 	initialValue,
 	channels,
-	usersMap
+	usersMap,
+	cookies
 }: {
 	userId: string | null
 	initialValue?: FormSchemaType
 	channels: Channel[]
 	usersMap: Map<string, string>
+	cookies: RequestCookie[]
 }) {
 	const { toast } = useToast()
 	const [open, setOpen] = useState(false)
@@ -88,7 +91,8 @@ export function PostForm({
 				publishChannels: values.sendChannels,
 				message: values.message ? values.message : null
 			},
-			initialValue !== undefined
+			initialValue !== undefined,
+			cookies
 		)
 		form.reset()
 		setSelectedChannels([])

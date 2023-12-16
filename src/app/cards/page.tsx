@@ -47,7 +47,12 @@ export default async function Cards({
 			</div>
 			<div className="flex flex-wrap gap-10">
 				{cards.map(card => (
-					<Card key={card.id} card={card} usersMap={usersMap} />
+					<Card
+						key={card.id}
+						card={card}
+						usersMap={usersMap}
+						cookies={cookieList}
+					/>
 				))}
 			</div>
 		</main>
