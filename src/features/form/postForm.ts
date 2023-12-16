@@ -46,9 +46,9 @@ export const usePostForm = () => {
 				'Content-Type': 'application/json',
 				cookie: cookies
 					.map(cookie => `${cookie.name}=${cookie.value}`)
-					.join('; '),
-				credentials: 'include'
+					.join('; ')
 			},
+			credentials: 'include',
 			body: JSON.stringify(data)
 		})
 		if (!cardRes.ok) {
@@ -59,7 +59,10 @@ export const usePostForm = () => {
 		const promises = []
 
 		// svgを送信するpromiseを作成
-		const svgBlob = new Blob([canvas.toSVG({}, svg => svg)], {
+		const svg = canvas
+			.toSVG({}, svg => svg)
+			.replace('https://h23w-01-frontend.trap.show', getApiOrigin())
+		const svgBlob = new Blob([svg], {
 			type: 'image/svg+xml'
 		})
 		promises.push(
