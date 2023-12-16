@@ -2,15 +2,20 @@ import Card from '@/app/cards/_components/Card'
 import CardOwnerSwitch from '@/features/card/components/CardOwnerSwitch'
 import { CardType } from '@/features/card/type'
 import { getApiOrigin } from '@/lib/env'
+import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies'
+import { cookies } from 'next/headers'
 
 export type CardOwner = 'me' | 'all'
 
-const fetchCards = async (owner: CardOwner) => {
+const fetchCards = async (owner: CardOwner, cookies: RequestCookie[]) => {
 	const ownerQuery = owner === 'me' ? '/me' : ''
 	const res = await fetch(`${getApiOrigin()}/cards${ownerQuery}`, {
 		mode: 'no-cors',
 		next: {
 			revalidate: 60
+		},
+		headers: {
+			cookie: cookies.map(cookie => `${cookie.name}=${cookie.value}`).join('; ')
 		}
 	})
 
@@ -25,7 +30,9 @@ const fetchCards = async (owner: CardOwner) => {
 export default async function Cards({
 	searchParams: { owner }
 }: { searchParams: { owner: CardOwner } }) {
-	const cards = await fetchCards(owner)
+	const cookieStore = cookies()
+	const cookieList = cookieStore.getAll()
+	const cards = await fetchCards(owner, cookieList)
 
 	return (
 		<main className="px-10">

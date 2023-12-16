@@ -9,13 +9,17 @@ import { PostForm } from '@/features/form/Form'
 import { fetchChannels } from '@/features/traq/channels'
 import { SHOWCASE_USER_KEY } from '@/lib/auth'
 import { getApiOrigin } from '@/lib/env'
+import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies'
 import { cookies, headers } from 'next/headers'
 
-const fetchCard = async (id: string) => {
+const fetchCard = async (id: string, cookies: RequestCookie[]) => {
 	const res = await fetch(`${getApiOrigin()}/cards/${id}`, {
 		mode: 'no-cors',
 		next: {
 			revalidate: 60
+		},
+		headers: {
+			cookie: cookies.map(cookie => `${cookie.name}=${cookie.value}`).join('; ')
 		}
 	})
 
@@ -27,11 +31,14 @@ const fetchCard = async (id: string) => {
 	return data
 }
 
-const fetchCardSvg = async (id: string) => {
+const fetchCardSvg = async (id: string, cookies: RequestCookie[]) => {
 	const res = await fetch(`${getApiOrigin()}/cards/${id}/svg`, {
 		mode: 'no-cors',
 		next: {
 			revalidate: 60
+		},
+		headers: {
+			cookie: cookies.map(cookie => `${cookie.name}=${cookie.value}`).join('; ')
 		}
 	})
 
@@ -53,8 +60,8 @@ export default async function EditCard({
 	const cookieStore = cookies()
 	const cookieList = cookieStore.getAll()
 	const channels = await fetchChannels(cookieList)
-	const card = await fetchCard(id)
-	const cardSvg = await fetchCardSvg(id)
+	const card = await fetchCard(id, cookieList)
+	const cardSvg = await fetchCardSvg(id, cookieList)
 
 	const initialFormValue = {
 		message: card.message,

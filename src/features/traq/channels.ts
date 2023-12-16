@@ -8,7 +8,6 @@ export type Channel = {
 }
 
 export const fetchChannels = async (cookies: RequestCookie[]) => {
-	console.log(cookies)
 	const res = await fetcher(`${getApiOrigin()}/channels`, cookies)
 
 	if (!res.ok) {
