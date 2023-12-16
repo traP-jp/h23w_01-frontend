@@ -19,6 +19,13 @@ export default function InnerColorSelector() {
 		<div className="space-y-2">
 			<div>塗りつぶし色</div>
 			<div>
+				<div>
+					<input
+						type="color"
+						onChange={e => setSelctedColor(e.target.value)}
+						value={selectedColor === 'transparent' ? savedColor : selectedColor}
+					/>
+				</div>
 				<label className="space-x-1">
 					<input
 						type="checkbox"
@@ -27,13 +34,6 @@ export default function InnerColorSelector() {
 					/>
 					<span>透明</span>
 				</label>
-				<div>
-					<input
-						type="color"
-						onChange={e => setSelctedColor(e.target.value)}
-						value={selectedColor === 'transparent' ? savedColor : selectedColor}
-					/>
-				</div>
 			</div>
 		</div>
 	)

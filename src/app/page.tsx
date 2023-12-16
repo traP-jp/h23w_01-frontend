@@ -8,6 +8,7 @@ import OtherSelector from '@/features/fabric/components/OtherSelector'
 import StampSelectorWrapper from '@/features/fabric/components/stamps/StampSelectorWrapper'
 import { PostForm } from '@/features/form/Form'
 import { fetchChannels } from '@/features/traq/channels'
+import { fetchUsers } from '@/features/traq/users'
 import { SHOWCASE_USER_KEY } from '@/lib/auth'
 import { cookies, headers } from 'next/headers'
 
@@ -17,11 +18,14 @@ export default async function Home() {
 	const cookieStore = cookies()
 	const cookieList = cookieStore.getAll()
 	const channels = await fetchChannels(cookieList)
+	const usersMap = new Map(
+		(await fetchUsers(cookieList)).map(user => [user.name, user.id])
+	)
 
 	return (
 		<main className="flex gap-12 pt-8 px-10">
 			<div className="space-y-8 flex-1">
-				<div className="space-y-2">
+				<div className="flex gap-2">
 					<ColorSelector />
 					<InnerColorSelector />
 					<CanvasColorSelector />
@@ -35,7 +39,12 @@ export default async function Home() {
 			</div>
 			<div className="flex flex-col justify-between flex-1">
 				<History />
-				<PostForm userId={userId} channels={channels} />
+				<PostForm
+					userId={userId}
+					channels={channels}
+					usersMap={usersMap}
+					cookies={cookieList}
+				/>
 			</div>
 		</main>
 	)
