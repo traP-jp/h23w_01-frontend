@@ -1,5 +1,6 @@
 import { getApiOrigin } from '@/lib/env'
 import { canvasAtom, imagesAtoms } from '@/states/canvas'
+import { userNamesAtom } from '@/states/users'
 import { useAtomValue } from 'jotai'
 
 export type form = {
@@ -20,6 +21,7 @@ interface PostFormData {
 export const usePostForm = () => {
 	const canvas = useAtomValue(canvasAtom)
 	const images = useAtomValue(imagesAtoms)
+	const userNames = useAtomValue(userNamesAtom)
 
 	const postForm = async (form: form, isPatch: boolean) => {
 		if (canvas === null) {
@@ -27,8 +29,14 @@ export const usePostForm = () => {
 		}
 		const method = isPatch ? 'PATCH' : 'POST'
 
+		const userUUID = userNames.get(form.ownerId)
+		if (!userUUID) {
+			console.error(userUUID)
+			throw new Error('invalid user id')
+		}
+
 		const data: PostFormData = {
-			owner_id: form.ownerId,
+			owner_id: userUUID,
 			publish_date: form.publishDate,
 			publish_channels: form.publishChannels,
 			message: form.message,

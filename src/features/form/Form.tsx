@@ -1,6 +1,7 @@
 'use client'
 
 import { selectedChannelsAtom } from '@/states/channels'
+import { userNamesAtom } from '@/states/users'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useAtom } from 'jotai'
 import { useState } from 'react'
@@ -38,6 +39,7 @@ import {
 } from './formSchema'
 import { usePostForm } from './postForm'
 import { SelectedChannelsList } from './selectedChannelsList'
+import { fetchUsers } from '../traq/users'
 
 export function PostForm({
 	userId,
@@ -51,6 +53,7 @@ export function PostForm({
 	const { toast } = useToast()
 	const [open, setOpen] = useState(false)
 	const [selectedChannels, setSelectedChannels] = useAtom(selectedChannelsAtom)
+	const [userNamesMap, setUserNamesMap] = useAtom(userNamesAtom)
 	const { postForm } = usePostForm()
 
 	const nextYear = new Date().getFullYear() + 1
@@ -69,6 +72,14 @@ export function PostForm({
 						message: ''
 				  }
 	})
+
+	if (userNamesMap.size === 0) {
+		fetchUsers([]).then(users => {
+			for (const user of users) {
+				setUserNamesMap(usersMap => new Map(usersMap).set(user.id, user.name))
+			}
+		})
+	}
 
 	function onSubmit(values: FormSchemaType) {
 		if (userId === null) {
