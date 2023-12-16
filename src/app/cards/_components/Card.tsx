@@ -6,13 +6,19 @@ import {
 import { CardType } from '@/features/card/type'
 import { datetimeToString } from '@/lib/date'
 import { getApiOrigin } from '@/lib/env'
+import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies'
 import Image from 'next/image'
 import CardActionButtons from './CardActionButtons'
 
 export default function Card({
 	card,
-	usersMap
-}: { card: CardType; usersMap: Map<string, string> }) {
+	usersMap,
+	cookies
+}: {
+	card: CardType
+	usersMap: Map<string, string>
+	cookies: RequestCookie[]
+}) {
 	return (
 		<HoverCard openDelay={500}>
 			<HoverCardTrigger className="w-[180px] border shadow-md">
@@ -64,7 +70,7 @@ export default function Card({
 							<p className="ml-4">{card.message}</p>
 						</div>
 					</div>
-					<CardActionButtons id={card.id} />
+					<CardActionButtons id={card.id} cookies={cookies} />
 				</div>
 			</HoverCardContent>
 		</HoverCard>

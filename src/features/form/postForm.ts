@@ -1,6 +1,7 @@
 import { getApiOrigin } from '@/lib/env'
 import { canvasAtom, imagesAtoms } from '@/states/canvas'
 import { useAtomValue } from 'jotai'
+import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies'
 
 export type form = {
 	ownerId: string
@@ -21,7 +22,11 @@ export const usePostForm = () => {
 	const canvas = useAtomValue(canvasAtom)
 	const images = useAtomValue(imagesAtoms)
 
-	const postForm = async (form: form, isPatch: boolean) => {
+	const postForm = async (
+		form: form,
+		isPatch: boolean,
+		cookies: RequestCookie[]
+	) => {
 		if (canvas === null) {
 			return
 		}
@@ -38,7 +43,10 @@ export const usePostForm = () => {
 		const cardRes = await fetch(`${getApiOrigin()}/cards`, {
 			method: method,
 			headers: {
-				'Content-Type': 'application/json'
+				'Content-Type': 'application/json',
+				cookie: cookies
+					.map(cookie => `${cookie.name}=${cookie.value}`)
+					.join('; ')
 			},
 			body: JSON.stringify(data)
 		})
@@ -57,7 +65,10 @@ export const usePostForm = () => {
 			fetch(`${getApiOrigin()}/cards/${cardId}/svg`, {
 				method: 'POST',
 				headers: {
-					'Content-Type': 'image/svg+xml'
+					'Content-Type': 'image/svg+xml',
+					cookie: cookies
+						.map(cookie => `${cookie.name}=${cookie.value}`)
+						.join('; ')
 				},
 				body: svgBlob
 			})
@@ -71,7 +82,10 @@ export const usePostForm = () => {
 			fetch(`${getApiOrigin()}/cards/${cardId}/png`, {
 				method: method,
 				headers: {
-					'Content-Type': 'image/png'
+					'Content-Type': 'image/png',
+					cookie: cookies
+						.map(cookie => `${cookie.name}=${cookie.value}`)
+						.join('; ')
 				},
 				body: imgBlob
 			})
@@ -85,6 +99,11 @@ export const usePostForm = () => {
 			promises.push(
 				fetch(`${getApiOrigin()}/images`, {
 					method: 'POST',
+					headers: {
+						cookie: cookies
+							.map(cookie => `${cookie.name}=${cookie.value}`)
+							.join('; ')
+					},
 					body: data
 				})
 			)
