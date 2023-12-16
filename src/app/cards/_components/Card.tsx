@@ -1,30 +1,18 @@
-'use client'
-
 import {
 	HoverCard,
 	HoverCardContent,
 	HoverCardTrigger
 } from '@/components/ui/hover-card'
 import { CardType } from '@/features/card/type'
-import { fetchUsers } from '@/features/traq/users'
 import { datetimeToString } from '@/lib/date'
 import { getApiOrigin } from '@/lib/env'
-import { usersUUIDAtom } from '@/states/users'
-import { useAtom } from 'jotai'
 import Image from 'next/image'
 import CardActionButtons from './CardActionButtons'
 
-export default function Card({ card }: { card: CardType }) {
-	const [usersUUIDMap, setUsersUUIDMap] = useAtom(usersUUIDAtom)
-
-	if (usersUUIDMap.size === 0) {
-		fetchUsers([]).then(users => {
-			for (const user of users) {
-				setUsersUUIDMap(usersMap => new Map(usersMap).set(user.id, user.name))
-			}
-		})
-	}
-
+export default function Card({
+	card,
+	usersMap
+}: { card: CardType; usersMap: Map<string, string> }) {
 	return (
 		<HoverCard openDelay={500}>
 			<HoverCardTrigger className="w-[180px] border shadow-md">
@@ -62,7 +50,7 @@ export default function Card({ card }: { card: CardType }) {
 						<div>
 							<p>送信者</p>
 							<p className="ml-4">
-								{usersUUIDMap.get(card.owner_id) ?? '不明なユーザー'}
+								{usersMap.get(card.owner_id) ?? '不明なユーザー'}
 							</p>
 						</div>
 						<div>

@@ -10,6 +10,7 @@ import { PostForm } from '@/features/form/Form'
 import { fetchChannels } from '@/features/traq/channels'
 import { SHOWCASE_USER_KEY } from '@/lib/auth'
 import { cookies, headers } from 'next/headers'
+import { fetchUsers } from '@/features/traq/users'
 
 export default async function Home() {
 	const headerList = headers()
@@ -17,6 +18,9 @@ export default async function Home() {
 	const cookieStore = cookies()
 	const cookieList = cookieStore.getAll()
 	const channels = await fetchChannels(cookieList)
+	const usersMap = new Map(
+		(await fetchUsers(cookieList)).map(user => [user.name, user.id])
+	)
 
 	return (
 		<main className="flex gap-12 pt-8 px-10">
@@ -35,7 +39,7 @@ export default async function Home() {
 			</div>
 			<div className="flex flex-col justify-between flex-1">
 				<History />
-				<PostForm userId={userId} channels={channels} />
+				<PostForm userId={userId} channels={channels} usersMap={usersMap} />
 			</div>
 		</main>
 	)

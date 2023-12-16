@@ -1,7 +1,6 @@
 'use client'
 
 import { selectedChannelsAtom } from '@/states/channels'
-import { userNamesAtom } from '@/states/users'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useAtom } from 'jotai'
 import { useState } from 'react'
@@ -31,7 +30,6 @@ import { useToast } from '@/components/ui/use-toast'
 import { ChevronDownIcon } from '@radix-ui/react-icons'
 
 import { Channel } from '@/features/traq/channels'
-import { fetchUsers } from '../traq/users'
 import {
 	FormSchemaType,
 	channelsMax,
@@ -44,16 +42,17 @@ import { SelectedChannelsList } from './selectedChannelsList'
 export function PostForm({
 	userId,
 	initialValue,
-	channels
+	channels,
+	usersMap
 }: {
 	userId: string | null
 	initialValue?: FormSchemaType
 	channels: Channel[]
+	usersMap: Map<string, string>
 }) {
 	const { toast } = useToast()
 	const [open, setOpen] = useState(false)
 	const [selectedChannels, setSelectedChannels] = useAtom(selectedChannelsAtom)
-	const [userNamesMap, setUserNamesMap] = useAtom(userNamesAtom)
 	const { postForm } = usePostForm()
 
 	const nextYear = new Date().getFullYear() + 1
@@ -73,21 +72,13 @@ export function PostForm({
 				  }
 	})
 
-	if (userNamesMap.size === 0) {
-		fetchUsers([]).then(users => {
-			for (const user of users) {
-				setUserNamesMap(usersMap => new Map(usersMap).set(user.name, user.id))
-			}
-		})
-	}
-
 	function onSubmit(values: FormSchemaType) {
 		if (userId === null) {
 			throw new Error('userId is null')
 		}
 		postForm(
 			{
-				ownerId: userId,
+				ownerId: usersMap.get(userId) ?? '',
 				publishDate: values.sendDateTime.toISOString(),
 				publishChannels: values.sendChannels,
 				message: values.message ? values.message : null
