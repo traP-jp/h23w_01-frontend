@@ -6,13 +6,13 @@ import {
 	HoverCardTrigger
 } from '@/components/ui/hover-card'
 import { CardType } from '@/features/card/type'
+import { fetchUsers } from '@/features/traq/users'
 import { datetimeToString } from '@/lib/date'
 import { getApiOrigin } from '@/lib/env'
-import Image from 'next/image'
-import CardActionButtons from './CardActionButtons'
 import { usersUUIDAtom } from '@/states/users'
 import { useAtom } from 'jotai'
-import { fetchUsers } from '@/features/traq/users'
+import Image from 'next/image'
+import CardActionButtons from './CardActionButtons'
 
 export default function Card({ card }: { card: CardType }) {
 	const [usersUUIDMap, setUsersUUIDMap] = useAtom(usersUUIDAtom)

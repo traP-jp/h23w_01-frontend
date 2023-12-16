@@ -31,6 +31,7 @@ import { useToast } from '@/components/ui/use-toast'
 import { ChevronDownIcon } from '@radix-ui/react-icons'
 
 import { Channel } from '@/features/traq/channels'
+import { fetchUsers } from '../traq/users'
 import {
 	FormSchemaType,
 	channelsMax,
@@ -39,7 +40,6 @@ import {
 } from './formSchema'
 import { usePostForm } from './postForm'
 import { SelectedChannelsList } from './selectedChannelsList'
-import { fetchUsers } from '../traq/users'
 
 export function PostForm({
 	userId,
