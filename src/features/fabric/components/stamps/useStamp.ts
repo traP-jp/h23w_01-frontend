@@ -1,6 +1,6 @@
 import { getImageSize } from '@/lib/image'
 import { canvasAtom } from '@/states/canvas'
-import { FabricImage } from 'fabric'
+import { FabricImage, Point } from 'fabric'
 import { useAtomValue } from 'jotai'
 
 export const useStamp = () => {
@@ -21,12 +21,11 @@ export const useStamp = () => {
 		}
 		const w = imgData.width
 		const h = imgData.height
-		const img = new FabricImage(imgData.imgEle, {
-			left: offsetX - w / 2,
-			top: offsetY - h / 2,
-			width: w,
-			height: h
-		})
+		const img = new FabricImage(imgData.imgEle)
+		img.scaleToWidth(100)
+		img.scaleToHeight(100)
+		img.setXY(new Point(offsetX - 50, offsetY - 50))
+
 		canvas.add(img)
 		return { id, src: stampImage }
 	}

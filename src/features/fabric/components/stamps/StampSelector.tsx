@@ -24,30 +24,28 @@ export default function StampSelector({ stamps }: { stamps: Stamp[] }) {
 				}}
 				className="flex my-4"
 			/>
-			<div className="flex flex-wrap overflow-y-auto h-64">
+			<div className="flex flex-wrap overflow-y-auto max-h-64">
 				{selectedStamps.map(stamp => (
-					<span title={''.concat(stamp.isUser ? '@' : '', stamp.name)}>
-						<button
-							key={stamp.id}
-							className={cn(
-								'w-[60px] h-[60px] mr-1 mb-1',
-								selectedStamp?.name === stamp.name &&
-									'border-2 border-kaga-blue'
-							)}
-							onClick={() => {
-								setSelectedStamp(stamp)
-								setSelectedTool('stamp')
-							}}
-						>
-							<Image
-								src={stamp.path}
-								alt={stamp.name}
-								width={128}
-								height={128}
-								className="w-full h-full"
-							/>
-						</button>
-					</span>
+					<button
+						key={stamp.id}
+						title={`${stamp.isUser ? '@' : ''}${stamp.name}`}
+						className={cn(
+							'w-[60px] h-[60px] mr-1 mb-1',
+							selectedStamp?.name === stamp.name && 'border-2 border-kaga-blue'
+						)}
+						onClick={() => {
+							setSelectedStamp(stamp)
+							setSelectedTool('stamp')
+						}}
+					>
+						<Image
+							src={stamp.path}
+							alt={stamp.name}
+							width={128}
+							height={128}
+							className="w-full h-full"
+						/>
+					</button>
 				))}
 			</div>
 		</>

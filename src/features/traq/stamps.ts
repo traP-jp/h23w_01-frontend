@@ -9,43 +9,48 @@ export type Stamp = {
 }
 
 async function fetchStamps(): Promise<Stamp[]> {
-	const unicodeRes = await fetch(`${getApiOrigin()}/stamps?type=unicode`, {
-		mode: 'no-cors',
-		next: {
-			revalidate: 3600
+	const fetchUnicodeStamps = () => {
+		return fetch(`${getApiOrigin()}/stamps?type=unicode`, {
+			mode: 'no-cors',
+			next: {
+				revalidate: 3600
+			}
+		})
+	}
+
+	const fetchOriginalStamps = () => {
+		return fetch(`${getApiOrigin()}/stamps?type=original`, {
+			mode: 'no-cors',
+			next: {
+				revalidate: 3600
+			}
+		})
+	}
+
+	return Promise.all([fetchUnicodeStamps(), fetchOriginalStamps()]).then(
+		async ([unicodeRes, originalRes]) => {
+			if (!unicodeRes.ok || !originalRes.ok) {
+				console.error(unicodeRes, originalRes)
+				throw new Error('Failed to fetch data')
+			}
+
+			const [unicodeData, originalData] = await Promise.all([
+				unicodeRes.json(),
+				originalRes.json()
+			])
+			for (const stamp of unicodeData) {
+				stamp.path = `${getApiOrigin()}/stamps/${stamp.id}/image`
+				stamp.isUser = false
+			}
+			for (const stamp of originalData) {
+				stamp.path = `${getApiOrigin()}/stamps/${stamp.id}/image`
+				stamp.isUser = false
+				stamp.id = `${stamp.id}-o`
+				// クエリパラメーターの対応がされるまでは2セット来てidがかぶるから、oってつける
+			}
+			return unicodeData.concat(originalData)
 		}
-	})
-
-	if (!unicodeRes.ok) {
-		console.error(unicodeRes)
-		throw new Error('Failed to fetch data')
-	}
-
-	const unicodeData: Stamp[] = await unicodeRes.json()
-	for (const stamp of unicodeData) {
-		stamp.path = `${getApiOrigin()}/stamps/${stamp.id}/image`
-		stamp.isUser = false
-	}
-
-	const originalRes = await fetch(`${getApiOrigin()}/stamps?type=original`, {
-		mode: 'no-cors',
-		next: {
-			revalidate: 3600
-		}
-	})
-
-	if (!originalRes.ok) {
-		console.error(unicodeRes)
-		throw new Error('Failed to fetch data')
-	}
-
-	const originalData: Stamp[] = await originalRes.json()
-	for (const stamp of originalData) {
-		stamp.path = `${getApiOrigin()}/stamps/${stamp.id}/image`
-		stamp.isUser = false
-	}
-
-	return unicodeData.concat(originalData)
+	)
 }
 
 export async function fetchAllStamps(): Promise<Stamp[]> {
@@ -65,5 +70,5 @@ export async function fetchAllStamps(): Promise<Stamp[]> {
 export async function fetchStampImage(stamp: Stamp): Promise<Blob> {
 	const res = await fetch(stamp.path)
 
-	return res.blob()
+	return await res.blob()
 }
