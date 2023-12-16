@@ -36,10 +36,7 @@ export default async function Cards({
 	const cards = await fetchCards(owner, cookieList)
 
 	const usersMap = new Map(
-		(await fetchUsers(cookies().getAll())).map(user => [
-			user.id,
-			user.name
-		]) as Array<[string, string]>
+		(await fetchUsers(cookies().getAll())).map(user => [user.id, user.name])
 	)
 
 	return (

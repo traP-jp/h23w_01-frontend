@@ -76,9 +76,14 @@ export function PostForm({
 		if (userId === null) {
 			throw new Error('userId is null')
 		}
+		const userUUID = usersMap.get(userId)
+		if (userUUID === undefined) {
+			console.error('user does not exist.', userId)
+			throw new Error('userUUID is undefined')
+		}
 		postForm(
 			{
-				ownerId: usersMap.get(userId) ?? '',
+				ownerId: userUUID,
 				publishDate: values.sendDateTime.toISOString(),
 				publishChannels: values.sendChannels,
 				message: values.message ? values.message : null
