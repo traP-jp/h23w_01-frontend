@@ -1,5 +1,7 @@
 import { getApiOrigin } from '@/lib/env'
 import { fetchUsers } from './users'
+import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies'
+import { fetcher } from '@/lib/fetch'
 
 export type Stamp = {
 	id: string
@@ -8,23 +10,13 @@ export type Stamp = {
 	isUser: boolean
 }
 
-async function fetchStamps(): Promise<Stamp[]> {
+async function fetchStamps(cookies: RequestCookie[]): Promise<Stamp[]> {
 	const fetchUnicodeStamps = () => {
-		return fetch(`${getApiOrigin()}/stamps?type=unicode`, {
-			mode: 'no-cors',
-			next: {
-				revalidate: 3600
-			}
-		})
+		return fetcher(`${getApiOrigin()}/stamps?type=unicode`, cookies)
 	}
 
 	const fetchOriginalStamps = () => {
-		return fetch(`${getApiOrigin()}/stamps?type=original`, {
-			mode: 'no-cors',
-			next: {
-				revalidate: 3600
-			}
-		})
+		return fetcher(`${getApiOrigin()}/stamps?type=original`, cookies)
 	}
 
 	return Promise.all([fetchUnicodeStamps(), fetchOriginalStamps()]).then(
@@ -53,9 +45,11 @@ async function fetchStamps(): Promise<Stamp[]> {
 	)
 }
 
-export async function fetchAllStamps(): Promise<Stamp[]> {
-	const stamps = await fetchStamps()
-	const users = await fetchUsers()
+export async function fetchAllStamps(
+	cookies: RequestCookie[]
+): Promise<Stamp[]> {
+	const stamps = await fetchStamps(cookies)
+	const users = await fetchUsers(cookies)
 
 	return stamps.concat(
 		users.map(user => ({

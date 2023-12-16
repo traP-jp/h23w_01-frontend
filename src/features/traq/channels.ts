@@ -1,5 +1,6 @@
 import { getApiOrigin } from '@/lib/env'
 import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies'
+import { fetcher } from '@/lib/fetch'
 
 export type Channel = {
 	id: string
@@ -8,15 +9,7 @@ export type Channel = {
 
 export const fetchChannels = async (cookies: RequestCookie[]) => {
 	console.log(cookies)
-	const res = await fetch(`${getApiOrigin()}/channels`, {
-		mode: 'no-cors',
-		next: {
-			revalidate: 3600
-		},
-		headers: {
-			cookie: `${cookies.map(c => `${c.name}=${c.value}`).join('; ')}`
-		}
-	})
+	const res = await fetcher(`${getApiOrigin()}/channels`, cookies)
 
 	if (!res.ok) {
 		console.error(res)

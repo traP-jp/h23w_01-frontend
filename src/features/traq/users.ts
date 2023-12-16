@@ -1,17 +1,14 @@
 import { getApiOrigin } from '@/lib/env'
+import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies'
+import { fetcher } from '@/lib/fetch'
 
 type User = {
 	id: string
 	name: string
 }
 
-export async function fetchUsers(): Promise<User[]> {
-	const res = await fetch(`${getApiOrigin()}/users`, {
-		mode: 'no-cors',
-		next: {
-			revalidate: 3600
-		}
-	})
+export async function fetchUsers(cookies: RequestCookie[]): Promise<User[]> {
+	const res = await fetcher(`${getApiOrigin()}/users`, cookies)
 
 	if (!res.ok) {
 		console.error(res)

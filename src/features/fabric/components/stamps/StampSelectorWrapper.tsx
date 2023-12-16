@@ -1,9 +1,10 @@
 import { Label } from '@/components/ui/label'
 import { fetchAllStamps } from '@/features/traq/stamps'
 import StampSelector from './StampSelector'
+import { cookies } from 'next/headers'
 
 export default async function StampSelectorWrapper() {
-	const stamps = await fetchAllStamps()
+	const stamps = await fetchAllStamps(cookies().getAll())
 	return (
 		<>
 			<div>
