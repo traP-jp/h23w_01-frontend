@@ -155,7 +155,7 @@ export function PostForm({
 												setSelectedChannels([...selectedChannels, channel.name])
 												form.setValue('sendChannels', [
 													...selectedChannels,
-													channel.name
+													channel.id
 												])
 											}}
 											disabled={selectedChannels.length >= channelsMax}
