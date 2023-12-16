@@ -1,9 +1,9 @@
 import Card from '@/app/cards/_components/Card'
 import CardOwnerSwitch from '@/features/card/components/CardOwnerSwitch'
 import { CardType } from '@/features/card/type'
+import { fetchUsers } from '@/features/traq/users'
 import { getApiOrigin } from '@/lib/env'
 import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies'
-import { fetchUsers } from '@/features/traq/users'
 import { cookies } from 'next/headers'
 
 export type CardOwner = 'me' | 'all'

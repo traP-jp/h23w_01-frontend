@@ -8,9 +8,9 @@ import OtherSelector from '@/features/fabric/components/OtherSelector'
 import StampSelectorWrapper from '@/features/fabric/components/stamps/StampSelectorWrapper'
 import { PostForm } from '@/features/form/Form'
 import { fetchChannels } from '@/features/traq/channels'
+import { fetchUsers } from '@/features/traq/users'
 import { SHOWCASE_USER_KEY } from '@/lib/auth'
 import { cookies, headers } from 'next/headers'
-import { fetchUsers } from '@/features/traq/users'
 
 export default async function Home() {
 	const headerList = headers()
