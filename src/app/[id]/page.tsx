@@ -11,6 +11,7 @@ import { SHOWCASE_USER_KEY } from '@/lib/auth'
 import { getApiOrigin } from '@/lib/env'
 import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies'
 import { cookies, headers } from 'next/headers'
+import { fetchUsers } from '@/features/traq/users'
 
 const fetchCard = async (id: string, cookies: RequestCookie[]) => {
 	const res = await fetch(`${getApiOrigin()}/cards/${id}`, {
@@ -62,6 +63,9 @@ export default async function EditCard({
 	const channels = await fetchChannels(cookieList)
 	const card = await fetchCard(id, cookieList)
 	const cardSvg = await fetchCardSvg(id, cookieList)
+	const usersMap = new Map(
+		(await fetchUsers(cookies().getAll())).map(user => [user.id, user.name])
+	)
 
 	const initialFormValue = {
 		message: card.message,
@@ -85,6 +89,7 @@ export default async function EditCard({
 					userId={userId}
 					initialValue={initialFormValue}
 					channels={channels}
+					usersMap={usersMap}
 				/>
 			</div>
 		</main>
