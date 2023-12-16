@@ -1,10 +1,10 @@
 'use client'
 
-import Link from 'next/link'
-import { Pencil2Icon, DashboardIcon } from '@radix-ui/react-icons'
-import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
-import { Avatar, AvatarImage, AvatarFallback } from '@radix-ui/react-avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar'
+import { DashboardIcon, Pencil2Icon } from '@radix-ui/react-icons'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 export default function Header({ userId }: { userId: string }) {
 	const pathname = usePathname()

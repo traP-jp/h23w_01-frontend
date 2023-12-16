@@ -1,11 +1,11 @@
-import Provider from '@/components/Provider'
 import Header from '@/components/Header'
+import Provider from '@/components/Provider'
 import { Toaster } from '@/components/ui/toaster'
+import { SHOWCASE_USER_KEY } from '@/lib/auth'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import './globals.css'
 import { headers } from 'next/headers'
-import { SHOWCASE_USER_KEY } from '@/lib/auth'
+import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
