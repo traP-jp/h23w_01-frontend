@@ -8,13 +8,14 @@ import OtherSelector from '@/features/fabric/components/OtherSelector'
 import { PostForm } from '@/features/form/Form'
 import { fetchChannels } from '@/features/traq/channels'
 import { SHOWCASE_USER_KEY } from '@/lib/auth'
-import { headers } from 'next/headers'
+import { cookies, headers } from 'next/headers'
 
 export default async function Home() {
 	const headerList = headers()
 	const userId = headerList.get(SHOWCASE_USER_KEY)
-	console.log('userId:', userId)
-	const channels = await fetchChannels()
+	const cookieStore = cookies()
+	const cookieList = cookieStore.getAll()
+	const channels = await fetchChannels(cookieList)
 
 	return (
 		<main className="flex gap-12 pt-8 px-10">

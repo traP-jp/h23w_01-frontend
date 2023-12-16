@@ -9,7 +9,7 @@ import { PostForm } from '@/features/form/Form'
 import { fetchChannels } from '@/features/traq/channels'
 import { SHOWCASE_USER_KEY } from '@/lib/auth'
 import { getApiOrigin } from '@/lib/env'
-import { headers } from 'next/headers'
+import { cookies, headers } from 'next/headers'
 
 const fetchCard = async (id: string) => {
 	const res = await fetch(`${getApiOrigin()}/cards/${id}`, {
@@ -50,7 +50,9 @@ export default async function EditCard({
 }) {
 	const headerList = headers()
 	const userId = headerList.get(SHOWCASE_USER_KEY)
-	const channels = await fetchChannels()
+	const cookieStore = cookies()
+	const cookieList = cookieStore.getAll()
+	const channels = await fetchChannels(cookieList)
 	const card = await fetchCard(id)
 	const cardSvg = await fetchCardSvg(id)
 
