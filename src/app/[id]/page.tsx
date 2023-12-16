@@ -7,11 +7,11 @@ import ObjectSelector from '@/features/fabric/components/ObjectSelector'
 import OtherSelector from '@/features/fabric/components/OtherSelector'
 import { PostForm } from '@/features/form/Form'
 import { fetchChannels } from '@/features/traq/channels'
+import { fetchUsers } from '@/features/traq/users'
 import { SHOWCASE_USER_KEY } from '@/lib/auth'
 import { getApiOrigin } from '@/lib/env'
 import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies'
 import { cookies, headers } from 'next/headers'
-import { fetchUsers } from '@/features/traq/users'
 
 const fetchCard = async (id: string, cookies: RequestCookie[]) => {
 	const res = await fetch(`${getApiOrigin()}/cards/${id}`, {
