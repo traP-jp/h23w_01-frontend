@@ -3,18 +3,26 @@ import { useImage } from '@/features/fabric/useImage'
 import { useObject } from '@/features/fabric/useObject'
 import { useText } from '@/features/fabric/useText'
 import { canvasAtom, imagesAtoms } from '@/states/canvas'
-import { selectObjectAtom, selectedToolAtom } from '@/states/tools'
+import {
+	selectObjectAtom,
+	selectedStampAtom,
+	selectedToolAtom
+} from '@/states/tools'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useAtom } from 'jotai'
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { MouseEvent } from 'react'
+import { fetchStampImage } from '../traq/stamps'
+import { useStamp } from './components/stamps/useStamp'
 
 export const useFabricCanvas = () => {
 	const [selectedObject, setSelctedObject] = useAtom(selectObjectAtom)
 	const [selectedTool, setSelectedTool] = useAtom(selectedToolAtom)
+	const [selectedStamp, setSelectedStamp] = useAtom(selectedStampAtom)
 	const { putObject } = useObject()
 	const { putImage } = useImage()
 	const { putText } = useText()
+	const { putStamp } = useStamp()
 	const inputRef = useRef<HTMLInputElement>(null)
 	const [position, setPosition] = useState({ x: 0, y: 0 })
 	const setImages = useSetAtom(imagesAtoms)
@@ -46,6 +54,18 @@ export const useFabricCanvas = () => {
 		setPosition({ x: offsetX, y: offsetY })
 		inputRef.current.click()
 	}
+	const handleAddStamp = async (e: MouseEvent<HTMLDivElement>) => {
+		if (selectedTool !== 'stamp' || selectedStamp === null) {
+			throw new Error('invalid state')
+		}
+		const { offsetX, offsetY } = e.nativeEvent
+		setPosition({ x: offsetX, y: offsetY })
+
+		const img = await fetchStampImage(selectedStamp)
+		putStamp(offsetX, offsetY, img)
+		setSelectedTool(null)
+		setSelectedStamp(null)
+	}
 	const onChange = async (e: ChangeEvent<HTMLInputElement>) => {
 		const files = e.target.files
 		if (files === null) {
@@ -69,6 +89,9 @@ export const useFabricCanvas = () => {
 				break
 			case 'image':
 				handleAddImage(e)
+				break
+			case 'stamp':
+				handleAddStamp(e)
 				break
 			default:
 				throw new Error(`invalid tool: ${selectedTool satisfies never}`)

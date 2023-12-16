@@ -1,24 +1,7 @@
+import { getImageSize } from '@/lib/image'
 import { canvasAtom } from '@/states/canvas'
 import { FabricImage } from 'fabric'
 import { useAtomValue } from 'jotai'
-
-const getImageSize = async (file: File) => {
-	const imgEle = new Image()
-	imgEle.src = URL.createObjectURL(file)
-	return new Promise<{
-		width: number
-		height: number
-		imgEle: HTMLImageElement
-	}>(resolve => {
-		imgEle.onload = () => {
-			resolve({
-				width: imgEle.naturalWidth,
-				height: imgEle.naturalHeight,
-				imgEle
-			})
-		}
-	})
-}
 
 export const useImage = () => {
 	const canvas = useAtomValue(canvasAtom)
