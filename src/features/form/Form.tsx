@@ -76,7 +76,7 @@ export function PostForm({
 	if (userNamesMap.size === 0) {
 		fetchUsers([]).then(users => {
 			for (const user of users) {
-				setUserNamesMap(usersMap => new Map(usersMap).set(user.id, user.name))
+				setUserNamesMap(usersMap => new Map(usersMap).set(user.name, user.id))
 			}
 		})
 	}

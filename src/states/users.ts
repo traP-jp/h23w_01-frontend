@@ -4,6 +4,4 @@ import { atom } from 'jotai'
 export const userNamesAtom = atom<Map<string, string>>(new Map())
 
 // Map<userUUID, userID>
-export const usersUUIDAtom = atom<Map<string, string>>(
-	new Map<string, string>()
-)
+export const usersUUIDAtom = atom<Map<string, string>>(new Map())
