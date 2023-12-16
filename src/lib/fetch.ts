@@ -8,6 +8,7 @@ export async function fetcher(url: string, cookies: RequestCookie[]) {
 		},
 		headers: {
 			cookie: `${cookies.map(c => `${c.name}=${c.value}`).join('; ')}`
-		}
+		},
+		credentials: 'include'
 	})
 }

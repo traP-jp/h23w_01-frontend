@@ -46,7 +46,8 @@ export const usePostForm = () => {
 				'Content-Type': 'application/json',
 				cookie: cookies
 					.map(cookie => `${cookie.name}=${cookie.value}`)
-					.join('; ')
+					.join('; '),
+				credentials: 'include'
 			},
 			body: JSON.stringify(data)
 		})
@@ -70,6 +71,7 @@ export const usePostForm = () => {
 						.map(cookie => `${cookie.name}=${cookie.value}`)
 						.join('; ')
 				},
+				credentials: 'include',
 				body: svgBlob
 			})
 		)
@@ -87,6 +89,7 @@ export const usePostForm = () => {
 						.map(cookie => `${cookie.name}=${cookie.value}`)
 						.join('; ')
 				},
+				credentials: 'include',
 				body: imgBlob
 			})
 		)
@@ -104,6 +107,7 @@ export const usePostForm = () => {
 							.map(cookie => `${cookie.name}=${cookie.value}`)
 							.join('; ')
 					},
+					credentials: 'include',
 					body: data
 				})
 			)

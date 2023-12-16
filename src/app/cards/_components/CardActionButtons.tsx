@@ -16,7 +16,8 @@ export default function CardActionButtons({
 				cookie: cookies
 					.map(cookie => `${cookie.name}=${cookie.value}`)
 					.join('; ')
-			}
+			},
+			credentials: 'include'
 		})
 		if (!res.ok) {
 			throw new Error('Failed to post form')

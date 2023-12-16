@@ -35,7 +35,7 @@ export default async function Home() {
 				<StampSelectorWrapper />
 			</div>
 			<div>
-				<FabricCanvasWrapper />
+				<FabricCanvasWrapper cookies={cookieList} />
 			</div>
 			<div className="flex flex-col justify-between flex-1">
 				<History />

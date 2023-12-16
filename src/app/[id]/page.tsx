@@ -81,7 +81,7 @@ export default async function EditCard({
 				<OtherSelector />
 			</div>
 			<div>
-				<FabricCanvasWrapper initialSvg={cardSvg} />
+				<FabricCanvasWrapper initialSvg={cardSvg} cookies={cookieList} />
 			</div>
 			<div className="flex flex-col justify-between flex-1">
 				<History />

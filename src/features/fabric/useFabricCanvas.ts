@@ -10,12 +10,13 @@ import {
 } from '@/states/tools'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useAtom } from 'jotai'
+import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies'
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { MouseEvent } from 'react'
 import { fetchStampImage } from '../traq/stamps'
 import { useStamp } from './components/stamps/useStamp'
 
-export const useFabricCanvas = () => {
+export const useFabricCanvas = (cookies: RequestCookie[]) => {
 	const [selectedObject, setSelctedObject] = useAtom(selectObjectAtom)
 	const [selectedTool, setSelectedTool] = useAtom(selectedToolAtom)
 	const [selectedStamp, setSelectedStamp] = useAtom(selectedStampAtom)
@@ -61,7 +62,7 @@ export const useFabricCanvas = () => {
 		const { offsetX, offsetY } = e.nativeEvent
 		setPosition({ x: offsetX, y: offsetY })
 
-		const img = await fetchStampImage(selectedStamp, [])
+		const img = await fetchStampImage(selectedStamp, cookies)
 		putStamp(offsetX, offsetY, img)
 		setSelectedTool(null)
 		setSelectedStamp(null)
