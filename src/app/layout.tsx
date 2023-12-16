@@ -1,9 +1,11 @@
 import Provider from '@/components/Provider'
+import Header from '@/components/Header'
 import { Toaster } from '@/components/ui/toaster'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-
+import { headers } from 'next/headers'
+import { SHOWCASE_USER_KEY } from '@/lib/auth'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
@@ -16,10 +18,17 @@ export default function RootLayout({
 }: {
 	children: React.ReactNode
 }) {
+	const userId = headers().get(SHOWCASE_USER_KEY)
+	if (userId === null) {
+		throw new Error('user id is null')
+	}
 	return (
 		<html lang="ja">
 			<body className={inter.className}>
-				<Provider>{children}</Provider>
+				<div className="flex">
+					<Header userId={userId} />
+					<Provider>{children}</Provider>
+				</div>
 				<Toaster />
 			</body>
 		</html>
