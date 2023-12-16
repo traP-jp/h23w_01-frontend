@@ -9,7 +9,10 @@ import { getApiOrigin } from '@/lib/env'
 import Image from 'next/image'
 import CardActionButtons from './CardActionButtons'
 
-export default function Card({ card }: { card: CardType }) {
+export default function Card({
+	card,
+	usersMap
+}: { card: CardType; usersMap: Map<string, string> }) {
 	return (
 		<HoverCard openDelay={500}>
 			<HoverCardTrigger className="w-[180px] border shadow-md">
@@ -42,6 +45,12 @@ export default function Card({ card }: { card: CardType }) {
 							<p>送信日時</p>
 							<p className="ml-4">
 								{datetimeToString(new Date(card.publish_date))}
+							</p>
+						</div>
+						<div>
+							<p>送信者</p>
+							<p className="ml-4">
+								{usersMap.get(card.owner_id) ?? '不明なユーザー'}
 							</p>
 						</div>
 						<div>

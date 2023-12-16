@@ -1,6 +1,7 @@
 import Card from '@/app/cards/_components/Card'
 import CardOwnerSwitch from '@/features/card/components/CardOwnerSwitch'
 import { CardType } from '@/features/card/type'
+import { fetchUsers } from '@/features/traq/users'
 import { getApiOrigin } from '@/lib/env'
 import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies'
 import { cookies } from 'next/headers'
@@ -34,6 +35,10 @@ export default async function Cards({
 	const cookieList = cookieStore.getAll()
 	const cards = await fetchCards(owner, cookieList)
 
+	const usersMap = new Map(
+		(await fetchUsers(cookies().getAll())).map(user => [user.id, user.name])
+	)
+
 	return (
 		<main className="px-10">
 			<div className="pt-7 pb-10 flex items-center justify-between">
@@ -42,7 +47,7 @@ export default async function Cards({
 			</div>
 			<div className="flex flex-wrap gap-10">
 				{cards.map(card => (
-					<Card key={card.id} card={card} />
+					<Card key={card.id} card={card} usersMap={usersMap} />
 				))}
 			</div>
 		</main>

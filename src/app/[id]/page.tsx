@@ -7,6 +7,7 @@ import ObjectSelector from '@/features/fabric/components/ObjectSelector'
 import OtherSelector from '@/features/fabric/components/OtherSelector'
 import { PostForm } from '@/features/form/Form'
 import { fetchChannels } from '@/features/traq/channels'
+import { fetchUsers } from '@/features/traq/users'
 import { SHOWCASE_USER_KEY } from '@/lib/auth'
 import { getApiOrigin } from '@/lib/env'
 import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies'
@@ -62,6 +63,9 @@ export default async function EditCard({
 	const channels = await fetchChannels(cookieList)
 	const card = await fetchCard(id, cookieList)
 	const cardSvg = await fetchCardSvg(id, cookieList)
+	const usersMap = new Map(
+		(await fetchUsers(cookies().getAll())).map(user => [user.id, user.name])
+	)
 
 	const initialFormValue = {
 		message: card.message,
@@ -85,6 +89,7 @@ export default async function EditCard({
 					userId={userId}
 					initialValue={initialFormValue}
 					channels={channels}
+					usersMap={usersMap}
 				/>
 			</div>
 		</main>

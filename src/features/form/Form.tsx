@@ -42,11 +42,13 @@ import { SelectedChannelsList } from './selectedChannelsList'
 export function PostForm({
 	userId,
 	initialValue,
-	channels
+	channels,
+	usersMap
 }: {
 	userId: string | null
 	initialValue?: FormSchemaType
 	channels: Channel[]
+	usersMap: Map<string, string>
 }) {
 	const { toast } = useToast()
 	const [open, setOpen] = useState(false)
@@ -74,9 +76,14 @@ export function PostForm({
 		if (userId === null) {
 			throw new Error('userId is null')
 		}
+		const userUUID = usersMap.get(userId)
+		if (userUUID === undefined) {
+			console.error('user does not exist.', userId)
+			throw new Error('userUUID is undefined')
+		}
 		postForm(
 			{
-				ownerId: userId,
+				ownerId: userUUID,
 				publishDate: values.sendDateTime.toISOString(),
 				publishChannels: values.sendChannels,
 				message: values.message ? values.message : null
