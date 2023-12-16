@@ -28,7 +28,8 @@ export function SelectedChannelsList() {
 	return (
 		<>
 			<Label className="block mb-2">
-				送信先チャンネル <span className="text-red-500 text-sm">(必須)</span>
+				送信先チャンネル
+				<span className="text-red-500 text-sm">(必須 3つまで)</span>
 			</Label>
 			<ul className="list-disc">{makeChannelsList()}</ul>
 		</>
