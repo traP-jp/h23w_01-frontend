@@ -2,7 +2,7 @@ import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies'
 
 export async function fetcher(url: string, cookies: RequestCookie[]) {
 	return fetch(url, {
-		mode: 'no-cors',
+		mode: 'cors',
 		next: {
 			revalidate: 3600
 		},
