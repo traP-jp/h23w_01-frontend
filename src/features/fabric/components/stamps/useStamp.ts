@@ -19,6 +19,7 @@ export const useStamp = () => {
 		if (!id) {
 			throw new Error(`invalid id: ${id}`)
 		}
+
 		const w = imgData.width
 		const h = imgData.height
 		const img = new FabricImage(imgData.imgEle)
@@ -27,7 +28,7 @@ export const useStamp = () => {
 		img.setXY(new Point(offsetX - 50, offsetY - 50))
 
 		canvas.add(img)
-		return { id, src: stampImage }
+		return { id, src: imgData.imgEle.src }
 	}
 
 	return { putStamp: putStamp }

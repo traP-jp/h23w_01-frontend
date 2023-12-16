@@ -5,6 +5,7 @@ import StampSelector from './StampSelector'
 
 export default async function StampSelectorWrapper() {
 	const stamps = await fetchAllStamps(cookies().getAll())
+
 	return (
 		<>
 			<div>
