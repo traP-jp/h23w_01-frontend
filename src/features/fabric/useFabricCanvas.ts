@@ -14,6 +14,7 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { MouseEvent } from 'react'
 import { fetchStampImage } from '../traq/stamps'
 import { useStamp } from './components/stamps/useStamp'
+import { cookies } from 'next/headers'
 
 export const useFabricCanvas = () => {
 	const [selectedObject, setSelctedObject] = useAtom(selectObjectAtom)
@@ -61,7 +62,7 @@ export const useFabricCanvas = () => {
 		const { offsetX, offsetY } = e.nativeEvent
 		setPosition({ x: offsetX, y: offsetY })
 
-		const img = await fetchStampImage(selectedStamp)
+		const img = await fetchStampImage(selectedStamp, cookies().getAll())
 		putStamp(offsetX, offsetY, img)
 		setSelectedTool(null)
 		setSelectedStamp(null)

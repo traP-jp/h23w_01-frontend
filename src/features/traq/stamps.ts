@@ -1,7 +1,7 @@
 import { getApiOrigin } from '@/lib/env'
-import { fetchUsers } from './users'
-import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies'
 import { fetcher } from '@/lib/fetch'
+import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies'
+import { fetchUsers } from './users'
 
 export type Stamp = {
 	id: string
@@ -61,8 +61,11 @@ export async function fetchAllStamps(
 	)
 }
 
-export async function fetchStampImage(stamp: Stamp): Promise<Blob> {
-	const res = await fetch(stamp.path)
+export async function fetchStampImage(
+	stamp: Stamp,
+	cookies: RequestCookie[]
+): Promise<Blob> {
+	const res = await fetcher(stamp.path, cookies)
 
 	return await res.blob()
 }

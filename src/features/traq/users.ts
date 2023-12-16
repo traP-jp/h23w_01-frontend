@@ -1,6 +1,6 @@
 import { getApiOrigin } from '@/lib/env'
-import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies'
 import { fetcher } from '@/lib/fetch'
+import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies'
 
 type User = {
 	id: string
