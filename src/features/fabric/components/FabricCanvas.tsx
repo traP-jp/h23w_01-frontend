@@ -5,12 +5,14 @@ import { canvasAtom } from '@/states/canvas'
 import { historyLockedAtom } from '@/states/history'
 import { Canvas, loadSVGFromString } from 'fabric'
 import { useSetAtom } from 'jotai'
+import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies'
 import { useEffect, useRef } from 'react'
 
 export default function FabricCanvasWrapper({
-	initialSvg
-}: { initialSvg?: string }) {
-	const { inputRef, onChange, handleToolClick } = useFabricCanvas()
+	initialSvg,
+	cookies
+}: { initialSvg?: string; cookies: RequestCookie[] }) {
+	const { inputRef, onChange, handleToolClick } = useFabricCanvas(cookies)
 
 	return (
 		<div onClick={handleToolClick}>

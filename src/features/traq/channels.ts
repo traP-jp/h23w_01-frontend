@@ -74,5 +74,5 @@ export const fetchChannels = async (cookies: RequestCookie[]) => {
 		})
 	}
 
-	return result
+	return result.filter(channel => channel.name.startsWith('gps/times'))
 }

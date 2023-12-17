@@ -18,7 +18,7 @@ export default function RootLayout({
 }: {
 	children: React.ReactNode
 }) {
-	const userId = headers().get(SHOWCASE_USER_KEY)
+	const userId = headers().get(SHOWCASE_USER_KEY) ?? 'mehm8128'
 	if (userId === null) {
 		throw new Error('user id is null')
 	}

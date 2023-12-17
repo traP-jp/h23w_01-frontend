@@ -35,7 +35,7 @@ async function fetchStamps(cookies: RequestCookie[]): Promise<Stamp[]> {
 				stamp.isUser = false
 			}
 			for (const stamp of originalData) {
-				stamp.path = `https://q.trap.jp/api/1.0/public/emoji/${stamp.id}`
+				stamp.path = `/api/img/${stamp.id}`
 				stamp.isUser = false
 				stamp.id = `${stamp.id}-o`
 				// クエリパラメーターの対応がされるまでは2セット来てidがかぶるから、oってつける
@@ -62,7 +62,7 @@ export async function fetchAllStamps(
 }
 
 export async function fetchStampImage(stamp: Stamp, cookies: RequestCookie[]) {
-	const res = await fetcher(stamp.path, cookies)
+	const res = await fetcher(stamp.path, cookies, false)
 	const blob = await res.blob()
 
 	return blob
