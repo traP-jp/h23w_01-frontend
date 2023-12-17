@@ -163,17 +163,24 @@ export function PostForm({
 							<CommandInput />
 							<CommandList>
 								{channels
-									.filter(channel => !selectedChannels.includes(channel.name))
+									.filter(
+										channel =>
+											!selectedChannels
+												.map(channel => channel.id)
+												.includes(channel.id)
+									)
 									.map(channel => (
 										<CommandItem
 											key={channel.id}
 											value={channel.name}
 											onSelect={() => {
-												setSelectedChannels([...selectedChannels, channel.name])
-												form.setValue('sendChannels', [
-													...selectedChannels,
-													channel.id
-												])
+												setSelectedChannels(selectedChannels.concat(channel))
+												form.setValue(
+													'sendChannels',
+													selectedChannels
+														.map(channel => channel.id)
+														.concat([channel.id])
+												)
 											}}
 											disabled={selectedChannels.length >= channelsMax}
 										>

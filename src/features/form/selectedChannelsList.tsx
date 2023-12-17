@@ -9,9 +9,9 @@ export function SelectedChannelsList() {
 	const makeChannelsList = () => {
 		return selectedChannels.map(channel => {
 			return (
-				<li key={channel} className="flex justify-between items-center my-1">
+				<li key={channel.id} className="flex justify-between items-center my-1">
 					<span className="before:content-['・'] before:text-lg">
-						#{channel}
+						#{channel.name}
 					</span>
 					<button
 						onClick={() => {
