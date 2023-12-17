@@ -60,10 +60,14 @@ export const usePostForm = () => {
 		// svgを送信するpromiseを作成
 		const svg = canvas
 			.toSVG({}, svg => svg)
-			.replace('https://h23w-01-frontend.trap.show', getApiOrigin())
+			.replace(
+				'blob:https://h23w-01-frontend.trap.show',
+				`${getApiOrigin()}/images`
+			)
 		const svgBlob = new Blob([svg], {
 			type: 'image/svg+xml'
 		})
+
 		const svgData = new FormData()
 		svgData.append('url', `${getApiOrigin()}/cards/${cardId}/svg`)
 		svgData.append('contentType', 'image/svg+xml')
