@@ -53,7 +53,6 @@ export async function fetchAllStamps(
 
 	return stamps.concat(
 		users
-			.filter(user => !user.name.startsWith('Webhook'))
 			.map(user => ({
 				id: user.id,
 				name: user.name,

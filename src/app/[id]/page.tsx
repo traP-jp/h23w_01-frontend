@@ -5,6 +5,7 @@ import FabricCanvasWrapper from '@/features/fabric/components/FabricCanvas'
 import History from '@/features/fabric/components/History'
 import ObjectSelector from '@/features/fabric/components/ObjectSelector'
 import OtherSelector from '@/features/fabric/components/OtherSelector'
+import StampSelectorWrapper from '@/features/fabric/components/stamps/StampSelectorWrapper'
 import { PostForm } from '@/features/form/Form'
 import { fetchChannels } from '@/features/traq/channels'
 import { fetchUsers } from '@/features/traq/users'
@@ -74,11 +75,12 @@ export default async function EditCard({
 	}
 
 	return (
-		<main className="flex gap-12 pt-8 px-10">
+		<main className="flex gap-12 pt-8 px-10 w-full">
 			<div className="space-y-8 flex-1">
 				<ColorSelector />
 				<ObjectSelector />
 				<OtherSelector />
+				<StampSelectorWrapper />
 			</div>
 			<div>
 				<FabricCanvasWrapper initialSvg={cardSvg} cookies={cookieList} />
