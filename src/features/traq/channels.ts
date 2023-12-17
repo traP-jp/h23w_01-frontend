@@ -74,5 +74,19 @@ export const fetchChannels = async (cookies: RequestCookie[]) => {
 		})
 	}
 
-	return result.filter(channel => channel.name.startsWith('gps/times'))
+	return result
+		.filter(
+			channel =>
+				channel.name.startsWith('gps/times') ||
+				channel.name.startsWith('event/hackathon/23winter')
+		)
+		.toSorted((a, b) => {
+			if (a.name < b.name) {
+				return -1
+			}
+			if (a.name > b.name) {
+				return 1
+			}
+			return 0
+		})
 }
