@@ -12,9 +12,7 @@ const fetchCards = async (owner: CardOwner, cookies: RequestCookie[]) => {
 	const ownerQuery = owner === 'me' ? '/me' : ''
 	const res = await fetch(`${getApiOrigin()}/cards${ownerQuery}`, {
 		mode: 'no-cors',
-		next: {
-			revalidate: 60
-		},
+		cache: 'no-store',
 		headers: {
 			cookie: cookies.map(cookie => `${cookie.name}=${cookie.value}`).join('; ')
 		},
