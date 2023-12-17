@@ -92,7 +92,7 @@ export default async function EditCard({
 					initialValue={initialFormValue}
 					channels={channels}
 					usersMap={usersMap}
-					cookies={cookieList}
+					cardId={card.id}
 				/>
 			</div>
 		</main>

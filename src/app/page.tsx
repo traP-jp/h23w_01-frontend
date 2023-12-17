@@ -39,12 +39,7 @@ export default async function Home() {
 			</div>
 			<div className="flex flex-col justify-between flex-1">
 				<History />
-				<PostForm
-					userId={userId}
-					channels={channels}
-					usersMap={usersMap}
-					cookies={cookieList}
-				/>
+				<PostForm userId={userId} channels={channels} usersMap={usersMap} />
 			</div>
 		</main>
 	)

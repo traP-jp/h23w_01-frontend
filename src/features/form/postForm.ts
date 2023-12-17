@@ -2,7 +2,6 @@ import { RequestBody } from '@/app/api/json/route'
 import { getApiOrigin } from '@/lib/env'
 import { canvasAtom, imagesAtoms } from '@/states/canvas'
 import { useAtomValue } from 'jotai'
-import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies'
 
 export type form = {
 	ownerId: string
@@ -23,11 +22,7 @@ export const usePostForm = () => {
 	const canvas = useAtomValue(canvasAtom)
 	const images = useAtomValue(imagesAtoms)
 
-	const postForm = async (
-		form: form,
-		isPatch: boolean,
-		cookies: RequestCookie[]
-	) => {
+	const postForm = async (form: form, isPatch: boolean, patchCardId?: string) => {
 		if (canvas === null) {
 			return
 		}
@@ -44,7 +39,7 @@ export const usePostForm = () => {
 		const cardRes = await fetch('/api/json', {
 			method: 'POST',
 			body: JSON.stringify({
-				url: `${getApiOrigin()}/cards`,
+				url: `${getApiOrigin()}/cards${isPatch ? `/${patchCardId}` : ''}`,
 				method: method,
 				body: data
 			} satisfies RequestBody)
