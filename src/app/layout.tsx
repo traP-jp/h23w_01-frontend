@@ -1,4 +1,4 @@
-import Header from '@/components/Header'
+import Sidebar from '@/components/Sidebar'
 import Provider from '@/components/Provider'
 import { Toaster } from '@/components/ui/toaster'
 import { SHOWCASE_USER_KEY } from '@/lib/auth'
@@ -18,16 +18,15 @@ export default function RootLayout({
 }: {
 	children: React.ReactNode
 }) {
-	let userId = headers().get(SHOWCASE_USER_KEY)
+	const userId = headers().get(SHOWCASE_USER_KEY)
 	if (userId === null) {
-		// throw new Error('user id is null')
-		userId = 'mehm8128'
+		throw new Error('user id is null')
 	}
 	return (
 		<html lang="ja">
 			<body className={inter.className}>
 				<div className="flex">
-					<Header userId={userId} />
+					<Sidebar userId={userId} />
 					<Provider>{children}</Provider>
 				</div>
 				<Toaster />
