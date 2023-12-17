@@ -65,7 +65,7 @@ export default async function EditCard({
 	const card = await fetchCard(id, cookieList)
 	const cardSvg = await fetchCardSvg(id, cookieList)
 	const usersMap = new Map(
-		(await fetchUsers(cookies().getAll())).map(user => [user.id, user.name])
+		(await fetchUsers(cookies().getAll())).map(user => [user.name, user.id])
 	)
 
 	const initialFormValue = {
