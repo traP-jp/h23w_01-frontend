@@ -8,6 +8,7 @@ export type Stamp = {
 	name: string
 	path: string
 	isUser: boolean
+	isUnicode: boolean
 }
 
 async function fetchStamps(cookies: RequestCookie[]): Promise<Stamp[]> {
@@ -33,12 +34,14 @@ async function fetchStamps(cookies: RequestCookie[]): Promise<Stamp[]> {
 			for (const stamp of unicodeData) {
 				stamp.path = `https://q.trap.jp/api/1.0/public/emoji/${stamp.id}`
 				stamp.isUser = false
+				stamp.isUnicode = true
 			}
 			for (const stamp of originalData) {
 				stamp.path = `/api/img/${stamp.id}`
 				stamp.isUser = false
 				stamp.id = `${stamp.id}-o`
 				// クエリパラメーターの対応がされるまでは2セット来てidがかぶるから、oってつける
+				stamp.isUnicode = false
 			}
 			return unicodeData.concat(originalData)
 		}
@@ -56,7 +59,8 @@ export async function fetchAllStamps(
 			id: user.id,
 			name: user.name,
 			path: `https://q.trap.jp/api/v3/public/icon/${user.name}`,
-			isUser: true
+			isUser: true,
+			isUnicode: false
 		}))
 	)
 }
