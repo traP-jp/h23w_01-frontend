@@ -12,10 +12,11 @@ export default function FabricCanvasWrapper({
 	initialSvg,
 	cookies
 }: { initialSvg?: string; cookies: RequestCookie[] }) {
-	const { inputRef, onChange, handleToolClick } = useFabricCanvas(cookies)
+	const { divRef, inputRef, onChange, handleToolClick, handleToolTouch } =
+		useFabricCanvas(cookies)
 
 	return (
-		<div onClick={handleToolClick}>
+		<div onClick={handleToolClick} onTouchStart={handleToolTouch} ref={divRef}>
 			<FabricCanvas initialSvg={initialSvg} />
 			<input
 				type="file"
