@@ -4,12 +4,12 @@ import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies'
 import { fetchUsers } from './users'
 
 export type Stamp = {
-		id: string
-		name: string
-		path: string
-		isUser: boolean
-		isUnicode: boolean
-	}
+	id: string
+	name: string
+	path: string
+	isUser: boolean
+	isUnicode: boolean
+}
 
 async function fetchStamps(cookies: RequestCookie[]): Promise<Stamp[]> {
 	const fetchUnicodeStamps = () => {
