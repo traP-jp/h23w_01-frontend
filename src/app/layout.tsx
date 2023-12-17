@@ -1,5 +1,5 @@
-import Sidebar from '@/components/Sidebar'
 import Provider from '@/components/Provider'
+import Sidebar from '@/components/Sidebar'
 import { Toaster } from '@/components/ui/toaster'
 import { SHOWCASE_USER_KEY } from '@/lib/auth'
 import type { Metadata } from 'next'
