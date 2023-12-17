@@ -31,7 +31,7 @@ async function fetchStamps(cookies: RequestCookie[]): Promise<Stamp[]> {
 				originalRes.json()
 			])
 			for (const stamp of unicodeData) {
-				stamp.path = `/api/img/${stamp.id}`
+				stamp.path = `https://q.trap.jp/api/1.0/public/emoji/${stamp.id}`
 				stamp.isUser = false
 			}
 			for (const stamp of originalData) {
