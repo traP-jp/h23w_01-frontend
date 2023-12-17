@@ -12,11 +12,12 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import { useAtom } from 'jotai'
 import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies'
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
-import { MouseEvent } from 'react'
+import { MouseEvent, TouchEvent } from 'react'
 import { fetchStampImage } from '../traq/stamps'
 import { useStamp } from './components/stamps/useStamp'
 
 export const useFabricCanvas = (cookies: RequestCookie[]) => {
+	const divRef = useRef<HTMLDivElement>(null)
 	const [selectedObject, setSelctedObject] = useAtom(selectObjectAtom)
 	const [selectedTool, setSelectedTool] = useAtom(selectedToolAtom)
 	const [selectedStamp, setSelectedStamp] = useAtom(selectedStampAtom)
@@ -30,36 +31,33 @@ export const useFabricCanvas = (cookies: RequestCookie[]) => {
 	const canvas = useAtomValue(canvasAtom)
 	const { pushRemoveHistory, histories, undo } = useHistory()
 
-	const handleAddObject = (e: MouseEvent<HTMLDivElement>) => {
+	const handleAddObject = (offsetX: number, offsetY: number) => {
 		if (selectedTool !== 'object' || selectedObject === null) {
 			throw new Error('invalid state')
 		}
-		const { offsetX, offsetY } = e.nativeEvent
 		putObject(offsetX, offsetY, selectedObject)
 		setSelectedTool(null)
 		setSelctedObject(null)
 	}
-	const handleAddText = (e: MouseEvent<HTMLDivElement>) => {
+	const handleAddText = (offsetX: number, offsetY: number) => {
 		if (selectedTool !== 'text') {
 			throw new Error('invalid state')
 		}
-		const { offsetX, offsetY } = e.nativeEvent
 		putText(offsetX, offsetY)
 		setSelectedTool(null)
 	}
-	const handleAddImage = (e: MouseEvent<HTMLDivElement>) => {
+	const handleAddImage = (offsetX: number, offsetY: number) => {
 		if (selectedTool !== 'image' || inputRef.current === null) {
 			throw new Error('invalid state')
 		}
-		const { offsetX, offsetY } = e.nativeEvent
+
 		setPosition({ x: offsetX, y: offsetY })
 		inputRef.current.click()
 	}
-	const handleAddStamp = async (e: MouseEvent<HTMLDivElement>) => {
+	const handleAddStamp = async (offsetX: number, offsetY: number) => {
 		if (selectedTool !== 'stamp' || selectedStamp === null) {
 			throw new Error('invalid state')
 		}
-		const { offsetX, offsetY } = e.nativeEvent
 		setPosition({ x: offsetX, y: offsetY })
 
 		const img = await fetchStampImage(selectedStamp, cookies)
@@ -79,20 +77,53 @@ export const useFabricCanvas = (cookies: RequestCookie[]) => {
 		setSelectedTool(null)
 	}
 
-	const handleToolClick = (e: MouseEvent<HTMLInputElement>) => {
+	const handleToolClick = (e: MouseEvent<HTMLDivElement>) => {
 		if (selectedTool === null) return
+
+		const { offsetX, offsetY } = e.nativeEvent
+		console.log(offsetX, offsetY)
+
 		switch (selectedTool) {
 			case 'object':
-				handleAddObject(e)
+				handleAddObject(offsetX, offsetY)
 				break
 			case 'text':
-				handleAddText(e)
+				handleAddText(offsetX, offsetY)
 				break
 			case 'image':
-				handleAddImage(e)
+				handleAddImage(offsetX, offsetY)
 				break
 			case 'stamp':
-				handleAddStamp(e)
+				handleAddStamp(offsetX, offsetY)
+				break
+			default:
+				throw new Error(`invalid tool: ${selectedTool satisfies never}`)
+		}
+	}
+
+	const handleToolTouch = (e: TouchEvent<HTMLDivElement>) => {
+		if (selectedTool === null || divRef.current === null) return
+
+		console.log(e)
+		const { clientX, clientY } = e.touches[0]
+		const [offsetX, offsetY] = [
+			clientX - divRef.current.getBoundingClientRect().left,
+			clientY - divRef.current.getBoundingClientRect().top
+		]
+		console.log(offsetX, offsetY)
+
+		switch (selectedTool) {
+			case 'object':
+				handleAddObject(offsetX, offsetY)
+				break
+			case 'text':
+				handleAddText(offsetX, offsetY)
+				break
+			case 'image':
+				handleAddImage(offsetX, offsetY)
+				break
+			case 'stamp':
+				handleAddStamp(offsetX, offsetY)
 				break
 			default:
 				throw new Error(`invalid tool: ${selectedTool satisfies never}`)
@@ -133,8 +164,10 @@ export const useFabricCanvas = (cookies: RequestCookie[]) => {
 	})
 
 	return {
+		divRef,
 		inputRef,
 		onChange,
-		handleToolClick
+		handleToolClick,
+		handleToolTouch
 	}
 }
