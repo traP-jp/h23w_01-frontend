@@ -31,11 +31,11 @@ async function fetchStamps(cookies: RequestCookie[]): Promise<Stamp[]> {
 				originalRes.json()
 			])
 			for (const stamp of unicodeData) {
-				stamp.path = `${getApiOrigin()}/stamps/${stamp.id}/image`
+				stamp.path = `/api/img/${stamp.id}`
 				stamp.isUser = false
 			}
 			for (const stamp of originalData) {
-				stamp.path = `${getApiOrigin()}/stamps/${stamp.id}/image`
+				stamp.path = `/api/img/${stamp.id}`
 				stamp.isUser = false
 				stamp.id = `${stamp.id}-o`
 				// クエリパラメーターの対応がされるまでは2セット来てidがかぶるから、oってつける
@@ -52,12 +52,14 @@ export async function fetchAllStamps(
 	const users = await fetchUsers(cookies)
 
 	return stamps.concat(
-		users.map(user => ({
-			id: user.id,
-			name: user.name,
-			path: `${getApiOrigin()}/users/${user.id}/icon`,
-			isUser: true
-		}))
+		users
+			.filter(user => !user.name.startsWith('Webhook'))
+			.map(user => ({
+				id: user.id,
+				name: user.name,
+				path: `/api/img/${user.id}?isUser=true`,
+				isUser: true
+			}))
 	)
 }
 
