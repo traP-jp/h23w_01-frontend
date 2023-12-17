@@ -10,38 +10,33 @@ export interface RequestBody {
 }
 
 export async function GET(
-	req: NextRequest,
-	{ params: { id } }: { params: { id: string } }
-) {
-	const { searchParams } = new URL(req.url)
-	const isUser = searchParams.get('isUser')
-	const cookieStore = cookies()
-	const cookieList = cookieStore.getAll()
-	const url =
-		isUser === 'true'
-			? `${getApiOrigin()}/users/${id}/icon`
-			: `${getApiOrigin()}/stamps/${id}/image`
+		req: NextRequest,
+		{ params: { id } }: { params: { id: string } }
+	) {
+		const cookieStore = cookies()
+		const cookieList = cookieStore.getAll()
+		const url = `${getApiOrigin()}/stamps/${id}/image`
 
-	const response = await fetch(url, {
-		method: 'GET',
-		headers: {
-			cookie: `${cookieList.map(c => `${c.name}=${c.value}`).join('; ')}`
-		},
-		credentials: 'include'
-	})
-	if (!response.ok) {
-		console.error(response)
-		throw new Error('Failed to fetch data')
-	}
-
-	const src = await response.arrayBuffer()
-
-	return new ImageResponse(
-		// @ts-ignore
-		<img src={src} width={128} height={128} alt="response" />,
-		{
-			width: 128,
-			height: 128
+		const response = await fetch(url, {
+			method: 'GET',
+			headers: {
+				cookie: `${cookieList.map(c => `${c.name}=${c.value}`).join('; ')}`
+			},
+			credentials: 'include'
+		})
+		if (!response.ok) {
+			console.error(response)
+			throw new Error('Failed to fetch data')
 		}
-	)
-}
+
+		const src = await response.arrayBuffer()
+
+		return new ImageResponse(
+			// @ts-ignore
+			<img src={src} width={128} height={128} alt="スタンプ" />,
+			{
+				width: 128,
+				height: 128
+			}
+		)
+	}
