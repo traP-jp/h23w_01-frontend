@@ -52,18 +52,17 @@ export async function fetchAllStamps(
 	const users = await fetchUsers(cookies)
 
 	return stamps.concat(
-		users
-			.map(user => ({
-				id: user.id,
-				name: user.name,
-				path: `/api/img/${user.id}?isUser=true`,
-				isUser: true
-			}))
+		users.map(user => ({
+			id: user.id,
+			name: user.name,
+			path: `https://q.trap.jp/api/v3/public/icon/${user.name}`,
+			isUser: true
+		}))
 	)
 }
 
 export async function fetchStampImage(stamp: Stamp, cookies: RequestCookie[]) {
-	const res = await fetcher(stamp.path, cookies)
+	const res = await fetcher(stamp.path, cookies, false)
 	const blob = await res.blob()
 
 	return blob

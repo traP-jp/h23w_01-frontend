@@ -1,6 +1,10 @@
 import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies'
 
-export async function fetcher(url: string, cookies: RequestCookie[]) {
+export async function fetcher(
+	url: string,
+	cookies: RequestCookie[],
+	credentials = false
+) {
 	return fetch(url, {
 		mode: 'cors',
 		next: {
@@ -9,6 +13,6 @@ export async function fetcher(url: string, cookies: RequestCookie[]) {
 		headers: {
 			cookie: `${cookies.map(c => `${c.name}=${c.value}`).join('; ')}`
 		},
-		credentials: 'include'
+		credentials: credentials ? 'include' : 'same-origin'
 	})
 }
