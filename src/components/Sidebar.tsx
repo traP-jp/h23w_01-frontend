@@ -11,6 +11,13 @@ export default function Sidebar({ userId }: { userId: string }) {
 
 	return (
 		<div className="w-20 px-4 py-2 h-screen bg-kaga-red flex flex-col">
+			<div>
+				<h1 className="text-white font-bold text-2xl py-2">
+					post
+					<br />
+					Qard
+				</h1>
+			</div>
 			<Link href="/" className="w-full flex justify-center" title="新規作成">
 				<Pencil2Icon
 					className={cn(
