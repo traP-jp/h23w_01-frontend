@@ -1,5 +1,6 @@
 'use client'
 
+import { RequestBody } from '@/app/api/json/route'
 import { Button } from '@/components/ui/button'
 import { getApiOrigin } from '@/lib/env'
 import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies'
@@ -10,14 +11,12 @@ export default function CardActionButtons({
 	cookies
 }: { id: string; cookies: RequestCookie[] }) {
 	const deleteCard = async () => {
-		const res = await fetch(`${getApiOrigin()}/cards/${id}`, {
-			method: 'DELETE',
-			headers: {
-				cookie: cookies
-					.map(cookie => `${cookie.name}=${cookie.value}`)
-					.join('; ')
-			},
-			credentials: 'include'
+		const res = await fetch('/api/json', {
+			method: 'POST',
+			body: JSON.stringify({
+				url: `${getApiOrigin()}/cards/${id}`,
+				method: 'DELETE'
+			} satisfies RequestBody)
 		})
 		if (!res.ok) {
 			throw new Error('Failed to post form')

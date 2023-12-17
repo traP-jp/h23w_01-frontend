@@ -1,3 +1,4 @@
+import { RequestBody } from '@/app/api/json/route'
 import { getApiOrigin } from '@/lib/env'
 import { canvasAtom, imagesAtoms } from '@/states/canvas'
 import { useAtomValue } from 'jotai'
@@ -40,21 +41,19 @@ export const usePostForm = () => {
 			images: images.map(image => image.id)
 		}
 		// カードの情報を送信
-		const cardRes = await fetch(`${getApiOrigin()}/cards`, {
-			method: method,
-			headers: {
-				'Content-Type': 'application/json',
-				cookie: cookies
-					.map(cookie => `${cookie.name}=${cookie.value}`)
-					.join('; ')
-			},
-			credentials: 'include',
-			body: JSON.stringify(data)
+		const cardRes = await fetch('/api/json', {
+			method: 'POST',
+			body: JSON.stringify({
+				url: `${getApiOrigin()}/cards`,
+				method: method,
+				body: data
+			} satisfies RequestBody)
 		})
+
 		if (!cardRes.ok) {
 			throw new Error('Failed to post form')
 		}
-		const cardId = await cardRes.text()
+		const cardId = (await cardRes.json()).res
 
 		const promises = []
 
@@ -65,17 +64,15 @@ export const usePostForm = () => {
 		const svgBlob = new Blob([svg], {
 			type: 'image/svg+xml'
 		})
+		const svgData = new FormData()
+		svgData.append('url', `${getApiOrigin()}/cards/${cardId}/svg`)
+		svgData.append('contentType', 'image/svg+xml')
+		svgData.append('method', method)
+		svgData.append('body', svgBlob)
 		promises.push(
-			fetch(`${getApiOrigin()}/cards/${cardId}/svg`, {
+			fetch('/api/formData', {
 				method: 'POST',
-				headers: {
-					'Content-Type': 'image/svg+xml',
-					cookie: cookies
-						.map(cookie => `${cookie.name}=${cookie.value}`)
-						.join('; ')
-				},
-				credentials: 'include',
-				body: svgBlob
+				body: svgData
 			})
 		)
 
@@ -83,38 +80,35 @@ export const usePostForm = () => {
 		const imgBlob = new Blob([canvas.toDataURL()], {
 			type: 'image/png'
 		})
+		const imgData = new FormData()
+		imgData.append('url', `${getApiOrigin()}/cards/${cardId}/png`)
+		imgData.append('contentType', 'image/png')
+		imgData.append('method', method)
+		imgData.append('body', imgBlob)
 		promises.push(
-			fetch(`${getApiOrigin()}/cards/${cardId}/png`, {
-				method: method,
-				headers: {
-					'Content-Type': 'image/png',
-					cookie: cookies
-						.map(cookie => `${cookie.name}=${cookie.value}`)
-						.join('; ')
-				},
-				credentials: 'include',
-				body: imgBlob
+			fetch('/api/formData', {
+				method: 'POST',
+				body: imgData
 			})
 		)
 
-		// 埋め込まれている画像を送信するpromiseを作成
-		for (const image of images) {
-			const data = new FormData()
-			data.append('id', image.id)
-			data.append('image', image.src)
-			promises.push(
-				fetch(`${getApiOrigin()}/images`, {
-					method: 'POST',
-					headers: {
-						cookie: cookies
-							.map(cookie => `${cookie.name}=${cookie.value}`)
-							.join('; ')
-					},
-					credentials: 'include',
-					body: data
-				})
-			)
-		}
+		// // 埋め込まれている画像を送信するpromiseを作成
+		// for (const image of images) {
+		// 	const data = new FormData()
+		// 	data.append('id', image.id)
+		// 	data.append('image', image.src)
+		// 	promises.push(
+		// 		fetch('/api/formData', {
+		// 			method: 'POST',
+		// 			body: JSON.stringify({
+		// 				url: `${getApiOrigin()}/images`,
+		// 				method: 'POST',
+		// 				contentType: 'image/png',
+		// 				body: data
+		// 			} satisfies RequestBody)
+		// 		})
+		// 	)
+		// }
 
 		await Promise.all(promises)
 	}

@@ -14,7 +14,7 @@ import { cookies, headers } from 'next/headers'
 
 export default async function Home() {
 	const headerList = headers()
-	const userId = headerList.get(SHOWCASE_USER_KEY)
+	const userId = headerList.get(SHOWCASE_USER_KEY) ?? 'mehm8128'
 	const cookieStore = cookies()
 	const cookieList = cookieStore.getAll()
 	const channels = await fetchChannels(cookieList)
