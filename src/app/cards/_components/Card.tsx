@@ -5,7 +5,6 @@ import {
 } from '@/components/ui/hover-card'
 import { CardType } from '@/features/card/type'
 import { datetimeToString } from '@/lib/date'
-import { getApiOrigin } from '@/lib/env'
 import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies'
 import Image from 'next/image'
 import CardActionButtons from './CardActionButtons'
@@ -23,7 +22,7 @@ export default function Card({
 		<HoverCard openDelay={500}>
 			<HoverCardTrigger className="w-[180px] border shadow-md">
 				<Image
-					src={`${getApiOrigin()}/cards/${card.id}/png`}
+					src={`/api/img/cards/${card.id}`}
 					width={300}
 					height={444}
 					alt={`${datetimeToString(
@@ -37,7 +36,7 @@ export default function Card({
 				sideOffset={-20}
 			>
 				<Image
-					src={`${getApiOrigin()}/cards/${card.id}/png`}
+					src={`/api/img/cards/${card.id}`}
 					width={300}
 					height={444}
 					className="border w-[240px]"
