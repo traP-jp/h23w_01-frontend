@@ -23,7 +23,7 @@ export default async function Home() {
 	)
 
 	return (
-		<main className="flex gap-12 pt-8 px-10 w-full">
+		<main className="flex gap-12 pt-8 px-2 w-full">
 			<div className="space-y-8 flex-1">
 				<div className="flex gap-2">
 					<ColorSelector />

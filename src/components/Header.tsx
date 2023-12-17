@@ -6,11 +6,11 @@ import { DashboardIcon, Pencil2Icon } from '@radix-ui/react-icons'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
-export default function Header({ userId }: { userId: string }) {
+export default function Sidebar({ userId }: { userId: string }) {
 	const pathname = usePathname()
 
 	return (
-		<div className="w-[4%] h-screen bg-kaga-red flex flex-col">
+		<div className="w-20 px-4 py-2 h-screen bg-kaga-red flex flex-col">
 			<Link href="/" className="w-full flex justify-center" title="新規作成">
 				<Pencil2Icon
 					className={cn(
@@ -24,7 +24,7 @@ export default function Header({ userId }: { userId: string }) {
 			<Link
 				href="/cards"
 				className="w-full flex justify-center"
-				title="はがき一覧"
+				title="Qard一覧"
 			>
 				<DashboardIcon
 					className={cn(
@@ -36,7 +36,10 @@ export default function Header({ userId }: { userId: string }) {
 				/>
 			</Link>
 			<Avatar title={`@${userId}`} className="pb-2 pt-auto mt-auto">
-				<AvatarImage src={`https://q.trap.jp/api/v3/public/icon/${userId}`} />
+				<AvatarImage
+					src={`https://q.trap.jp/api/v3/public/icon/${userId}`}
+					className="rounded-full"
+				/>
 				<AvatarFallback>U</AvatarFallback>
 			</Avatar>
 		</div>
