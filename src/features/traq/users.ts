@@ -16,5 +16,5 @@ export async function fetchUsers(cookies: RequestCookie[]): Promise<User[]> {
 	}
 
 	const data: User[] = await res.json()
-	return data
+	return data.filter(user => !user.name.startsWith('Webhook'))
 }

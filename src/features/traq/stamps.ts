@@ -31,11 +31,11 @@ async function fetchStamps(cookies: RequestCookie[]): Promise<Stamp[]> {
 				originalRes.json()
 			])
 			for (const stamp of unicodeData) {
-				stamp.path = `${getApiOrigin()}/stamps/${stamp.id}/image`
+				stamp.path = `https://q.trap.jp/api/1.0/public/emoji/${stamp.id}`
 				stamp.isUser = false
 			}
 			for (const stamp of originalData) {
-				stamp.path = `${getApiOrigin()}/stamps/${stamp.id}/image`
+				stamp.path = `https://q.trap.jp/api/1.0/public/emoji/${stamp.id}`
 				stamp.isUser = false
 				stamp.id = `${stamp.id}-o`
 				// クエリパラメーターの対応がされるまでは2セット来てidがかぶるから、oってつける
@@ -55,7 +55,7 @@ export async function fetchAllStamps(
 		users.map(user => ({
 			id: user.id,
 			name: user.name,
-			path: `${getApiOrigin()}/users/${user.id}/icon`,
+			path: `https://q.trap.jp/api/v3/public/icon/${user.name}`,
 			isUser: true
 		}))
 	)
