@@ -21,7 +21,7 @@ export const fetchChannels = async (cookies: RequestCookie[]) => {
 		console.error(res)
 		throw new Error('Failed to fetch data')
 	}
-	const data: ChannelRes[] = await res.json()
+	const data: ChannelRes[] = (await res.json()).public
 	const channelsMap = new Map<string, ChannelRes>()
 	const rootChannels: ChannelRes[] = []
 	for (const channel of data) {
