@@ -76,14 +76,13 @@ export const usePostForm = () => {
 		)
 
 		// imgを送信するpromiseを作成
-		const imgBlob = new Blob([canvas.toDataURL()], {
-			type: 'image/png'
-		})
+		const canvasImgUrl = canvas.toDataURL()
+		const blob = await (await fetch(canvasImgUrl)).blob()
 		const imgData = new FormData()
 		imgData.append('url', `${getApiOrigin()}/cards/${cardId}/png`)
 		imgData.append('contentType', 'image/png')
 		imgData.append('method', method)
-		imgData.append('body', imgBlob)
+		imgData.append('body', blob)
 		promises.push(
 			fetch('/api/formData', {
 				method: 'POST',
