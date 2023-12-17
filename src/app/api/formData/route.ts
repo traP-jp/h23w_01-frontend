@@ -15,6 +15,7 @@ export async function POST(req: Request): Promise<NextResponse> {
 	const url = formData.get('url')
 	const contentType = formData.get('contentType')
 	const method = formData.get('method')
+	const id = formData.get('id')
 	const body = formData.get('body')
 	if (
 		url === null ||
@@ -24,14 +25,24 @@ export async function POST(req: Request): Promise<NextResponse> {
 	) {
 		throw new Error('Failed to fetch data')
 	}
+	const formData2 = new FormData()
+	if (id !== null) {
+		formData2.append('id', id)
+		formData2.append('image', body)
+	}
 
 	const res = await fetch(url.toString(), {
 		method: method.toString(),
-		headers: {
-			'Content-Type': contentType.toString(),
-			cookie: `${cookieList.map(c => `${c.name}=${c.value}`).join('; ')}`
-		},
-		body: body,
+		headers:
+			id !== null
+				? {
+						cookie: `${cookieList.map(c => `${c.name}=${c.value}`).join('; ')}`
+				  }
+				: {
+						'Content-Type': contentType.toString(),
+						cookie: `${cookieList.map(c => `${c.name}=${c.value}`).join('; ')}`
+				  },
+		body: id !== null ? formData2 : body,
 		credentials: 'include'
 	})
 	if (!res.ok) {

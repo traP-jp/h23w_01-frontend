@@ -92,23 +92,21 @@ export const usePostForm = () => {
 			})
 		)
 
-		// // 埋め込まれている画像を送信するpromiseを作成
-		// for (const image of images) {
-		// 	const data = new FormData()
-		// 	data.append('id', image.id)
-		// 	data.append('image', image.src)
-		// 	promises.push(
-		// 		fetch('/api/formData', {
-		// 			method: 'POST',
-		// 			body: JSON.stringify({
-		// 				url: `${getApiOrigin()}/images`,
-		// 				method: 'POST',
-		// 				contentType: 'image/png',
-		// 				body: data
-		// 			} satisfies RequestBody)
-		// 		})
-		// 	)
-		// }
+		// 埋め込まれている画像を送信するpromiseを作成
+		for (const image of images) {
+			const data = new FormData()
+			data.append('url', `${getApiOrigin()}/images`)
+			data.append('contentType', 'image/png')
+			data.append('method', method)
+			data.append('id', image.id)
+			data.append('body', image.src)
+			promises.push(
+				fetch('/api/formData', {
+					method: 'POST',
+					body: data
+				})
+			)
+		}
 
 		await Promise.all(promises)
 	}

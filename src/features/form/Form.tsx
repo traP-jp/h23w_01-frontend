@@ -75,7 +75,7 @@ export function PostForm({
 				  }
 	})
 
-	function onSubmit(values: FormSchemaType) {
+	async function onSubmit(values: FormSchemaType) {
 		if (userId === null) {
 			throw new Error('userId is null')
 		}
@@ -84,22 +84,29 @@ export function PostForm({
 			console.error('user does not exist.', userId)
 			throw new Error('userUUID is undefined')
 		}
-		postForm(
-			{
-				ownerId: userUUID,
-				publishDate: values.sendDateTime.toISOString(),
-				publishChannels: values.sendChannels,
-				message: values.message ? values.message : null
-			},
-			initialValue !== undefined,
-			cookies
-		)
-		form.reset()
-		setSelectedChannels([])
-		toast({
-			title: '📨',
-			description: '手紙を送信しました'
-		})
+		try {
+			await postForm(
+				{
+					ownerId: userUUID,
+					publishDate: values.sendDateTime.toISOString(),
+					publishChannels: values.sendChannels,
+					message: values.message ? values.message : null
+				},
+				initialValue !== undefined,
+				cookies
+			)
+			form.reset()
+			setSelectedChannels([])
+			toast({
+				title: '📨',
+				description: '手紙を送信しました'
+			})
+		} catch {
+			toast({
+				title: 'error',
+				description: '手紙の送信に失敗しました'
+			})
+		}
 	}
 
 	const timezoneOffset = new Date().getTimezoneOffset() * 60000 // get timezone offset in milliseconds
