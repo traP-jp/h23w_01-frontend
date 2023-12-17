@@ -40,9 +40,9 @@ export default async function Cards({
 	)
 
 	return (
-		<main className="px-10">
+		<main className="px-10 w-full">
 			<div className="pt-7 pb-10 flex items-center justify-between">
-				<h1 className="text-3xl">自分のカード</h1>
+				<h1 className="text-3xl">Qard一覧</h1>
 				<CardOwnerSwitch owner={owner} />
 			</div>
 			<div className="flex flex-wrap gap-10">
