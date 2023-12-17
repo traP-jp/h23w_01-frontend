@@ -17,7 +17,8 @@ const fetchCards = async (owner: CardOwner, cookies: RequestCookie[]) => {
 		},
 		headers: {
 			cookie: cookies.map(cookie => `${cookie.name}=${cookie.value}`).join('; ')
-		}
+		},
+		credentials: 'include'
 	})
 
 	if (!res.ok) {
