@@ -9,7 +9,7 @@ export default function CardOwnerSwitch({ owner }: { owner: CardOwner }) {
 
 	const checked = owner === 'me'
 	const handleChange = (val: boolean) => {
-		router.replace(`/cards?owner=${val ? 'me' : 'other'}`)
+		router.replace(`/cards?owner=${val ? 'me' : 'all'}`)
 	}
 
 	return (
