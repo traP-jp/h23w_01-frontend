@@ -104,7 +104,6 @@ export const useFabricCanvas = (cookies: RequestCookie[]) => {
 	const handleToolTouch = (e: TouchEvent<HTMLDivElement>) => {
 		if (selectedTool === null || divRef.current === null) return
 
-		console.log(e)
 		const { clientX, clientY } = e.touches[0]
 		const [offsetX, offsetY] = [
 			clientX - divRef.current.getBoundingClientRect().left,

@@ -39,7 +39,8 @@ function FabricCanvas({ initialSvg }: { initialSvg?: string }) {
 		if (!canvasEl.current) return
 		const canvas = new Canvas(canvasEl.current, {
 			height: 740,
-			width: 500
+			width: 500,
+			backgroundColor: '#fff'
 		})
 
 		setCanvas(canvas)

@@ -22,10 +22,17 @@ export const usePostForm = () => {
 	const canvas = useAtomValue(canvasAtom)
 	const images = useAtomValue(imagesAtoms)
 
-	const postForm = async (form: form, isPatch: boolean, patchCardId?: string) => {
+	const postForm = async (
+		form: form,
+		isPatch: boolean,
+		patchCardId?: string
+	) => {
 		if (canvas === null) {
 			return
 		}
+		canvas.discardActiveObject()
+		canvas.renderAll()
+
 		const method = isPatch ? 'PATCH' : 'POST'
 
 		const data: PostFormData = {
