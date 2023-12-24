@@ -61,7 +61,7 @@ export const useFabricCanvas = (cookies: RequestCookie[]) => {
 		setPosition({ x: offsetX, y: offsetY })
 
 		const img = await fetchStampImage(selectedStamp, cookies)
-		await putStamp(offsetX, offsetY, img, selectedStamp.isUnicode, selectedStamp.id)
+		await putStamp(offsetX, offsetY, img, selectedStamp)
 		setSelectedTool(null)
 		setSelectedStamp(null)
 	}
