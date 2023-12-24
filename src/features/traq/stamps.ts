@@ -56,7 +56,7 @@ export async function fetchAllStamps(
 		users.map(user => ({
 			id: user.id,
 			name: user.name,
-			path: `https://q.trap.jp/api/v3/public/icon/${user.name}`,
+			path: `/api/img/stamps/user/${user.name}`,
 			isUser: true,
 			isUnicode: false
 		}))
