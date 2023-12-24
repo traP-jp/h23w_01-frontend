@@ -5,6 +5,6 @@ export const canvasAtom = atom<Canvas | null>(null)
 
 interface Image {
 	id: string
-	src: File
+	src: Blob
 }
 export const imagesAtoms = atom<Image[]>([])

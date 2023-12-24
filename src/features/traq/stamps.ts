@@ -37,10 +37,8 @@ async function fetchStamps(cookies: RequestCookie[]): Promise<Stamp[]> {
 				stamp.isUnicode = true
 			}
 			for (const stamp of originalData) {
-				stamp.path = `/api/img/${stamp.id}`
+				stamp.path = `/api/img/stamps/${stamp.id}`
 				stamp.isUser = false
-				stamp.id = `${stamp.id}-o`
-				// クエリパラメーターの対応がされるまでは2セット来てidがかぶるから、oってつける
 				stamp.isUnicode = false
 			}
 			return unicodeData.concat(originalData)

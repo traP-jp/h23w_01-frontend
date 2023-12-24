@@ -15,7 +15,7 @@ export async function GET(
 ) {
 	const cookieStore = cookies()
 	const cookieList = cookieStore.getAll()
-	const url = `${getApiOrigin()}/images/${id}`
+	const url = `${getApiOrigin()}/stamps/${id}/image`
 
 	const response = await fetch(url, {
 		method: 'GET',
@@ -33,7 +33,7 @@ export async function GET(
 
 	return new ImageResponse(
 		// @ts-ignore
-		<img src={src} width={128} height={128} alt="埋め込み画像" />,
+		<img src={src} width={128} height={128} alt="スタンプ" />,
 		{
 			width: 128,
 			height: 128

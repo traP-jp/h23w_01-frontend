@@ -61,7 +61,7 @@ export const useFabricCanvas = (cookies: RequestCookie[]) => {
 		setPosition({ x: offsetX, y: offsetY })
 
 		const img = await fetchStampImage(selectedStamp, cookies)
-		putStamp(offsetX, offsetY, img, selectedStamp.isUnicode)
+		await putStamp(offsetX, offsetY, img, selectedStamp.isUnicode, selectedStamp.id)
 		setSelectedTool(null)
 		setSelectedStamp(null)
 	}
@@ -81,7 +81,6 @@ export const useFabricCanvas = (cookies: RequestCookie[]) => {
 		if (selectedTool === null) return
 
 		const { offsetX, offsetY } = e.nativeEvent
-		console.log(offsetX, offsetY)
 
 		switch (selectedTool) {
 			case 'object':
@@ -109,7 +108,6 @@ export const useFabricCanvas = (cookies: RequestCookie[]) => {
 			clientX - divRef.current.getBoundingClientRect().left,
 			clientY - divRef.current.getBoundingClientRect().top
 		]
-		console.log(offsetX, offsetY)
 
 		switch (selectedTool) {
 			case 'object':
