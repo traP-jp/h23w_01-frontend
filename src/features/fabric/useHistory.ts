@@ -67,11 +67,10 @@ export const useHistory = () => {
 			return
 		}
 		const content = histories[index - 1].json
-		await canvas.loadFromJSON(content, () => {
-			canvas.renderAll()
-			// targetId以降を全て削除
-			setHistories(histories.slice(0, index))
-		})
+		await canvas.loadFromJSON(content)
+		canvas.renderAll()
+		// targetId以降を全て削除
+		setHistories(histories.slice(0, index))
 		setHistoryLocked(false)
 	}
 
