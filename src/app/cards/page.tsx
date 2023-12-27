@@ -2,9 +2,10 @@ import Card from '@/app/cards/_components/Card'
 import CardOwnerSwitch from '@/features/card/components/CardOwnerSwitch'
 import { CardType } from '@/features/card/type'
 import { fetchUsers } from '@/features/traq/users'
+import { SHOWCASE_USER_KEY } from '@/lib/auth'
 import { getApiOrigin } from '@/lib/env'
 import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies'
-import { cookies } from 'next/headers'
+import { cookies, headers } from 'next/headers'
 
 export type CardOwner = 'me' | 'all'
 
@@ -33,7 +34,8 @@ export default async function Cards({
 	const cookieStore = cookies()
 	const cookieList = cookieStore.getAll()
 	const cards = await fetchCards(owner, cookieList)
-
+	const headerList = headers()
+	const meId = headerList.get(SHOWCASE_USER_KEY)
 	const usersMap = new Map(
 		(await fetchUsers(cookies().getAll())).map(user => [user.id, user.name])
 	)
@@ -46,12 +48,7 @@ export default async function Cards({
 			</div>
 			<div className="flex flex-wrap gap-10">
 				{cards.map(card => (
-					<Card
-						key={card.id}
-						card={card}
-						usersMap={usersMap}
-						cookies={cookieList}
-					/>
+					<Card key={card.id} card={card} usersMap={usersMap} meId={meId} />
 				))}
 			</div>
 		</main>

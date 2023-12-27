@@ -3,13 +3,9 @@
 import { RequestBody } from '@/app/api/json/route'
 import { Button } from '@/components/ui/button'
 import { getApiOrigin } from '@/lib/env'
-import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies'
 import Link from 'next/link'
 
-export default function CardActionButtons({
-	id,
-	cookies
-}: { id: string; cookies: RequestCookie[] }) {
+export default function CardActionButtons({ id }: { id: string }) {
 	const deleteCard = async () => {
 		const res = await fetch('/api/json', {
 			method: 'POST',

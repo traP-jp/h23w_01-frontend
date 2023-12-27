@@ -5,18 +5,17 @@ import {
 } from '@/components/ui/hover-card'
 import { CardType } from '@/features/card/type'
 import { datetimeToString } from '@/lib/date'
-import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies'
 import Image from 'next/image'
 import CardActionButtons from './CardActionButtons'
 
 export default function Card({
 	card,
 	usersMap,
-	cookies
+	meId
 }: {
 	card: CardType
 	usersMap: Map<string, string>
-	cookies: RequestCookie[]
+	meId: string | null
 }) {
 	return (
 		<HoverCard openDelay={500}>
@@ -69,7 +68,9 @@ export default function Card({
 							<p className="ml-4">{card.message}</p>
 						</div>
 					</div>
-					<CardActionButtons id={card.id} cookies={cookies} />
+					{usersMap.get(card.owner_id) === meId && (
+						<CardActionButtons id={card.id} />
+					)}
 				</div>
 			</HoverCardContent>
 		</HoverCard>
