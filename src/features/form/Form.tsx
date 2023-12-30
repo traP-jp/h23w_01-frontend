@@ -30,6 +30,7 @@ import { useToast } from '@/components/ui/use-toast'
 import { ChevronDownIcon } from '@radix-ui/react-icons'
 
 import { Channel } from '@/features/traq/channels'
+import { useRouter } from 'next/navigation'
 import {
 	FormSchemaType,
 	channelsMax,
@@ -56,6 +57,7 @@ export function PostForm({
 	const [open, setOpen] = useState(false)
 	const [selectedChannels, setSelectedChannels] = useAtom(selectedChannelsAtom)
 	const { postForm } = usePostForm()
+	const router = useRouter()
 
 	const nextYear = new Date().getFullYear() + 1
 
@@ -100,6 +102,7 @@ export function PostForm({
 				title: '📨',
 				description: '手紙を送信しました'
 			})
+			router.push('/cards')
 		} catch {
 			toast({
 				title: 'error',
@@ -112,12 +115,7 @@ export function PostForm({
 
 	return (
 		<Form {...form}>
-			<form
-				onSubmit={e => {
-					e.preventDefault()
-					form.handleSubmit(onSubmit)
-				}}
-			>
+			<form onSubmit={form.handleSubmit(onSubmit)}>
 				<FormField
 					control={form.control}
 					name="sendDateTime"
@@ -221,7 +219,7 @@ export function PostForm({
 				/>
 
 				<div className="flex justify-end">
-					<Button type="button">保存</Button>
+					<Button type="submit">保存</Button>
 				</div>
 			</form>
 		</Form>
