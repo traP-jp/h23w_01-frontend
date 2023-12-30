@@ -112,7 +112,12 @@ export function PostForm({
 
 	return (
 		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)}>
+			<form
+				onSubmit={e => {
+					e.preventDefault()
+					form.handleSubmit(onSubmit)
+				}}
+			>
 				<FormField
 					control={form.control}
 					name="sendDateTime"
@@ -216,7 +221,7 @@ export function PostForm({
 				/>
 
 				<div className="flex justify-end">
-					<Button type="submit">保存</Button>
+					<Button type="button">保存</Button>
 				</div>
 			</form>
 		</Form>

@@ -14,6 +14,7 @@ export function SelectedChannelsList() {
 						#{channel.name}
 					</span>
 					<button
+						type="button"
 						onClick={() => {
 							setSelectedChannels(selectedChannels.filter(c => c !== channel))
 						}}
