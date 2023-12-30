@@ -5,6 +5,7 @@ import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies'
 type ChannelRes = {
 	id: string
 	name: string
+	archived: boolean
 	parentId: string | null
 	children: string[]
 }
@@ -22,9 +23,10 @@ export const fetchChannels = async (cookies: RequestCookie[]) => {
 		throw new Error('Failed to fetch data')
 	}
 	const data: ChannelRes[] = (await res.json()).public
+	const channels = data.filter(channel => !channel.archived)
 	const channelsMap = new Map<string, ChannelRes>()
 	const rootChannels: ChannelRes[] = []
-	for (const channel of data) {
+	for (const channel of channels) {
 		channelsMap.set(channel.id, channel)
 		if (channel.parentId === null) {
 			rootChannels.push(channel)
