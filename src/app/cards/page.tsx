@@ -1,6 +1,7 @@
 import Card from '@/app/cards/_components/Card'
 import CardOwnerSwitch from '@/features/card/components/CardOwnerSwitch'
 import { CardType } from '@/features/card/type'
+import { fetchChannels } from '@/features/traq/channels'
 import { fetchUsers } from '@/features/traq/users'
 import { SHOWCASE_USER_KEY } from '@/lib/auth'
 import { getApiOrigin } from '@/lib/env'
@@ -39,6 +40,7 @@ export default async function Cards({
 	const usersMap = new Map(
 		(await fetchUsers(cookies().getAll())).map(user => [user.id, user.name])
 	)
+	const { channelMap } = await fetchChannels(cookieList)
 
 	return (
 		<main className="px-10 w-full">
@@ -48,7 +50,13 @@ export default async function Cards({
 			</div>
 			<div className="flex flex-wrap gap-10">
 				{cards.map(card => (
-					<Card key={card.id} card={card} usersMap={usersMap} meId={meId} />
+					<Card
+						key={card.id}
+						card={card}
+						usersMap={usersMap}
+						meId={meId}
+						channelMap={channelMap}
+					/>
 				))}
 			</div>
 		</main>

@@ -17,7 +17,7 @@ export default async function Home() {
 	const userId = headerList.get(SHOWCASE_USER_KEY)
 	const cookieStore = cookies()
 	const cookieList = cookieStore.getAll()
-	const channels = await fetchChannels(cookieList)
+	const { channels } = await fetchChannels(cookieList)
 	const usersMap = new Map(
 		(await fetchUsers(cookieList)).map(user => [user.name, user.id])
 	)

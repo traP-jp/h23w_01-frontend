@@ -63,7 +63,7 @@ export default async function EditCard({
 	const userId = headerList.get(SHOWCASE_USER_KEY)
 	const cookieStore = cookies()
 	const cookieList = cookieStore.getAll()
-	const channels = await fetchChannels(cookieList)
+	const { channels } = await fetchChannels(cookieList)
 	const card = await fetchCard(id, cookieList)
 	const cardSvg = await fetchCardSvg(id, cookieList)
 	const usersMap = new Map(

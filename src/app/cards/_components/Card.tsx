@@ -11,11 +11,13 @@ import CardActionButtons from './CardActionButtons'
 export default function Card({
 	card,
 	usersMap,
-	meId
+	meId,
+	channelMap
 }: {
 	card: CardType
 	usersMap: Map<string, string>
 	meId: string | null
+	channelMap: Map<string, string>
 }) {
 	return (
 		<HoverCard openDelay={500}>
@@ -60,7 +62,10 @@ export default function Card({
 						<div>
 							<p>送信先</p>
 							<p className="ml-4">
-								{card.publish_channels.map(channel => channel).join(', ')}
+								#
+								{card.publish_channels
+									.map(channel => channelMap.get(channel) ?? '不明なチャンネル')
+									.join(', ')}
 							</p>
 						</div>
 						<div>
